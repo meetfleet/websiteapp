@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/meetglfd/public_html/
-    - /bin/cp -r dist/. $DEPLOYPATH
+    - /bin/cp -r . $DEPLOYPATH
