@@ -94,6 +94,11 @@ header {
   stroke-width: 1.75;
 }
 
+header nav {
+  display: flex;
+  align-items: center;
+}
+
 main {
   position: fixed;
   inset: 0;
@@ -724,17 +729,17 @@ main {
 }
 
 @keyframes loopOriginal {
-  0%, 25% { opacity: 1; transform: scale(1) translateX(0); pointer-events: auto; }
-  33.3%, 87.5% { opacity: 0; transform: scale(0.85) translateX(-40px); pointer-events: none; }
-  92% { opacity: 0; transform: scale(0.85) translateX(40px); pointer-events: none; }
-  100% { opacity: 1; transform: scale(1) translateX(0); pointer-events: auto; }
+  0%, 25% { opacity: 1; transform: scale(1) translateX(0); }
+  33.3%, 87.5% { opacity: 0; transform: scale(0.85) translateX(-40px); }
+  92% { opacity: 0; transform: scale(0.85) translateX(40px); }
+  100% { opacity: 1; transform: scale(1) translateX(0); }
 }
 
 @keyframes loopMessage {
-  0%, 33.3% { opacity: 0; transform: scale(0.85); pointer-events: none; }
-  37.5%, 45.8% { opacity: 1; transform: scale(0.85); pointer-events: auto; }
-  62.5%, 87.5% { opacity: 1; transform: scale(1); pointer-events: auto; }
-  95.8%, 100% { opacity: 0; transform: scale(0.9); pointer-events: none; }
+  0%, 33.3% { opacity: 0; transform: scale(0.85); }
+  37.5%, 45.8% { opacity: 1; transform: scale(0.85); }
+  62.5%, 87.5% { opacity: 1; transform: scale(1); }
+  95.8%, 100% { opacity: 0; transform: scale(0.9); }
 }
 
 @keyframes loopMessageBg {

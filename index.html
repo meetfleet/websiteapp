@@ -1,25 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
+
 <head>
+  <!-- ── Core ── -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>meetfleet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- ── Primary Meta ── -->
+  <title>Meetfleet | Hyper-Local Spontaneous Social Coordination</title>
+  <meta name="description" content="Meetfleet is hyper-local coordination for the spontaneous era. Discover real-time activities near you — ski, dine, explore — and join friends instantly. Redefine the social landscape.">
+  <meta name="keywords" content="Meetfleet, spontaneous plans, local activities, social coordination, meet people, real-time events, outdoor activities, skiing, dining, social app, hyper-local">
+  <meta name="author" content="Meetfleet">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <link rel="canonical" href="https://meetfleet.app/">
+
+  <!-- ── Theme & Appearance ── -->
+  <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="color-scheme" content="dark light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Meetfleet">
+  <meta name="application-name" content="Meetfleet">
+
+  <!-- ── Open Graph ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Meetfleet">
+  <meta property="og:title" content="Meetfleet | Hyper-Local Spontaneous Social Coordination">
+  <meta property="og:description" content="Hyper-local coordination for the spontaneous era, join us, let's redefine the social landscape.">
+  <meta property="og:image" content="assets/images/og.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Meetfleet | discover and join spontaneous activities near you">
+  <meta property="og:url" content="https://meetfleet.app/">
+  <meta property="og:locale" content="en_US">
+
+  <!-- ── Twitter Card ── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Meetfleet | Hyper-Local Spontaneous Social Coordination">
+  <meta name="twitter:description" content="Hyper-local coordination for the spontaneous era. Discover real-time activities and join friends instantly.">
+  <meta name="twitter:image" content="assets/images/og.webp">
+  <meta name="twitter:image:alt" content="Meetfleet | discover and join spontaneous activities near you">
+
+  <!-- ── Favicons ── -->
+  <link rel="icon" href="./assets/images/dark.png">
+  <link rel="icon" href="./assets/images/light.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="./assets/images/dark.png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="./assets/images/light.png">
+
+  <!-- ── Preload Critical Assets ── -->
+  <link rel="preload" href="assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/images/bg.webp" as="image" type="image/webp" media="(min-width: 769px)">
+  <link rel="preload" href="assets/images/mobilebg.webp" as="image" type="image/webp" media="(max-width: 768px)">
+
+  <!-- ── DNS Prefetch ── -->
+  <link rel="dns-prefetch" href="//unpkg.com">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+  <!-- ── Structured Data (JSON-LD) ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "name": "Meetfleet",
+        "url": "https://meetfleet.app/",
+        "description": "Hyper-local coordination for the spontaneous era. Discover real-time activities near you and join friends instantly.",
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Meetfleet",
+        "operatingSystem": "iOS",
+        "applicationCategory": "SocialNetworkingApplication",
+        "description": "Meetfleet is hyper-local coordination for the spontaneous era. Discover real-time activities — ski, dine, explore — and join friends instantly.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "image": "assets/images/og.webp"
+      },
+      {
+        "@type": "Organization",
+        "name": "Meetfleet",
+        "url": "https://meetfleet.app/",
+        "logo": "assets/images/logo.svg",
+        "sameAs": [
+          "https://www.instagram.com/meetfleet"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- ── Stylesheet ── -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div class="bg"></div>
+  <div class="bg" role="presentation" aria-hidden="true"></div>
 
-  <header>
+  <header role="banner">
     <span class="wordmark">meetfleet</span>
+    <nav aria-label="Social links">
+      <a href="https://www.instagram.com/meetfleet" target="_blank" rel="noopener noreferrer" class="ig-link" aria-label="Follow Meetfleet on Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </a>
+    </nav>
   </header>
 
-  <main>
+  <main role="main">
 
-    <section class="hero">
-      <img src="assets/images/logo.svg" class="hero-icon" alt="">
-      <h1>Half is virtual,<br>The other 90% is real</h1>
-      <p>Hyper-local coordination for the spontaneous era, join us,<br>let's redefine the social landscape.</p>
+    <section class="hero" aria-labelledby="hero-heading">
+      <img src="assets/images/logo.svg" class="hero-icon" alt="Meetfleet logo" width="34" height="34">
+      <h1 id="hero-heading">Half is virtual,<br>The other 90% is real</h1>
+      <p>Hyper-local coordination for the spontaneous era, join us, let's redefine the social landscape.</p>
+      <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer" aria-label="Download Meetfleet on the App Store">
+        <img src="assets/images/apple.webp" class="appstore-btn" alt="Download on the App Store" width="140" height="47" loading="eager">
+      </a>
     </section>
 
     <div class="float-action poke">
@@ -36,36 +144,131 @@
       </div>
     </div>
 
-    <div class="activity-card">
-      <div class="card-top">
-        <div class="ski-tile">
-          <img src="assets/images/Skiing Icon.svg" class="ski-icon" alt="ski">
-        </div>
-        <div class="card-info">
-          <h2>Ski</h2>
-          <div class="user-row">
-            <span class="avatar"></span>
-            <span class="username">@maria</span>
+    <!-- ── Activity Track with teaser cards ── -->
+    <div class="activity-track" id="activityTrack">
+
+      <!-- Left teaser (clone) -->
+      <div class="activity-teaser activity-teaser--left" aria-hidden="true">
+        <div class="activity-container">
+          <div class="card-top glass-card">
+            <div class="ski-tile">
+              <img src="assets/images/skiing-icon.svg" class="ski-icon" alt="">
+            </div>
+            <div class="card-info">
+              <h2>Dinner</h2>
+              <div class="user-row">
+                <span class="avatar"></span>
+                <span class="username">@maria</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-bottom glass-card">
+            <div class="pills">
+              <div class="pill">
+                <i data-lucide="clock-3"></i>
+                <span>2 hours</span>
+              </div>
+              <div class="pill">
+                <i data-lucide="map-pin"></i>
+                <span>Haut Atlas</span>
+              </div>
+              <div class="pill">
+                <i data-lucide="tag"></i>
+                <span>Free</span>
+              </div>
+            </div>
+            <button class="join-btn" tabindex="-1">Join Maria Now</button>
           </div>
         </div>
       </div>
 
-      <div class="pills">
-        <div class="pill" data-haptic>
-          <i data-lucide="clock-3"></i>
-          <span>2 hours</span>
+      <!-- Main card -->
+      <div class="activity-main" id="activityMain">
+        <div class="activity-container">
+          <div class="card-top glass-card">
+            <div class="ski-tile">
+              <img src="assets/images/skiing-icon.svg" class="ski-icon" alt="ski">
+            </div>
+            <div class="card-info">
+              <h2>Ski</h2>
+              <div class="user-row">
+                <span class="avatar"></span>
+                <span class="username">@maria</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-bottom glass-card">
+            <div class="card-bottom-state original-state">
+              <div class="pills">
+                <div class="pill" data-haptic>
+                  <i data-lucide="clock-3"></i>
+                  <span>2 hours</span>
+                </div>
+                <div class="pill" data-haptic>
+                  <i data-lucide="map-pin"></i>
+                  <span>Haut Atlas</span>
+                </div>
+                <div class="pill" data-haptic>
+                  <i data-lucide="tag"></i>
+                  <span>Free</span>
+                </div>
+              </div>
+
+              <button class="join-btn" data-haptic="heavy">Join Maria Now</button>
+            </div>
+
+            <div class="card-bottom-state message-state">
+              <div class="message-rect-container">
+                <div class="message-text">Yesterday was for chilling and exploring, today is for speed 😁. Who’s feeling brave enough to challenge me to a ski match right now?</div>
+              </div>
+              <div class="message-meta">
+                <i data-lucide="calendar"></i>
+                <span>just now</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="pill" data-haptic>
-          <i data-lucide="map-pin"></i>
-          <span>Haut Atlas</span>
-        </div>
-        <div class="pill" data-haptic>
-          <i data-lucide="tag"></i>
-          <span>Free</span>
+
+        <!-- Custom cursor for this card zone -->
+        <div class="card-cursor" id="cardCursor"></div>
+      </div>
+
+      <!-- Right teaser (clone) -->
+      <div class="activity-teaser activity-teaser--right" aria-hidden="true">
+        <div class="activity-container">
+          <div class="card-top glass-card">
+            <div class="ski-tile">
+              <i data-lucide="land-plot" class="tile-icon"></i>
+            </div>
+            <div class="card-info">
+              <h2>Golf</h2>
+              <div class="user-row">
+                <span class="avatar"></span>
+                <span class="username">@maria</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-bottom glass-card">
+            <div class="pills">
+              <div class="pill">
+                <i data-lucide="clock-3"></i>
+                <span>2 hours</span>
+              </div>
+              <div class="pill">
+                <i data-lucide="map-pin"></i>
+                <span>Haut Atlas</span>
+              </div>
+              <div class="pill">
+                <i data-lucide="tag"></i>
+                <span>Free</span>
+              </div>
+            </div>
+            <button class="join-btn" tabindex="-1">Join Maria Now</button>
+          </div>
         </div>
       </div>
 
-      <button class="join-btn" data-haptic="heavy">Join Maria Now</button>
     </div>
 
   </main>
@@ -73,4 +276,5 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="main.js"></script>
 </body>
+
 </html>
