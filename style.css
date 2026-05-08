@@ -1,12 +1,43 @@
 /* ── FONTS ── */
-@font-face { font-family:'Aeonik'; src:url('assets/fonts/Aeonik-Pro-Thin.ttf') format('truetype'); font-weight:100; font-display:swap; }
-@font-face { font-family:'Aeonik'; src:url('assets/fonts/Aeonik-Pro-Light.ttf') format('truetype'); font-weight:300; font-display:swap; }
-@font-face { font-family:'Aeonik'; src:url('assets/fonts/Aeonik-Pro-Regular.ttf') format('truetype'); font-weight:400; font-display:swap; }
-@font-face { font-family:'Aeonik'; src:url('assets/fonts/Aeonik-Pro-Bold.ttf') format('truetype'); font-weight:700; font-display:swap; }
-@font-face { font-family:'Aeonik'; src:url('assets/fonts/Aeonik-Pro-Black.ttf') format('truetype'); font-weight:900; font-display:swap; }
+@font-face {
+  font-family: 'Aeonik';
+  src: url('assets/fonts/Aeonik-Pro-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Aeonik';
+  src: url('assets/fonts/Aeonik-Pro-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Aeonik';
+  src: url('assets/fonts/Aeonik-Pro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Aeonik';
+  src: url('assets/fonts/Aeonik-Pro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Aeonik';
+  src: url('assets/fonts/Aeonik-Pro-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+}
 
 /* ── RESET ── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -34,9 +65,33 @@ body {
 header {
   position: fixed;
   top: 32px;
-  left: 40px;
+  left: 7%;
+  right: 7%;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   animation: fadeDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ig-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.ig-link:hover {
+  opacity: 1;
+}
+
+.ig-link svg {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+  stroke-width: 1.75;
 }
 
 main {
@@ -51,7 +106,7 @@ main {
   font-size: 19px;
   letter-spacing: -0.5px;
   color: white;
-  text-shadow: 0 1px 16px rgba(0,0,0,0.25);
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.25);
 }
 
 /* ── HERO ── */
@@ -76,15 +131,21 @@ main {
   line-height: 1.08;
   letter-spacing: -1.8px;
   margin-bottom: 16px;
-  text-shadow: 0 2px 24px rgba(0,0,0,0.15);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.15);
 }
 
 .hero p {
   font-size: 13.5px;
   font-weight: 400;
   line-height: 1.65;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
   max-width: 300px;
+}
+
+.appstore-btn {
+  display: block;
+  width: 130px;
+  margin-top: 20px;
 }
 
 /* ── GLASS BUBBLE ── */
@@ -92,16 +153,16 @@ main {
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(28px) saturate(1.8) brightness(1.1);
   -webkit-backdrop-filter: blur(28px) saturate(1.8) brightness(1.1);
-  border: 1px solid rgba(255,255,255,0.22);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 4px 24px rgba(0,0,0,0.14),
-    inset 0 1px 0 rgba(255,255,255,0.28);
+    0 4px 24px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
   cursor: pointer;
   user-select: none;
   transition:
@@ -112,10 +173,10 @@ main {
 
 .glass-bubble:hover {
   transform: scale(1.1);
-  background: rgba(255,255,255,0.22);
+  background: rgba(255, 255, 255, 0.22);
   box-shadow:
-    0 8px 32px rgba(0,0,0,0.2),
-    inset 0 1px 0 rgba(255,255,255,0.32);
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
 }
 
 .glass-bubble:active {
@@ -123,8 +184,17 @@ main {
   transition-duration: 0.08s;
 }
 
-.glass-bubble img { width: 22px; height: 22px; }
-.glass-bubble svg { width: 22px; height: 22px; stroke: white; stroke-width: 1.75; }
+.glass-bubble img {
+  width: 22px;
+  height: 22px;
+}
+
+.glass-bubble svg {
+  width: 22px;
+  height: 22px;
+  stroke: white;
+  stroke-width: 1.75;
+}
 
 /* ── FLOATING ACTIONS ── */
 .float-action {
@@ -136,45 +206,105 @@ main {
   user-select: none;
 }
 
-.float-action > span {
+.float-action>span {
   font-size: 15px;
   font-weight: 400;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255, 255, 255, 0.88);
   letter-spacing: -0.1px;
-  text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 }
 
 .poke {
-  top: 12%;
-  right: 14%;
+  top: calc(12% + 20px);
+  right: 10%;
   animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
 
 .message {
   top: 37%;
-  left: 40%;
+  left: calc(40% + 60px);
   animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
 }
 
-/* ── ACTIVITY CARD ── */
-.activity-card {
+/* ── ACTIVITY TRACK (horizontal flow) ── */
+.activity-track {
   position: absolute;
   bottom: 7%;
-  right: 27%;
+  right: calc(27% - 125px);
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  /* Center on the main card */
   width: 345px;
-  background: rgba(8, 6, 4, 0.58);
-  backdrop-filter: blur(50px) saturate(1.6) brightness(0.88);
-  -webkit-backdrop-filter: blur(50px) saturate(1.6) brightness(0.88);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 28px;
-  padding: 16px;
+}
+
+.activity-main {
+  position: relative;
+  flex-shrink: 0;
+  width: 345px;
+}
+
+.activity-main .activity-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* ── TEASER CARDS ── */
+.activity-teaser {
+  position: absolute;
+  width: 345px;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.65;
+  transform: scale(0.96);
+  filter: blur(1.5px) saturate(0.8);
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.activity-teaser .activity-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Remove entry animation from main card, let teasers fade in */
+.activity-main .glass-card {
+  animation: none;
+}
+
+/* Left teaser: show only right edge */
+.activity-teaser--left {
+  right: calc(100% + 20px);
+  bottom: 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.7) 85%, rgba(0, 0, 0, 1) 100%);
+  mask-image: linear-gradient(to right, transparent 0%, transparent 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.7) 85%, rgba(0, 0, 0, 1) 100%);
+}
+
+/* Right teaser: show only left edge */
+.activity-teaser--right {
+  left: calc(100% + 20px);
+  bottom: 0;
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, transparent 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.7) 85%, rgba(0, 0, 0, 1) 100%);
+  mask-image: linear-gradient(to left, transparent 0%, transparent 30%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.7) 85%, rgba(0, 0, 0, 1) 100%);
+}
+
+/* ── GLASS CARD (shared) ── */
+.glass-card {
+  background: rgba(8, 6, 4, 0.58);
+  backdrop-filter: blur(20px) saturate(1.6) brightness(0.88);
+  -webkit-backdrop-filter: blur(50px) saturate(1.6) brightness(0.88);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 28px;
   box-shadow:
-    0 24px 72px rgba(0,0,0,0.36),
-    inset 0 1px 0 rgba(255,255,255,0.09);
+    0 24px 72px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  overflow: hidden;
   animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+  transform: translateZ(0);
 }
 
 /* ── CARD TOP ── */
@@ -182,14 +312,81 @@ main {
   display: flex;
   align-items: center;
   gap: 14px;
+  padding: 16px;
+}
+
+.card-bottom {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activity-main .card-bottom {
+  display: grid;
+}
+
+.card-bottom-state {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.original-state {
+  animation: loopOriginal 12s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  justify-content: center;
+}
+
+.message-state {
+  animation: loopMessage 12s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  justify-content: center;
+  transform-origin: center;
+  margin-top: -4px;
+}
+
+.message-rect-container {
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
+  animation: loopMessageBg 12s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.message-text {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 16px;
+  margin-top: -8px;
+  opacity: 0.6;
+}
+
+.message-meta svg {
+  width: 14px;
+  height: 14px;
+  stroke: white;
+}
+
+.message-meta span {
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .ski-tile {
   width: 110px;
   height: 110px;
   border-radius: 20px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,7 +400,17 @@ main {
   opacity: 0.88;
 }
 
-.card-info { flex: 1; }
+.tile-icon {
+  width: 54px;
+  height: 54px;
+  stroke: white;
+  stroke-width: 1.75;
+  opacity: 0.88;
+}
+
+.card-info {
+  flex: 1;
+}
 
 .card-info h2 {
   font-size: 44px;
@@ -227,10 +434,18 @@ main {
   flex-shrink: 0;
 }
 
+.activity-teaser--right .avatar {
+  background: linear-gradient(135deg, #f7c948 0%, #fb923c 100%);
+}
+
+.activity-teaser--left .avatar {
+  background: linear-gradient(135deg, #8b5cf6 0%, #c026d3 100%);
+}
+
 .username {
   font-size: 13px;
   font-weight: 400;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ── PILLS ── */
@@ -242,16 +457,17 @@ main {
 .pill {
   flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  gap: 5px;
-  background: rgba(0,0,0,0.42);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 100px;
-  padding: 10px 8px;
-  font-size: 12px;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 14px 12px;
+  font-size: 11px;
   font-family: 'Aeonik', sans-serif;
-  color: rgba(255,255,255,0.72);
+  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   user-select: none;
   transition:
@@ -261,7 +477,7 @@ main {
 
 .pill:hover {
   transform: scale(1.06);
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .pill:active {
@@ -270,11 +486,11 @@ main {
 }
 
 .pill svg {
-  width: 13px;
-  height: 13px;
-  stroke: rgba(255,255,255,0.58);
+  width: 14px;
+  height: 14px;
+  stroke: white;
   flex-shrink: 0;
-  stroke-width: 1.75;
+  stroke-width: 2;
 }
 
 /* ── JOIN BUTTON ── */
@@ -282,10 +498,10 @@ main {
   width: 100%;
   padding: 15px 24px;
   border-radius: 100px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: white;
   font-family: 'Aeonik', sans-serif;
   font-size: 16px;
@@ -293,7 +509,7 @@ main {
   letter-spacing: -0.2px;
   cursor: pointer;
   user-select: none;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
   transition:
     transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
     background 0.15s ease;
@@ -301,7 +517,7 @@ main {
 
 .join-btn:hover {
   transform: scale(1.02);
-  background: rgba(255,255,255,0.23);
+  background: rgba(255, 255, 255, 0.23);
 }
 
 .join-btn:active {
@@ -309,18 +525,219 @@ main {
   transition-duration: 0.08s;
 }
 
+/* ── CUSTOM CURSOR (activity card only) ── */
+.activity-main {
+  cursor: none;
+}
+
+.card-cursor {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  transition:
+    opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: left, top, opacity, transform;
+  box-shadow:
+    0 0 12px 2px rgba(255, 255, 255, 0.04),
+    inset 0 0 8px 1px rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+}
+
+.card-cursor.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 0 18px 3px rgba(255, 255, 255, 0.07),
+    inset 0 0 10px 1px rgba(255, 255, 255, 0.03);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+
+  /* Background */
+  .bg {
+    background: url('assets/images/mobilebg.webp') center bottom / cover no-repeat;
+  }
+
+  /* Header */
+  header {
+    top: 20px;
+    left: 36px;
+    right: 36px;
+  }
+
+  /* Hero — shift up so it clears the cards */
+  .hero {
+    left: 36px;
+    right: 36px;
+    top: 25%;
+    max-width: none;
+  }
+
+  .hero-icon {
+    width: 39px;
+    height: 39px;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-size: clamp(24px, 7vw, 32px);
+    letter-spacing: -1.2px;
+    margin-bottom: 12px;
+  }
+
+  .hero p {
+    font-size: 13px;
+    max-width: none;
+    line-height: 1.6;
+  }
+
+  .appstore-btn {
+    display: block;
+    width: 140px;
+    margin-top: 20px;
+  }
+
+  /* Float actions — anchored to top corners of the activity card */
+  .poke {
+    top: auto;
+    right: auto;
+    left: calc(50% + 82px);
+    bottom: calc(5% + 300px);
+  }
+
+  .message {
+    top: auto;
+    right: auto;
+    left: calc(50% - 182px);
+    bottom: calc(5% + 350px);
+  }
+
+  /* Activity track — centered, scaled down */
+  .activity-track {
+    left: 50%;
+    right: auto;
+    bottom: 5%;
+    width: 300px;
+    transform: translateX(-50%);
+    gap: 16px;
+  }
+
+  .activity-main {
+    width: 300px;
+  }
+
+  .activity-teaser {
+    width: 300px;
+  }
+
+  /* Card internals */
+  .card-top {
+    padding: 13px;
+    gap: 11px;
+  }
+
+  .card-bottom {
+    padding: 13px;
+  }
+  
+  .card-bottom-state {
+    gap: 10px;
+  }
+
+  .ski-tile {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+  }
+
+  .ski-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .card-info h2 {
+    font-size: 36px;
+    letter-spacing: -1.8px;
+    margin-bottom: 8px;
+  }
+
+  .pill {
+    padding: 11px 10px;
+    font-size: 10.5px;
+  }
+
+  .join-btn {
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+
+}
+
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeUpCenter {
-  from { opacity: 0; transform: translateY(calc(-50% + 18px)); }
-  to   { opacity: 1; transform: translateY(-50%); }
+  from {
+    opacity: 0;
+    transform: translateY(calc(-50% + 18px));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
 }
 
 @keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loopOriginal {
+  0%, 25% { opacity: 1; transform: scale(1) translateX(0); pointer-events: auto; }
+  33.3%, 87.5% { opacity: 0; transform: scale(0.85) translateX(-40px); pointer-events: none; }
+  92% { opacity: 0; transform: scale(0.85) translateX(40px); pointer-events: none; }
+  100% { opacity: 1; transform: scale(1) translateX(0); pointer-events: auto; }
+}
+
+@keyframes loopMessage {
+  0%, 33.3% { opacity: 0; transform: scale(0.85); pointer-events: none; }
+  37.5%, 45.8% { opacity: 1; transform: scale(0.85); pointer-events: auto; }
+  62.5%, 87.5% { opacity: 1; transform: scale(1); pointer-events: auto; }
+  95.8%, 100% { opacity: 0; transform: scale(0.9); pointer-events: none; }
+}
+
+@keyframes loopMessageBg {
+  0%, 45.8% { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.15); }
+  62.5%, 100% { background: rgba(255, 255, 255, 0); border-color: rgba(255, 255, 255, 0); }
 }
