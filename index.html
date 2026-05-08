@@ -57,11 +57,8 @@
   <!-- ── Preload Critical Assets ── -->
   <link rel="preload" href="assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/images/bg.webp" as="image" type="image/webp" media="(min-width: 769px)">
   <link rel="preload" href="assets/images/mobilebg.webp" as="image" type="image/webp" media="(max-width: 768px)">
-
-  <!-- ── DNS Prefetch ── -->
-  <link rel="dns-prefetch" href="//unpkg.com">
-  <link rel="preconnect" href="https://unpkg.com">
 
   <!-- ── Structured Data (JSON-LD) ── -->
   <script type="application/ld+json">
@@ -194,7 +191,7 @@
         <div class="activity-container">
           <div class="card-top glass-card">
             <div class="ski-tile">
-              <img src="assets/images/skiing-icon.svg" class="ski-icon" alt="ski">
+              <img src="assets/images/skiing-icon.svg" class="ski-icon" alt="ski" fetchpriority="high">
             </div>
             <div class="card-info">
               <h2>Ski</h2>
@@ -281,7 +278,7 @@
 
   </main>
 
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/lucide.min.js"></script>
   <script src="main.js"></script>
 </body>
 
