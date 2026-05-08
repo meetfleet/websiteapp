@@ -269,6 +269,10 @@ main {
   transition: opacity 0.5s ease, filter 0.5s ease;
 }
 
+.activity-teaser .glass-card {
+  box-shadow: none;
+}
+
 .activity-teaser .activity-container {
   width: 100%;
   display: flex;
@@ -583,11 +587,11 @@ main {
     right: 36px;
   }
 
-  /* Hero — shift up so it clears the cards */
+  /* Hero — shift down so it clears the cards */
   .hero {
     left: 36px;
     right: 36px;
-    top: 25%;
+    top: 30%;
     max-width: none;
   }
 
@@ -615,19 +619,10 @@ main {
     margin-top: 20px;
   }
 
-  /* Float actions — anchored to top corners of the activity card */
-  .poke {
-    top: auto;
-    right: auto;
-    left: calc(50% + 82px);
-    bottom: calc(5% + 300px);
-  }
-
+  /* Hide float actions on mobile */
+  .poke,
   .message {
-    top: auto;
-    right: auto;
-    left: calc(50% - 182px);
-    bottom: calc(5% + 350px);
+    display: none;
   }
 
   /* Activity track — centered, scaled down */
@@ -646,6 +641,14 @@ main {
 
   .activity-teaser {
     width: 300px;
+  }
+
+  .activity-teaser--left {
+    right: calc(100% + 6px);
+  }
+
+  .activity-teaser--right {
+    left: calc(100% + 6px);
   }
 
   /* Card internals */
