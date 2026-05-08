@@ -231,6 +231,12 @@ main {
   animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
 }
 
+@media (max-width: 768px) {
+  .float-action {
+    display: none;
+  }
+}
+
 /* ── ACTIVITY TRACK (horizontal flow) ── */
 .activity-track {
   position: absolute;
