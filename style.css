@@ -596,7 +596,7 @@ main {
   .hero {
     left: 36px;
     right: 36px;
-    top: 30%;
+    top: calc(30% - 3px);
     max-width: none;
   }
 
