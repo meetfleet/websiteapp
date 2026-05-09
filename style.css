@@ -393,6 +393,7 @@ main {
 .message-meta span {
   font-size: 12px;
   font-weight: 400;
+  padding-top: 2px;
 }
 
 .ski-tile {
