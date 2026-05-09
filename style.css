@@ -359,6 +359,8 @@ main {
   justify-content: center;
   transform-origin: center;
   margin-top: -4px;
+  margin-left: -4px;
+  margin-right: -4px;
 }
 
 .message-rect-container {
@@ -479,7 +481,7 @@ main {
   background: rgba(0, 0, 0, 0.42);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 18px;
-  padding: 14px 12px;
+  padding: 18px 12px;
   font-size: 11px;
   font-family: 'Aeonik', sans-serif;
   color: rgba(255, 255, 255, 0.5);
