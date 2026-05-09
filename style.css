@@ -511,7 +511,7 @@ main {
 /* ── JOIN BUTTON ── */
 .join-btn {
   width: 100%;
-  padding: 15px 24px;
+  padding: 17px 24px 13px;
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(16px);
