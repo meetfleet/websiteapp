@@ -380,8 +380,7 @@ main {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding-left: 16px;
-  margin-top: -8px;
+  margin-top: 8px;
   opacity: 0.6;
 }
 
