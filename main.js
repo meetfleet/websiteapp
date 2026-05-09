@@ -1,5 +1,3 @@
-lucide.createIcons();
-
 const vibrate = (pattern) => navigator?.vibrate?.(pattern);
 
 document.querySelectorAll('[data-haptic]').forEach(el => {
