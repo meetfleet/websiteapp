@@ -31,19 +31,26 @@ $to      = 'support@meetfleet.app';
 $subject = '[Support] ' . $topic . ' — ' . $name;
 
 $body  = "Name:    $name\n";
-$body .= "Email:   $email\n";
-$body .= "Topic:   $topic\n";
-$body .= str_repeat('-', 40) . "\n\n";
-$body .= $message . "\n";
+$body  .= "Email:   $email\n";
+$body  .= "Topic:   $topic\n";
+$body  .= str_repeat('-', 40) . "\n\n";
+$body  .= $message . "\n";
 
-$headers  = "From: noreply@meetfleet.app\r\n";
-$headers .= "Reply-To: $email\r\n";
+// Use support@meetfleet.app as From — must match a real inbox on the server
+$headers  = "From: Meetfleet Support <support@meetfleet.app>\r\n";
+$headers .= "Reply-To: $name <$email>\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
 
-if (mail($to, $subject, $body, $headers)) {
+// -f sets the envelope sender (required by many cPanel/sendmail configs)
+$extra = '-f support@meetfleet.app';
+
+if (mail($to, $subject, $body, $headers, $extra)) {
     header('Location: /support/success/');
-} else {
-    header('Location: /support/?error=1');
+    exit;
 }
+
+// mail() failed — log it silently and show error to user
+error_log('[Meetfleet Support] mail() failed for: ' . $email);
+header('Location: /support/?error=1');
 exit;
