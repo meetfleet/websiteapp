@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support — Meetfleet</title>
+  <meta name="description" content="Get help with Meetfleet. Send us a message and we'll get back to you.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" href="../assets/images/dark.png">
+  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../legal.css">
+</head>
+<body>
+
+  <header class="legal-header">
+    <a href="https://meetfleet.app">
+      <img src="../assets/images/logo.svg" class="legal-logo" alt="Meetfleet">
+    </a>
+    <a href="https://meetfleet.app" class="back-link">meetfleet.app ↗</a>
+  </header>
+
+  <main class="support-wrap">
+
+    <p class="legal-kicker">Help</p>
+    <h1 class="legal-h1">Support</h1>
+    <p class="legal-updated" style="margin-bottom:40px;">We usually respond within 24 hours.</p>
+
+    <form action="send.php" method="POST" novalidate>
+
+      <!-- Honeypot -->
+      <div class="honeypot">
+        <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="topic">Topic</label>
+        <select id="topic" name="topic" required>
+          <option value="" disabled selected>Select a topic</option>
+          <option value="Account">Account</option>
+          <option value="Bug Report">Bug Report</option>
+          <option value="Prime+ / Billing">Prime+ / Billing</option>
+          <option value="Privacy & Data">Privacy &amp; Data</option>
+          <option value="Safety & Reports">Safety &amp; Reports</option>
+          <option value="Feature Request">Feature Request</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Describe your issue or question..." required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Send Message</button>
+
+    </form>
+
+    <div class="error-msg" id="errorMsg" style="display:none;margin-top:20px;">
+      Something went wrong. Please check your details and try again.
+    </div>
+
+    <script>
+      if (new URLSearchParams(location.search).get('error')) {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    </script>
+
+  </main>
+
+  <footer class="legal-footer">
+    <div class="footer-links">
+      <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="/terms-of-service/">Terms of Service</a>
+      <a href="https://meetfleet.app">Home</a>
+    </div>
+    <span>© 2026 Meetfleet</span>
+  </footer>
+
+</body>
+</html>
