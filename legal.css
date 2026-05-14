@@ -183,17 +183,55 @@ ol li {
   border-top: 1px solid rgba(0,0,0,0.07);
 }
 
-.contact-section .section-title { margin-bottom: 16px; }
-
-.contact-section a {
-  color: rgba(0,0,0,0.58);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(0,0,0,0.15);
-  transition: color 0.15s, border-color 0.15s;
+.contact-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  background: #fafaf9;
 }
 
-.contact-section a:hover {
-  color: #000;
+.contact-card-left { display: flex; flex-direction: column; gap: 3px; }
+
+.contact-card-label {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.28);
+  margin: 0;
+}
+
+.contact-card-email {
+  font-size: 14px;
+  color: rgba(0,0,0,0.62);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+  transition: color 0.15s, border-color 0.15s;
+  line-height: 1.4;
+}
+
+.contact-card-email:hover { color: #000; border-color: rgba(0,0,0,0.4); }
+
+.contact-support-btn {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.7);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  letter-spacing: -0.1px;
+}
+
+.contact-support-btn:hover {
+  background: #000;
+  color: #fff;
   border-color: #000;
 }
 
@@ -384,6 +422,7 @@ ol li {
   .legal-h1 { font-size: 28px; letter-spacing: -1px; }
   .legal-wrap { padding: 48px 20px 80px; }
   .support-wrap { padding: 48px 20px 80px; }
-  .legal-footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+  .legal-footer { padding: 20px; }
+  .contact-card { flex-direction: column; align-items: flex-start; }
   .form-row { grid-template-columns: 1fr; }
 }
