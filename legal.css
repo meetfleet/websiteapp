@@ -366,14 +366,26 @@ ol li {
 .submit-btn:hover { background: #222; }
 .submit-btn:active { transform: scale(0.98); }
 
-.error-msg {
-  background: #fff0f0;
-  border: 1px solid rgba(220,50,50,0.15);
-  border-radius: 10px;
-  padding: 12px 16px;
-  font-size: 13.5px;
-  color: #c0392b;
-  margin-bottom: 24px;
+.form-group input.field-error,
+.form-group select.field-error,
+.form-group textarea.field-error {
+  border-color: rgba(210, 50, 40, 0.4);
+  background: rgba(210, 50, 40, 0.03);
+}
+
+.field-error-msg {
+  font-size: 12px;
+  color: rgba(200, 45, 35, 0.78);
+  margin: 5px 0 0;
+  letter-spacing: -0.1px;
+  line-height: 1.4;
+}
+
+.server-error-msg {
+  font-size: 13px;
+  color: rgba(200, 45, 35, 0.72);
+  margin-top: 18px;
+  letter-spacing: -0.1px;
 }
 
 /* ── SUCCESS PAGE ── */

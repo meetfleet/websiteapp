@@ -69,14 +69,70 @@
 
     </form>
 
-    <div class="error-msg" id="errorMsg" style="display:none;margin-top:20px;">
-      Something went wrong. Please check your details and try again.
-    </div>
-
     <script>
-      if (new URLSearchParams(location.search).get('error')) {
-        document.getElementById('errorMsg').style.display = 'block';
-      }
+      (function () {
+        const form = document.querySelector('form');
+
+        const fields = {
+          name:    { el: document.getElementById('name'),    empty: 'Please enter your name' },
+          email:   { el: document.getElementById('email'),   empty: 'Please enter your email', invalid: 'Enter a valid email address' },
+          topic:   { el: document.getElementById('topic'),   empty: 'Please select a topic' },
+          message: { el: document.getElementById('message'), empty: 'Please describe your issue or question' }
+        };
+
+        function isValidEmail(v) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+        }
+
+        function setError(key, msg) {
+          const el = fields[key].el;
+          el.classList.add('field-error');
+          let e = document.getElementById('err-' + key);
+          if (!e) {
+            e = document.createElement('p');
+            e.id = 'err-' + key;
+            e.className = 'field-error-msg';
+            el.parentNode.appendChild(e);
+          }
+          e.textContent = msg;
+        }
+
+        function clearError(key) {
+          fields[key].el.classList.remove('field-error');
+          const e = document.getElementById('err-' + key);
+          if (e) e.remove();
+        }
+
+        function validate(key) {
+          const { el, empty, invalid } = fields[key];
+          const val = el.value.trim();
+          if (!val) { setError(key, empty); return false; }
+          if (key === 'email' && !isValidEmail(val)) { setError(key, invalid); return false; }
+          clearError(key);
+          return true;
+        }
+
+        Object.keys(fields).forEach(key => {
+          const ev = fields[key].el.tagName === 'SELECT' ? 'change' : 'input';
+          fields[key].el.addEventListener(ev, () => validate(key));
+        });
+
+        form.addEventListener('submit', function (e) {
+          const results = Object.keys(fields).map(k => validate(k));
+          if (results.includes(false)) {
+            e.preventDefault();
+            const first = form.querySelector('.field-error');
+            if (first) first.focus();
+          }
+        });
+
+        if (new URLSearchParams(location.search).get('error')) {
+          const p = document.createElement('p');
+          p.className = 'server-error-msg';
+          p.textContent = "Couldn't send your message. Please try again.";
+          form.after(p);
+        }
+      })();
     </script>
 
   </main>
