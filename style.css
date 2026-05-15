@@ -709,12 +709,12 @@ main {
   left: 7%;
   z-index: 10;
   display: flex;
-  gap: 20px;
+  gap: 40px;
   animation: fadeDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
 }
 
 .site-footer a {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.1px;
   color: rgba(255, 255, 255, 0.3);
