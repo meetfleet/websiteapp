@@ -717,7 +717,7 @@ main {
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.1px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.45);
   text-decoration: none;
   transition: color 0.15s ease;
   white-space: nowrap;
