@@ -113,8 +113,8 @@
         }
 
         Object.keys(fields).forEach(key => {
-          fields[key].el.addEventListener('focus', () => Object.keys(fields).forEach(clearError));
-          fields[key].el.addEventListener('change', () => Object.keys(fields).forEach(clearError));
+          const ev = fields[key].el.tagName === 'SELECT' ? 'change' : 'input';
+          fields[key].el.addEventListener(ev, () => Object.keys(fields).forEach(clearError));
         });
 
         form.addEventListener('submit', function (e) {
