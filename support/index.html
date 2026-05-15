@@ -114,7 +114,7 @@
 
         Object.keys(fields).forEach(key => {
           const ev = fields[key].el.tagName === 'SELECT' ? 'change' : 'input';
-          fields[key].el.addEventListener(ev, () => clearError(key));
+          fields[key].el.addEventListener(ev, () => Object.keys(fields).forEach(clearError));
         });
 
         form.addEventListener('submit', function (e) {
