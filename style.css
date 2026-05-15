@@ -702,6 +702,37 @@ main {
 
 }
 
+/* ── SITE FOOTER ── */
+.site-footer {
+  position: fixed;
+  bottom: 28px;
+  left: 7%;
+  z-index: 10;
+  display: flex;
+  gap: 20px;
+  animation: fadeDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+.site-footer a {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+  color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.site-footer a:hover {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    display: none;
+  }
+}
+
 /* ── ANIMATIONS ── */
 @keyframes fadeUp {
   from {
