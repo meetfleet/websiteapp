@@ -447,7 +447,7 @@ ol li {
   .legal-header { padding: 0 20px; }
   .legal-h1 { font-size: 28px; letter-spacing: -1px; }
   .legal-wrap { padding: 48px 20px 80px; }
-  .support-wrap { padding: 48px 20px 80px; }
+  .support-wrap { padding: 48px 12px 80px; max-width: 100%; }
   .legal-footer { padding: 18px 20px; }
   .form-row { grid-template-columns: 1fr; }
 }
