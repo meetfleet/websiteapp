@@ -6,67 +6,94 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
   });
 });
 
+/* ── SCENE SLIDER ── */
+(() => {
+  const bgSlides = document.querySelectorAll('.bg-slide');
+  const heroSlides = document.querySelectorAll('.hero-text-slide');
+  const activityTracks = document.querySelectorAll('.activity-track');
+  
+  if (!bgSlides.length || !heroSlides.length || !activityTracks.length) return;
+
+  let currentScene = 0;
+  const numScenes = bgSlides.length;
+
+  setInterval(() => {
+    // Remove active
+    bgSlides[currentScene].classList.remove('active');
+    heroSlides[currentScene].classList.remove('active');
+    activityTracks[currentScene].classList.remove('active');
+
+    // Next scene
+    currentScene = (currentScene + 1) % numScenes;
+
+    // Add active
+    bgSlides[currentScene].classList.add('active');
+    heroSlides[currentScene].classList.add('active');
+    activityTracks[currentScene].classList.add('active');
+  }, 7000);
+})();
+
 /* ── CUSTOM CURSOR — activity card only ── */
 (() => {
-  const zone = document.getElementById('activityMain');
-  const cursor = document.getElementById('cardCursor');
-  if (!zone || !cursor) return;
+  const zones = document.querySelectorAll('.activity-main');
+  
+  zones.forEach(zone => {
+    const cursor = zone.querySelector('.card-cursor');
+    if (!cursor) return;
 
-  // State
-  let mouseX = 0, mouseY = 0;   // actual mouse position (relative to zone)
-  let curX = 0, curY = 0;       // interpolated cursor position
-  let isInside = false;
-  let rafId = null;
+    let mouseX = 0, mouseY = 0;
+    let curX = 0, curY = 0;
+    let isInside = false;
+    let rafId = null;
 
-  const LERP = 0.12; // smoothing factor — lower = more lag
+    const LERP = 0.12;
 
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
-  }
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
 
-  function tick() {
-    curX = lerp(curX, mouseX, LERP);
-    curY = lerp(curY, mouseY, LERP);
+    function tick() {
+      curX = lerp(curX, mouseX, LERP);
+      curY = lerp(curY, mouseY, LERP);
 
-    cursor.style.left = curX + 'px';
-    cursor.style.top  = curY + 'px';
+      cursor.style.left = curX + 'px';
+      cursor.style.top  = curY + 'px';
 
-    rafId = requestAnimationFrame(tick);
-  }
+      rafId = requestAnimationFrame(tick);
+    }
 
-  zone.addEventListener('mouseenter', (e) => {
-    const rect = zone.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-    // Snap interpolated position on first entry to avoid sliding from corner
-    curX = mouseX;
-    curY = mouseY;
-    cursor.style.left = curX + 'px';
-    cursor.style.top  = curY + 'px';
+    zone.addEventListener('mouseenter', (e) => {
+      const rect = zone.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      
+      curX = mouseX;
+      curY = mouseY;
+      cursor.style.left = curX + 'px';
+      cursor.style.top  = curY + 'px';
 
-    isInside = true;
-    cursor.classList.add('is-visible');
+      isInside = true;
+      cursor.classList.add('is-visible');
 
-    if (!rafId) rafId = requestAnimationFrame(tick);
-  });
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    });
 
-  zone.addEventListener('mousemove', (e) => {
-    const rect = zone.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-  });
+    zone.addEventListener('mousemove', (e) => {
+      const rect = zone.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    });
 
-  zone.addEventListener('mouseleave', () => {
-    isInside = false;
-    cursor.classList.remove('is-visible');
+    zone.addEventListener('mouseleave', () => {
+      isInside = false;
+      cursor.classList.remove('is-visible');
 
-    // Let the animation loop run a bit longer so it can finish the fade-out,
-    // then stop it to save resources.
-    setTimeout(() => {
-      if (!isInside && rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-    }, 500);
+      setTimeout(() => {
+        if (!isInside && rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }, 500);
+    });
   });
 })();

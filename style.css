@@ -54,11 +54,31 @@ body {
 }
 
 /* ── BACKGROUND ── */
-.bg {
+.bg-slider {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: url('assets/images/bg.webp') center top / cover no-repeat;
+}
+.bg-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 8s linear;
+  transform: scale(1.05);
+}
+.bg-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+.bg-slide.slide-ski {
+  background-image: url('assets/images/bg.webp');
+  background-position: center top;
+}
+.bg-slide.slide-horse {
+  background-image: url('assets/images/horse.webp');
+  background-position: center center;
 }
 
 /* ── LAYOUT ── */
@@ -119,6 +139,7 @@ main {
   position: absolute;
   left: 7%;
   top: 50%;
+  width: 100%;
   max-width: 400px;
   animation: fadeUpCenter 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
@@ -130,7 +151,23 @@ main {
   opacity: 0.9;
 }
 
-.hero h1 {
+.hero-text-slider {
+  display: grid;
+}
+.hero-text-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+.hero-text-slide.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hero-text-slide h1 {
   font-size: clamp(28px, 3.2vw, 50px);
   font-weight: 700;
   line-height: 1.08;
@@ -139,12 +176,12 @@ main {
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.15);
 }
 
-.hero p {
-  font-size: 13.5px;
+.hero-text-slide p {
+  font-size: 15px;
   font-weight: 400;
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.55);
-  max-width: 300px;
+  max-width: 330px;
 }
 
 .appstore-btn {
@@ -238,15 +275,31 @@ main {
 }
 
 /* ── ACTIVITY TRACK (horizontal flow) ── */
-.activity-track {
+.activity-slider {
   position: absolute;
   bottom: 7%;
   right: calc(27% - 125px);
+  width: 345px;
+  height: 380px;
+}
+
+.activity-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   display: flex;
   align-items: flex-end;
   gap: 20px;
-  /* Center on the main card */
   width: 345px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.activity-track.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
 .activity-main {
@@ -584,8 +637,9 @@ main {
 @media (max-width: 768px) {
 
   /* Background */
-  .bg {
-    background: url('assets/images/mobilebg.webp') center bottom / cover no-repeat;
+  .bg-slide.slide-ski {
+    background-image: url('assets/images/mobilebg.webp');
+    background-position: center bottom;
   }
 
   /* Header */
@@ -609,14 +663,14 @@ main {
     margin-bottom: 12px;
   }
 
-  .hero h1 {
+  .hero-text-slide h1 {
     font-size: clamp(24px, 7vw, 32px);
     letter-spacing: -1.2px;
     margin-bottom: 8px;
   }
 
-  .hero p {
-    font-size: 13px;
+  .hero-text-slide p {
+    font-size: 14.5px;
     max-width: none;
     line-height: 1.6;
   }
@@ -634,12 +688,16 @@ main {
   }
 
   /* Activity track — centered, scaled down */
-  .activity-track {
+  .activity-slider {
     left: 50%;
     right: auto;
     bottom: 5%;
     width: 300px;
     transform: translateX(-50%);
+  }
+
+  .activity-track {
+    width: 300px;
     gap: 16px;
   }
 
