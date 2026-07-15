@@ -654,6 +654,7 @@ main {
     left: 36px;
     right: 36px;
     top: calc(30% - 3px);
+    width: auto;
     max-width: none;
   }
 
