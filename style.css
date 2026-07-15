@@ -636,39 +636,53 @@ main {
 /* ── MOBILE ── */
 @media (max-width: 768px) {
 
-  /* Background — exclusively use ridemobile.webp (light image) */
+  /* Background — slide 1: original dark bg, slide 2: light ride image */
   .bg-slide.slide-ski {
-    background-image: url('assets/images/ridemobile.webp');
+    background-image: url('assets/images/mobilebg.webp');
     background-position: center bottom;
   }
   .bg-slide.slide-horse {
-    display: none;
+    background-image: url('assets/images/ridemobile.webp');
+    background-position: center bottom;
   }
 
-  /* Dark text for light background */
-  .wordmark {
+}
+
+/* ── MOBILE: dark text when ride scene is active (light bg) ── */
+@media (max-width: 768px) {
+
+  .wordmark,
+  .ig-link,
+  .ig-link svg,
+  .hero-icon,
+  .hero-text-slide h1,
+  .hero-text-slide p {
+    transition: color 0.8s ease, filter 0.8s ease, stroke 0.8s ease;
+  }
+
+  body.scene-ride .wordmark {
     color: #1a1a1a;
     text-shadow: none;
   }
 
-  .ig-link {
+  body.scene-ride .ig-link {
     color: #1a1a1a;
   }
 
-  .ig-link svg {
+  body.scene-ride .ig-link svg {
     stroke: #1a1a1a;
   }
 
-  .hero-icon {
+  body.scene-ride .hero-icon {
     filter: brightness(0);
   }
 
-  .hero-text-slide h1 {
+  body.scene-ride .hero-text-slide h1 {
     color: #1a1a1a;
     text-shadow: none;
   }
 
-  .hero-text-slide p {
+  body.scene-ride .hero-text-slide p {
     color: rgba(0, 0, 0, 0.55);
   }
 

@@ -30,6 +30,9 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
     bgSlides[currentScene].classList.add('active');
     heroSlides[currentScene].classList.add('active');
     activityTracks[currentScene].classList.add('active');
+
+    // Toggle body class for mobile text color (ride scene = light bg)
+    document.body.classList.toggle('scene-ride', currentScene === 1);
   }, 7000);
 })();
 
