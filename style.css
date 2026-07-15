@@ -636,10 +636,40 @@ main {
 /* ── MOBILE ── */
 @media (max-width: 768px) {
 
-  /* Background */
+  /* Background — exclusively use ridemobile.webp (light image) */
   .bg-slide.slide-ski {
-    background-image: url('assets/images/mobilebg.webp');
+    background-image: url('assets/images/ridemobile.webp');
     background-position: center bottom;
+  }
+  .bg-slide.slide-horse {
+    display: none;
+  }
+
+  /* Dark text for light background */
+  .wordmark {
+    color: #1a1a1a;
+    text-shadow: none;
+  }
+
+  .ig-link {
+    color: #1a1a1a;
+  }
+
+  .ig-link svg {
+    stroke: #1a1a1a;
+  }
+
+  .hero-icon {
+    filter: brightness(0);
+  }
+
+  .hero-text-slide h1 {
+    color: #1a1a1a;
+    text-shadow: none;
+  }
+
+  .hero-text-slide p {
+    color: rgba(0, 0, 0, 0.55);
   }
 
   /* Header */
