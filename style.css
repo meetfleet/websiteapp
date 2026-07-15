@@ -78,7 +78,7 @@ body {
 }
 .bg-slide.slide-horse {
   background-image: url('assets/images/horse.webp');
-  background-position: center center;
+  background-position: 75% center;
 }
 
 /* ── LAYOUT ── */
