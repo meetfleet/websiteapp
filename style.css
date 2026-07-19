@@ -565,6 +565,19 @@ body.hide-floats .float-action {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   flex-shrink: 0;
   object-fit: cover;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.55);
+}
+
+.avatar[alt="james"] {
+  box-shadow: 0 0 0 1.5px #15803d; /* dark green */
+}
+
+.avatar[alt="imad"] {
+  box-shadow: 0 0 0 1.5px #adff2f; /* greenish yellowish */
+}
+
+.avatar[alt="david"] {
+  box-shadow: 0 0 0 1.5px #8b5a2b; /* brown */
 }
 
 .activity-teaser--right .avatar {
