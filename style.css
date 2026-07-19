@@ -80,6 +80,23 @@ body {
   background-image: url('assets/images/horse.webp');
   background-position: 75% center;
 }
+.bg-slide.slide-beach {
+  background-image: url('assets/images/beach/bg.webp');
+  background-position: center center;
+}
+.bg-slide.slide-golf {
+  background-image: url('assets/images/golf/bg.webp');
+  background-position: center center;
+}
+.bg-slide.slide-shopping {
+  background-image: url('assets/images/shopping/bg.webp');
+  background-position: center center;
+}
+.bg-slide.slide-dinner {
+  background-image: url('assets/images/dinner/bg.webp');
+  background-position: center center;
+}
+
 
 /* ── LAYOUT ── */
 header {
@@ -144,6 +161,19 @@ main {
   animation: fadeUpCenter 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
 
+@media (min-width: 769px) {
+  .hero {
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    background: rgba(0, 0, 0, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 28px;
+    padding: 32px;
+    margin-left: -32px; /* Offset the padding to keep content aligned */
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+  }
+}
+
 .hero-icon {
   width: 34px;
   height: 34px;
@@ -180,8 +210,9 @@ main {
   font-size: 15px;
   font-weight: 400;
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.95);
   max-width: 330px;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
 }
 
 .appstore-btn {
@@ -246,6 +277,13 @@ main {
   gap: 12px;
   cursor: pointer;
   user-select: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+body.hide-floats .float-action {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.85);
 }
 
 .float-action>span {
@@ -281,6 +319,8 @@ main {
   right: calc(27% - 125px);
   width: 345px;
   height: 380px;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .activity-track {
@@ -292,14 +332,10 @@ main {
   gap: 20px;
   width: 345px;
   opacity: 0;
-  transform: translateY(20px) scale(0.95);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-}
-.activity-track.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: transform, opacity;
 }
 
 .activity-main {
@@ -362,10 +398,10 @@ main {
 
 /* ── GLASS CARD (shared) ── */
 .glass-card {
-  background: rgba(8, 6, 4, 0.58);
-  backdrop-filter: blur(20px) saturate(1.6) brightness(0.88);
-  -webkit-backdrop-filter: blur(50px) saturate(1.6) brightness(0.88);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(8, 6, 4, 0.55);
+  backdrop-filter: blur(32px) saturate(1.8) brightness(0.95);
+  -webkit-backdrop-filter: blur(32px) saturate(1.8) brightness(0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 28px;
   box-shadow:
     0 24px 72px rgba(0, 0, 0, 0.36),
@@ -381,6 +417,8 @@ main {
   align-items: center;
   gap: 14px;
   padding: 16px;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .card-bottom {
@@ -633,6 +671,51 @@ main {
     inset 0 0 10px 1px rgba(255, 255, 255, 0.03);
 }
 
+
+/* ── LIGHT SCENES (Beach, Golf, Shopping) — MOBILE ONLY ── */
+@media (max-width: 768px) {
+  body.scene-light .wordmark,
+  body.scene-light .ig-link,
+  body.scene-light .ig-link svg,
+  body.scene-light .hero-icon,
+  body.scene-light .hero-text-slide h1,
+  body.scene-light .hero-text-slide p,
+  body.scene-light .float-action > span {
+    transition: color 0.8s ease, filter 0.8s ease, stroke 0.8s ease;
+  }
+
+  body.scene-light .wordmark {
+    color: #1a1a1a;
+    text-shadow: none;
+  }
+
+  body.scene-light .ig-link {
+    color: #1a1a1a;
+  }
+
+  body.scene-light .ig-link svg {
+    stroke: #1a1a1a;
+  }
+
+  body.scene-light .hero-icon {
+    filter: brightness(0);
+  }
+
+  body.scene-light .hero-text-slide h1 {
+    color: #1a1a1a;
+    text-shadow: none;
+  }
+
+  body.scene-light .hero-text-slide p {
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  body.scene-light .float-action > span {
+    color: #1a1a1a;
+    text-shadow: none;
+  }
+}
+
 /* ── MOBILE ── */
 @media (max-width: 768px) {
 
@@ -645,8 +728,26 @@ main {
     background-image: url('assets/images/ridemobile.webp');
     background-position: center bottom;
   }
+  .bg-slide.slide-beach {
+    background-image: url('assets/images/beach/mobilebg.webp');
+    background-position: center bottom;
+  }
+  .bg-slide.slide-golf {
+    background-image: url('assets/images/golf/mobilebg.webp');
+    background-position: center bottom;
+  }
+  .bg-slide.slide-shopping {
+    background-image: url('assets/images/shopping/mobilebg.webp');
+    background-position: center bottom;
+  }
+  .bg-slide.slide-dinner {
+    background-image: url('assets/images/dinner/mobilebg.webp');
+    background-position: center bottom;
+  }
+
 
 }
+
 
 /* ── MOBILE: dark text when ride scene is active (light bg) ── */
 @media (max-width: 768px) {
@@ -766,6 +867,7 @@ main {
   .card-top {
     padding: 13px;
     gap: 11px;
+    height: auto;
   }
 
   .card-bottom {

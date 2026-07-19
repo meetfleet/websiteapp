@@ -111,6 +111,10 @@
   <div class="bg-slider" role="presentation" aria-hidden="true">
     <div class="bg-slide slide-ski active"></div>
     <div class="bg-slide slide-horse"></div>
+    <div class="bg-slide slide-beach"></div>
+    <div class="bg-slide slide-golf"></div>
+    <div class="bg-slide slide-shopping"></div>
+    <div class="bg-slide slide-dinner"></div>
   </div>
 
   <header role="banner">
@@ -141,6 +145,22 @@
           <h1>Saddle up today,<br>Ride the untamed path.</h1>
           <p>Spontaneous adventures for the equestrian soul, saddle up, let's explore the scenic countryside.</p>
         </div>
+        <div class="hero-text-slide">
+          <h1>Sun, sand,<br>and endless waves.</h1>
+          <p>Catch the perfect wave or just relax on the shore. Life's a beach, let's soak it up together.</p>
+        </div>
+        <div class="hero-text-slide">
+          <h1>Perfect your swing,<br>master the green.</h1>
+          <p>Hit the links and enjoy a sunny day out. Grab your clubs and let's play a round.</p>
+        </div>
+        <div class="hero-text-slide">
+          <h1>Retail therapy,<br>redefined today.</h1>
+          <p>Discover the best local boutiques and sales. Join the hunt for the perfect find.</p>
+        </div>
+        <div class="hero-text-slide">
+          <h1>Savor the moment,<br>dine in style.</h1>
+          <p>A culinary journey right around the corner. Join friends for a delightful dinner.</p>
+        </div>
       </div>
       <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer"
         aria-label="Download Meetfleet on the App Store">
@@ -163,266 +183,172 @@
       </div>
     </div>
 
-    <!-- ── Activity Track with teaser cards ── -->
+    <!-- Activity Slider: 6 scenes -->
     <div class="activity-slider" id="activitySlider">
+
+      <!-- SKI (0) -->
       <div class="activity-track active">
-
-      <!-- Left teaser (clone) -->
-      <div class="activity-teaser activity-teaser--left" aria-hidden="true">
-        <div class="activity-container">
-          <div class="card-top glass-card">
-            <div class="ski-tile">
-              <img src="assets/images/skiing-icon.svg" class="ski-icon" alt="">
-            </div>
-            <div class="card-info">
-              <h2>Dinner</h2>
-              <div class="user-row">
-                <span class="avatar"></span>
-                <span class="username">@maria</span>
-              </div>
-            </div>
-          </div>
-          <div class="card-bottom glass-card">
-            <div class="pills">
-              <div class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg>
-                <span>2 hours</span>
-              </div>
-              <div class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>Haut Atlas</span>
-              </div>
-              <div class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                <span>Free</span>
-              </div>
-            </div>
-            <button class="join-btn" tabindex="-1">Join Maria Now</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Main card -->
-      <div class="activity-main" id="activityMain">
-        <div class="activity-container">
-          <div class="card-top glass-card">
-            <div class="ski-tile">
-              <img src="assets/images/skiing-icon.svg" class="ski-icon" alt="ski" fetchpriority="high">
-            </div>
-            <div class="card-info">
-              <h2>Ski</h2>
-              <div class="user-row">
-                <span class="avatar"></span>
-                <span class="username">@maria</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card-bottom glass-card">
-            <div class="card-bottom-state original-state">
-              <div class="pills">
-                <div class="pill" data-haptic>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg>
-                  <span>2 hours</span>
-                </div>
-                <div class="pill" data-haptic>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span>Haut Atlas</span>
-                </div>
-                <div class="pill" data-haptic>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                  <span>Free</span>
-                </div>
-              </div>
-
-              <button class="join-btn" data-haptic="heavy">Join Maria Now</button>
-            </div>
-
-            <div class="card-bottom-state message-state">
-              <div class="message-rect-container">
-                <div class="message-text">Yesterday was for chilling and exploring, today is for speed 😁. Who’s feeling
-                  brave enough to challenge me to a ski match right now?</div>
-                <div class="message-meta">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
-                  <span>just now</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Custom cursor for this card zone -->
-        <div class="card-cursor"></div>
-      </div>
-
-      <!-- Right teaser (clone) -->
-      <div class="activity-teaser activity-teaser--right" aria-hidden="true">
-        <div class="activity-container">
-          <div class="card-top glass-card">
-            <div class="ski-tile">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-icon"><path d="m12 8 6-3-6-3v10"/><path d="m8 11.99-5.5 3.14a1 1 0 0 0 0 1.74l8.5 4.86a2 2 0 0 0 2 0l8.5-4.86a1 1 0 0 0 0-1.74L16 12"/><path d="m6.49 12.85 11.02 6.3"/><path d="M17.51 12.85 6.5 19.15"/></svg>
-            </div>
-            <div class="card-info">
-              <h2>Golf</h2>
-              <div class="user-row">
-                <span class="avatar"></span>
-                <span class="username">@maria</span>
-              </div>
-            </div>
-          </div>
-          <div class="card-bottom glass-card">
-            <div class="pills">
-              <div class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg>
-                <span>2 hours</span>
-              </div>
-              <div class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>Haut Atlas</span>
-              </div>
-              <div class="pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                <span>Free</span>
-              </div>
-            </div>
-            <button class="join-btn" tabindex="-1">Join Maria Now</button>
-          </div>
-        </div>
-      </div>
-
-      </div>
-
-      <!-- HORSE SCENE -->
-      <div class="activity-track">
-        <!-- Left teaser (clone) -->
         <div class="activity-teaser activity-teaser--left" aria-hidden="true">
           <div class="activity-container">
-            <div class="card-top glass-card">
-              <div class="ski-tile">
-                <img src="assets/images/skiing-icon.svg" class="ski-icon" alt="">
-              </div>
-              <div class="card-info">
-                <h2>Dinner</h2>
-                <div class="user-row">
-                  <span class="avatar"></span>
-                  <span class="username">@maria</span>
-                </div>
-              </div>
-            </div>
-            <div class="card-bottom glass-card">
-              <div class="pills">
-                <div class="pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg>
-                  <span>2 hours</span>
-                </div>
-                <div class="pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span>Haut Atlas</span>
-                </div>
-                <div class="pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                  <span>Free</span>
-                </div>
-              </div>
-              <button class="join-btn" tabindex="-1">Join Maria Now</button>
-            </div>
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/dinner/dinner.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Dine</h2><div class="user-row"><span class="avatar"></span><span class="username">@david</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Downtown</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$60</span></div></div><button class="join-btn" tabindex="-1">Join David Now</button></div>
           </div>
         </div>
-
-        <!-- Main card -->
         <div class="activity-main">
           <div class="activity-container">
-            <div class="card-top glass-card">
-              <div class="ski-tile">
-                <img src="assets/images/horse-head.svg" class="ski-icon" alt="horse" fetchpriority="high">
-              </div>
-              <div class="card-info">
-                <h2>Ride</h2>
-                <div class="user-row">
-                  <span class="avatar"></span>
-                  <span class="username">@james</span>
-                </div>
-              </div>
-            </div>
-
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/skiing-icon.svg" class="ski-icon" alt="ski" fetchpriority="high"></div><div class="card-info"><h2>Ski</h2><div class="user-row"><span class="avatar"></span><span class="username">@maria</span></div></div></div>
             <div class="card-bottom glass-card">
-              <div class="card-bottom-state original-state">
-                <div class="pills">
-                  <div class="pill" data-haptic>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg>
-                    <span>3 hours</span>
-                  </div>
-                  <div class="pill" data-haptic>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Pine Trails</span>
-                  </div>
-                  <div class="pill" data-haptic>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                    <span>Free</span>
-                  </div>
-                </div>
-
-                <button class="join-btn" data-haptic="heavy">Join James Now</button>
-              </div>
-
-              <div class="card-bottom-state message-state">
-                <div class="message-rect-container">
-                <div class="message-text">Yesterday was for chilling and exploring, today is for trail riding 😁. Who’s feeling brave enough to challenge me to a horse race right now?</div>
-                  <div class="message-meta">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
-                    <span>2 mins ago</span>
-                  </div>
-                </div>
-              </div>
+              <div class="card-bottom-state original-state"><div class="pills"><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Haut Atlas</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" data-haptic="heavy">Join Maria Now</button></div>
+              <div class="card-bottom-state message-state"><div class="message-rect-container"><div class="message-text">Yesterday was for chilling and exploring, today is for speed. Who's feeling brave enough to challenge me to a ski match right now?</div><div class="message-meta"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span>just now</span></div></div></div>
             </div>
           </div>
-
-          <!-- Custom cursor for this card zone -->
           <div class="card-cursor"></div>
         </div>
-
-        <!-- Right teaser (clone) -->
         <div class="activity-teaser activity-teaser--right" aria-hidden="true">
           <div class="activity-container">
-            <div class="card-top glass-card">
-              <div class="ski-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tile-icon"><path d="m12 8 6-3-6-3v10"/><path d="m8 11.99-5.5 3.14a1 1 0 0 0 0 1.74l8.5 4.86a2 2 0 0 0 2 0l8.5-4.86a1 1 0 0 0 0-1.74L16 12"/><path d="m6.49 12.85 11.02 6.3"/><path d="M17.51 12.85 6.5 19.15"/></svg>
-              </div>
-              <div class="card-info">
-                <h2>Golf</h2>
-                <div class="user-row">
-                  <span class="avatar"></span>
-                  <span class="username">@maria</span>
-                </div>
-              </div>
-            </div>
-            <div class="card-bottom glass-card">
-              <div class="pills">
-                <div class="pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg>
-                  <span>2 hours</span>
-                </div>
-                <div class="pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span>Haut Atlas</span>
-                </div>
-                <div class="pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-                  <span>Free</span>
-                </div>
-              </div>
-              <button class="join-btn" tabindex="-1">Join Maria Now</button>
-            </div>
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/horse-head.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Ride</h2><div class="user-row"><span class="avatar"></span><span class="username">@james</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>3 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Pine Trails</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" tabindex="-1">Join James Now</button></div>
           </div>
         </div>
       </div>
+
+      <!-- HORSE (1) -->
+      <div class="activity-track">
+        <div class="activity-teaser activity-teaser--left" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/skiing-icon.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Ski</h2><div class="user-row"><span class="avatar"></span><span class="username">@maria</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Haut Atlas</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" tabindex="-1">Join Maria Now</button></div>
+          </div>
+        </div>
+        <div class="activity-main">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/horse-head.svg" class="ski-icon" alt="horse" fetchpriority="high"></div><div class="card-info"><h2>Ride</h2><div class="user-row"><span class="avatar"></span><span class="username">@james</span></div></div></div>
+            <div class="card-bottom glass-card">
+              <div class="card-bottom-state original-state"><div class="pills"><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>3 hours</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Pine Trails</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" data-haptic="heavy">Join James Now</button></div>
+              <div class="card-bottom-state message-state"><div class="message-rect-container"><div class="message-text">Yesterday was for chilling and exploring, today is for trail riding. Who's feeling brave enough to challenge me to a horse race right now?</div><div class="message-meta"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span>2 mins ago</span></div></div></div>
+            </div>
+          </div>
+          <div class="card-cursor"></div>
+        </div>
+        <div class="activity-teaser activity-teaser--right" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/beach/beach.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Beach</h2><div class="user-row"><span class="avatar"></span><span class="username">@alex</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>4 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malibu Coast</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$10</span></div></div><button class="join-btn" tabindex="-1">Join Alex Now</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEACH (2) -->
+      <div class="activity-track">
+        <div class="activity-teaser activity-teaser--left" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/horse-head.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Ride</h2><div class="user-row"><span class="avatar"></span><span class="username">@james</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>3 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Pine Trails</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" tabindex="-1">Join James Now</button></div>
+          </div>
+        </div>
+        <div class="activity-main">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/beach/beach.svg" class="ski-icon" alt="beach" fetchpriority="high"></div><div class="card-info"><h2>Beach</h2><div class="user-row"><span class="avatar"></span><span class="username">@alex</span></div></div></div>
+            <div class="card-bottom glass-card">
+              <div class="card-bottom-state original-state"><div class="pills"><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>4 hours</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malibu Coast</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$10</span></div></div><button class="join-btn" data-haptic="heavy">Join Alex Now</button></div>
+              <div class="card-bottom-state message-state"><div class="message-rect-container"><div class="message-text">Sun's out, surf's up! Who's down for some beach volleyball and catching waves until sunset?</div><div class="message-meta"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span>5 mins ago</span></div></div></div>
+            </div>
+          </div>
+          <div class="card-cursor"></div>
+        </div>
+        <div class="activity-teaser activity-teaser--right" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/golf/golf.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Golf</h2><div class="user-row"><span class="avatar"></span><span class="username">@imad</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>3 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Royal Golf Rabat Morocco</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$50</span></div></div><button class="join-btn" tabindex="-1">Join Imad Now</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOLF (3) -->
+      <div class="activity-track">
+        <div class="activity-teaser activity-teaser--left" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/beach/beach.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Beach</h2><div class="user-row"><span class="avatar"></span><span class="username">@alex</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>4 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Malibu Coast</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$10</span></div></div><button class="join-btn" tabindex="-1">Join Alex Now</button></div>
+          </div>
+        </div>
+        <div class="activity-main">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/golf/golf.svg" class="ski-icon" alt="golf" fetchpriority="high"></div><div class="card-info"><h2>Golf</h2><div class="user-row"><span class="avatar"></span><span class="username">@imad</span></div></div></div>
+            <div class="card-bottom glass-card">
+              <div class="card-bottom-state original-state"><div class="pills"><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>3 hours</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Royal Golf Rabat Morocco</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$50</span></div></div><button class="join-btn" data-haptic="heavy">Join Imad Now</button></div>
+              <div class="card-bottom-state message-state"><div class="message-rect-container"><div class="message-text">Tee time in an hour! Need one more to complete our foursome. Let's enjoy the green.</div><div class="message-meta"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span>10 mins ago</span></div></div></div>
+            </div>
+          </div>
+          <div class="card-cursor"></div>
+        </div>
+        <div class="activity-teaser activity-teaser--right" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/shopping/shopping.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Shop</h2><div class="user-row"><span class="avatar"></span><span class="username">@sarah</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Downtown</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" tabindex="-1">Join Sarah Now</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOPPING (4) -->
+      <div class="activity-track">
+        <div class="activity-teaser activity-teaser--left" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/golf/golf.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Golf</h2><div class="user-row"><span class="avatar"></span><span class="username">@imad</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>3 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Royal Golf Rabat Morocco</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$50</span></div></div><button class="join-btn" tabindex="-1">Join Imad Now</button></div>
+          </div>
+        </div>
+        <div class="activity-main">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/shopping/shopping.svg" class="ski-icon" alt="shopping" fetchpriority="high"></div><div class="card-info"><h2>Shop</h2><div class="user-row"><span class="avatar"></span><span class="username">@sarah</span></div></div></div>
+            <div class="card-bottom glass-card">
+              <div class="card-bottom-state original-state"><div class="pills"><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Downtown</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" data-haptic="heavy">Join Sarah Now</button></div>
+              <div class="card-bottom-state message-state"><div class="message-rect-container"><div class="message-text">Big weekend sales happening right now! Who wants to go bargain hunting with me?</div><div class="message-meta"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span>15 mins ago</span></div></div></div>
+            </div>
+          </div>
+          <div class="card-cursor"></div>
+        </div>
+        <div class="activity-teaser activity-teaser--right" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/dinner/dinner.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Dine</h2><div class="user-row"><span class="avatar"></span><span class="username">@david</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Downtown</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$60</span></div></div><button class="join-btn" tabindex="-1">Join David Now</button></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- DINNER (5) -->
+      <div class="activity-track">
+        <div class="activity-teaser activity-teaser--left" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/shopping/shopping.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Shop</h2><div class="user-row"><span class="avatar"></span><span class="username">@sarah</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Downtown</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" tabindex="-1">Join Sarah Now</button></div>
+          </div>
+        </div>
+        <div class="activity-main">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/dinner/dinner.svg" class="ski-icon" alt="dinner" fetchpriority="high"></div><div class="card-info"><h2>Dine</h2><div class="user-row"><span class="avatar"></span><span class="username">@david</span></div></div></div>
+            <div class="card-bottom glass-card">
+              <div class="card-bottom-state original-state"><div class="pills"><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Downtown</span></div><div class="pill" data-haptic><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>$60</span></div></div><button class="join-btn" data-haptic="heavy">Join David Now</button></div>
+              <div class="card-bottom-state message-state"><div class="message-rect-container"><div class="message-text">Found a hidden gem with the best pasta in town! 🍝🍷 Who's hungry and ready for a feast?</div><div class="message-meta"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><span>10 mins ago</span></div></div></div>
+            </div>
+          </div>
+          <div class="card-cursor"></div>
+        </div>
+        <div class="activity-teaser activity-teaser--right" aria-hidden="true">
+          <div class="activity-container">
+            <div class="card-top glass-card"><div class="ski-tile"><img src="assets/images/skiing-icon.svg" class="ski-icon" alt=""></div><div class="card-info"><h2>Ski</h2><div class="user-row"><span class="avatar"></span><span class="username">@maria</span></div></div></div>
+            <div class="card-bottom glass-card"><div class="pills"><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6h4"/></svg><span>2 hours</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg><span>Haut Atlas</span></div><div class="pill"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Free</span></div></div><button class="join-btn" tabindex="-1">Join Maria Now</button></div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </main>
 
   <footer class="site-footer">
+    <a href="/terms-of-service/">Terms of Use (EULA)</a>
     <a href="/privacy-policy/">Privacy Policy</a>
-    <a href="/terms-of-service/">Terms of Use</a>
     <a href="/support/">Support</a>
   </footer>
 

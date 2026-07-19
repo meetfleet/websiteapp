@@ -14,26 +14,141 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
   
   if (!bgSlides.length || !heroSlides.length || !activityTracks.length) return;
 
+  const numScenes = Math.min(bgSlides.length, heroSlides.length, activityTracks.length);
   let currentScene = 0;
-  const numScenes = bgSlides.length;
+  let autoPlayTimer = null;
 
-  setInterval(() => {
-    // Remove active
-    bgSlides[currentScene].classList.remove('active');
-    heroSlides[currentScene].classList.remove('active');
-    activityTracks[currentScene].classList.remove('active');
+  const trackWidth = 365; // 345 width + 20 gap
 
-    // Next scene
-    currentScene = (currentScene + 1) % numScenes;
+  function updateCarousel(dragOffset = 0, withTransition = true) {
+    activityTracks.forEach((track, i) => {
+      let d = i - currentScene;
+      
+      // Wrap around logic for 6 cards
+      if (d < -2) d += numScenes;
+      if (d > 3) d -= numScenes;
 
-    // Add active
+      const x = d * trackWidth + dragOffset;
+      
+      track.style.transition = withTransition ? 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease' : 'none';
+      
+      if (d === 0) {
+        track.style.transform = `translateX(${x}px) scale(1)`;
+        track.style.opacity = 1;
+        track.style.pointerEvents = 'auto';
+        track.style.zIndex = 10;
+        const glass = track.querySelector('.glass-card');
+        if (glass) glass.style.borderRadius = '28px';
+      } else {
+        track.style.transform = `translateX(${x}px) scale(0.95)`;
+        track.style.opacity = Math.abs(x) > trackWidth * 1.5 ? 0 : 0.6; 
+        track.style.pointerEvents = 'none';
+        track.style.zIndex = 1;
+        const glass = track.querySelector('.glass-card');
+        if (glass) glass.style.borderRadius = '40px';
+      }
+    });
+  }
+
+  // Initialize initial positions
+  updateCarousel(0, false);
+
+  function goToScene(targetScene) {
+    if (targetScene === currentScene) return;
+
+    if (targetScene < 0) targetScene = numScenes - 1;
+    if (targetScene >= numScenes) targetScene = 0;
+
+    const prevScene = currentScene;
+    currentScene = targetScene;
+
+    bgSlides[prevScene].classList.remove('active');
+    heroSlides[prevScene].classList.remove('active');
+    
     bgSlides[currentScene].classList.add('active');
     heroSlides[currentScene].classList.add('active');
-    activityTracks[currentScene].classList.add('active');
 
-    // Toggle body class for mobile text color (ride scene = light bg)
-    document.body.classList.toggle('scene-ride', currentScene === 1);
-  }, 7000);
+    updateCarousel(0, true);
+
+    // Floating action buttons
+    if (currentScene !== 0) {
+      document.body.classList.add('hide-floats');
+    } else {
+      document.body.classList.remove('hide-floats');
+    }
+
+    // Mobile specific classes
+    document.body.classList.remove('scene-ride', 'scene-light');
+    if (currentScene === 1) {
+      document.body.classList.add('scene-ride');
+    } else if (currentScene >= 2 && currentScene <= 4) {
+      document.body.classList.add('scene-light');
+    }
+  }
+
+  function startAutoPlay() {
+    if (autoPlayTimer) clearInterval(autoPlayTimer);
+    autoPlayTimer = setInterval(() => {
+      goToScene(currentScene + 1);
+    }, 7000);
+  }
+
+  startAutoPlay();
+
+  /* ── SWIPE LOGIC ── */
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+  let currentOffset = 0;
+
+  const sliderZone = document.querySelector('.activity-slider') || document.body;
+
+  sliderZone.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    clearInterval(autoPlayTimer);
+    sliderZone.setPointerCapture(e.pointerId);
+  });
+
+  sliderZone.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    const diffX = e.clientX - startX;
+    const diffY = e.clientY - startY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      e.preventDefault(); // Prevent scrolling
+      currentOffset = diffX;
+      updateCarousel(currentOffset, false);
+    }
+  });
+
+  sliderZone.addEventListener('pointerup', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    sliderZone.releasePointerCapture(e.pointerId);
+
+    if (currentOffset > 80) {
+      goToScene(currentScene - 1);
+    } else if (currentOffset < -80) {
+      goToScene(currentScene + 1);
+    } else {
+      updateCarousel(0, true); // Snap back to center
+    }
+    
+    currentOffset = 0;
+    startAutoPlay();
+  });
+
+  sliderZone.addEventListener('pointercancel', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    sliderZone.releasePointerCapture(e.pointerId);
+    updateCarousel(0, true);
+    currentOffset = 0;
+    startAutoPlay();
+  });
+
 })();
 
 /* ── CUSTOM CURSOR — activity card only ── */
