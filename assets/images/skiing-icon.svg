@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48"><!-- Icon from IconPark TwoTone by ByteDance - https://github.com/bytedance/IconPark/blob/master/LICENSE --><defs><mask id="SVG8Z0dpeyP"><g fill="none" stroke="#fff" stroke-miterlimit="2" stroke-width="2"><path fill="#555" d="M24 14a5 5 0 1 0 0-10a5 5 0 0 0 0 10Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M34 24h-6l-6-5l-3 10l6 6l2 9M17 34l-2 5l-6 5"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 44h34l5-7M34 24v20"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVG8Z0dpeyP)"/></svg>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_765_71" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="2" y="1" width="29" height="30">
+<path d="M15.9993 9.33341C16.8834 9.33341 17.7313 8.98223 18.3564 8.3571C18.9815 7.73198 19.3327 6.88414 19.3327 6.00008C19.3327 5.11603 18.9815 4.26818 18.3564 3.64306C17.7313 3.01794 16.8834 2.66675 15.9993 2.66675C15.1153 2.66675 14.2674 3.01794 13.6423 3.64306C13.0172 4.26818 12.666 5.11603 12.666 6.00008C12.666 6.88414 13.0172 7.73198 13.6423 8.3571C14.2674 8.98223 15.1153 9.33341 15.9993 9.33341Z" stroke="white" stroke-width="2" stroke-miterlimit="2"/>
+<path d="M22.6667 16.0001H18.6667L14.6667 12.6667L12.6667 19.3334L16.6667 23.3334L18 29.3334M11.3333 22.6667L10 26.0001L6 29.3334" stroke="white" stroke-width="2" stroke-miterlimit="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.33301 29.3333H25.9997L29.333 24.6667M22.6663 16V29.3333" stroke="white" stroke-width="2" stroke-miterlimit="2" stroke-linecap="round" stroke-linejoin="round"/>
+</mask>
+<g mask="url(#mask0_765_71)">
+<path d="M0 0H32V32H0V0Z" fill="black"/>
+</g>
+</svg>

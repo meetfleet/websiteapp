@@ -564,6 +564,7 @@ body.hide-floats .float-action {
   border-radius: 50%;
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .activity-teaser--right .avatar {
