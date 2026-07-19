@@ -562,19 +562,11 @@ body.hide-floats .float-action {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: #ffffff;
   flex-shrink: 0;
   object-fit: cover;
   border: 1.5px solid rgba(255, 255, 255, 0.3);
   box-sizing: border-box;
-}
-
-.activity-teaser--right .avatar {
-  background: linear-gradient(135deg, #f7c948 0%, #fb923c 100%);
-}
-
-.activity-teaser--left .avatar {
-  background: linear-gradient(135deg, #8b5cf6 0%, #c026d3 100%);
 }
 
 .username {
