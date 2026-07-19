@@ -565,7 +565,7 @@ body.hide-floats .float-action {
   background: #ffffff;
   flex-shrink: 0;
   object-fit: cover;
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
   box-sizing: border-box;
 }
 
