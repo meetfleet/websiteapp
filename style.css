@@ -335,6 +335,7 @@ body.hide-floats .float-action {
   pointer-events: none;
   -webkit-user-select: none;
   user-select: none;
+  transform-origin: center;
   will-change: transform, opacity;
 }
 
@@ -409,6 +410,8 @@ body.hide-floats .float-action {
   overflow: hidden;
   animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
   transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, backdrop-filter;
 }
 
 /* ── CARD TOP ── */
@@ -441,17 +444,31 @@ body.hide-floats .float-action {
 }
 
 .original-state {
-  animation: loopOriginal 12s cubic-bezier(0.25, 1, 0.5, 1) infinite;
   justify-content: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .message-state {
-  animation: loopMessage 12s cubic-bezier(0.25, 1, 0.5, 1) infinite;
   justify-content: center;
   transform-origin: center;
   margin-top: -4px;
   margin-left: -4px;
   margin-right: -4px;
+  opacity: 0;
+  transform: scale(0.85) translateX(40px);
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.show-message .original-state {
+  opacity: 0;
+  transform: scale(0.85) translateX(-40px);
+  pointer-events: none;
+}
+.show-message .message-state {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+  pointer-events: auto;
 }
 
 .message-rect-container {
@@ -459,7 +476,12 @@ body.hide-floats .float-action {
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.12);
-  animation: loopMessageBg 12s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.show-message .message-rect-container {
+  background: rgba(255, 255, 255, 0);
+  border-color: rgba(255, 255, 255, 0);
 }
 
 .message-text {
@@ -495,6 +517,8 @@ body.hide-floats .float-action {
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -973,23 +997,4 @@ body.hide-floats .float-action {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-@keyframes loopOriginal {
-  0%, 25% { opacity: 1; transform: scale(1) translateX(0); }
-  33.3%, 87.5% { opacity: 0; transform: scale(0.85) translateX(-40px); }
-  92% { opacity: 0; transform: scale(0.85) translateX(40px); }
-  100% { opacity: 1; transform: scale(1) translateX(0); }
-}
-
-@keyframes loopMessage {
-  0%, 33.3% { opacity: 0; transform: scale(0.85); }
-  37.5%, 45.8% { opacity: 1; transform: scale(0.85); }
-  62.5%, 87.5% { opacity: 1; transform: scale(1); }
-  95.8%, 100% { opacity: 0; transform: scale(0.9); }
-}
-
-@keyframes loopMessageBg {
-  0%, 45.8% { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.15); }
-  62.5%, 100% { background: rgba(255, 255, 255, 0); border-color: rgba(255, 255, 255, 0); }
 }

@@ -18,9 +18,9 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
   let currentScene = 0;
   let autoPlayTimer = null;
 
-  const trackWidth = 365; // 345 width + 20 gap
-
   function updateCarousel(dragOffset = 0, withTransition = true) {
+    const trackWidth = window.innerWidth <= 768 ? 312 : 365; // 300 width + 12 gap vs 345 width + 20 gap
+
     activityTracks.forEach((track, i) => {
       let d = i - currentScene;
       
@@ -30,20 +30,39 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
 
       const x = d * trackWidth + dragOffset;
       
-      track.style.transition = withTransition ? 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease' : 'none';
+      track.style.transition = withTransition ? 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, filter 0.8s ease' : 'none';
       
       if (d === 0) {
         track.style.transform = `translateX(${x}px) scale(1)`;
         track.style.opacity = 1;
         track.style.pointerEvents = 'auto';
         track.style.zIndex = 10;
+        track.style.maskImage = 'none';
+        track.style.webkitMaskImage = 'none';
+        track.style.filter = 'blur(0px)';
         const glass = track.querySelector('.glass-card');
         if (glass) glass.style.borderRadius = '28px';
       } else {
+        const isDesktop = window.innerWidth > 768;
         track.style.transform = `translateX(${x}px) scale(0.95)`;
-        track.style.opacity = Math.abs(x) > trackWidth * 1.5 ? 0 : 0.6; 
+        track.style.opacity = Math.abs(x) > trackWidth * 1.5 ? 0 : (isDesktop ? 0.35 : 0.6); 
+        track.style.filter = isDesktop ? 'blur(4px)' : 'blur(0px)';
         track.style.pointerEvents = 'none';
         track.style.zIndex = 1;
+        
+        if (isDesktop) {
+          if (d < 0) {
+            track.style.maskImage = 'linear-gradient(to right, transparent 0%, transparent 20%, rgba(0,0,0,1) 80%)';
+            track.style.webkitMaskImage = 'linear-gradient(to right, transparent 0%, transparent 20%, rgba(0,0,0,1) 80%)';
+          } else if (d > 0) {
+            track.style.maskImage = 'linear-gradient(to left, transparent 0%, transparent 20%, rgba(0,0,0,1) 80%)';
+            track.style.webkitMaskImage = 'linear-gradient(to left, transparent 0%, transparent 20%, rgba(0,0,0,1) 80%)';
+          }
+        } else {
+          track.style.maskImage = 'none';
+          track.style.webkitMaskImage = 'none';
+        }
+
         const glass = track.querySelector('.glass-card');
         if (glass) glass.style.borderRadius = '40px';
       }
@@ -147,6 +166,114 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
     updateCarousel(0, true);
     currentOffset = 0;
     startAutoPlay();
+  });
+
+  /* ── INNER CARD BOTTOM SWIPE LOGIC ── */
+  const cardBottoms = document.querySelectorAll('.card-bottom');
+  
+  cardBottoms.forEach(bottom => {
+    let innerStartX = 0;
+    let isInnerDragging = false;
+    let innerOffset = 0;
+    
+    // We can infer state from the presence of the class
+    const isMessageShowing = () => bottom.classList.contains('show-message');
+
+    bottom.addEventListener('pointerdown', (e) => {
+      e.stopPropagation(); // VERY IMPORTANT: Prevents main carousel from sliding!
+      isInnerDragging = true;
+      innerStartX = e.clientX;
+      bottom.setPointerCapture(e.pointerId);
+      
+      // Temporarily disable CSS transitions during drag for instant finger tracking
+      const orig = bottom.querySelector('.original-state');
+      const msg = bottom.querySelector('.message-state');
+      if (orig) orig.style.transition = 'none';
+      if (msg) msg.style.transition = 'none';
+    });
+    
+    bottom.addEventListener('pointermove', (e) => {
+      if (!isInnerDragging) return;
+      e.stopPropagation();
+      e.preventDefault();
+      
+      innerOffset = e.clientX - innerStartX;
+      
+      const orig = bottom.querySelector('.original-state');
+      const msg = bottom.querySelector('.message-state');
+      
+      // Calculate physical dragging math (slower, deliberate drag)
+      const progress = Math.min(Math.max(innerOffset / 140, -1), 1); 
+      const travelDist = progress * 40; // Clamped to max 40px travel distance for stability
+      
+      if (!isMessageShowing()) {
+        // Dragging out of original state
+        if (orig) {
+          orig.style.transform = `translateX(${travelDist}px) scale(${1 - Math.abs(progress)*0.15})`;
+          orig.style.opacity = 1 - Math.abs(progress);
+        }
+        if (msg) {
+          const startX = innerOffset > 0 ? -40 : 40;
+          msg.style.transform = `translateX(${startX * (1 - Math.abs(progress))}px) scale(${0.85 + Math.abs(progress)*0.15})`;
+          msg.style.opacity = Math.abs(progress);
+        }
+      } else {
+        // Dragging out of message state
+        if (msg) {
+          msg.style.transform = `translateX(${travelDist}px) scale(${1 - Math.abs(progress)*0.15})`;
+          msg.style.opacity = 1 - Math.abs(progress);
+        }
+        if (orig) {
+          const startX = innerOffset > 0 ? -40 : 40;
+          orig.style.transform = `translateX(${startX * (1 - Math.abs(progress))}px) scale(${0.85 + Math.abs(progress)*0.15})`;
+          orig.style.opacity = Math.abs(progress);
+        }
+      }
+    });
+    
+    const resetInnerStyles = () => {
+      const orig = bottom.querySelector('.original-state');
+      const msg = bottom.querySelector('.message-state');
+      
+      if (orig) orig.style.transition = '';
+      if (msg) msg.style.transition = '';
+      
+      // Force reflow to ensure CSS transitions re-activate before snapping styles
+      bottom.offsetHeight;
+      
+      if (orig) {
+        orig.style.transform = '';
+        orig.style.opacity = '';
+      }
+      if (msg) {
+        msg.style.transform = '';
+        msg.style.opacity = '';
+      }
+    };
+    
+    bottom.addEventListener('pointerup', (e) => {
+      if (!isInnerDragging) return;
+      isInnerDragging = false;
+      e.stopPropagation();
+      bottom.releasePointerCapture(e.pointerId);
+      
+      resetInnerStyles(); // Let CSS take back control
+      
+      // Require a deliberate 50px drag to toggle state
+      if (Math.abs(innerOffset) > 50) {
+        bottom.classList.toggle('show-message');
+      }
+      innerOffset = 0;
+    });
+
+    bottom.addEventListener('pointercancel', (e) => {
+      if (!isInnerDragging) return;
+      isInnerDragging = false;
+      e.stopPropagation();
+      bottom.releasePointerCapture(e.pointerId);
+      resetInnerStyles();
+      innerOffset = 0;
+    });
   });
 
 })();
