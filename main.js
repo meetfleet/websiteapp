@@ -39,14 +39,14 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
         track.style.zIndex = 10;
         track.style.maskImage = 'none';
         track.style.webkitMaskImage = 'none';
-        track.style.filter = 'blur(0px)';
+        track.style.filter = 'none';
         const glass = track.querySelector('.glass-card');
         if (glass) glass.style.borderRadius = '28px';
       } else {
         const isDesktop = window.innerWidth > 768;
         track.style.transform = `translateX(${x}px) scale(0.95)`;
         track.style.opacity = Math.abs(x) > trackWidth * 1.5 ? 0 : (isDesktop ? 0.35 : 0.6); 
-        track.style.filter = isDesktop ? 'blur(4px)' : 'blur(0px)';
+        track.style.filter = isDesktop ? 'blur(4px)' : 'none';
         track.style.pointerEvents = 'none';
         track.style.zIndex = 1;
         

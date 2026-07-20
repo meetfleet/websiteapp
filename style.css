@@ -411,7 +411,6 @@ body.hide-floats .float-action {
   animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
   transform: translateZ(0);
   backface-visibility: hidden;
-  will-change: transform, backdrop-filter;
 }
 
 /* ── CARD TOP ── */
@@ -891,6 +890,13 @@ body.hide-floats .float-action {
 
   .card-bottom {
     padding: 13px;
+    background: rgba(14, 10, 8, 0.38);
+    backdrop-filter: blur(28px) saturate(1.8) brightness(1.05);
+    -webkit-backdrop-filter: blur(28px) saturate(1.8) brightness(1.05);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
   }
   
   .card-bottom-state {
@@ -917,6 +923,17 @@ body.hide-floats .float-action {
   .pill {
     padding: 15px 10px;
     font-size: 10.5px;
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .card-bottom .message-rect-container {
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .join-btn {
