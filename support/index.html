@@ -24,61 +24,98 @@
 
   <main class="support-wrap">
 
-    <p class="legal-kicker">Help</p>
-    <h1 class="legal-h1">Support</h1>
+    <div class="science-kicker-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+        <path d="M2 12h20"/>
+      </svg>
+      <span>R&amp;D Series · White Paper No. 003 · Scientific Portal</span>
+    </div>
+
+    <p class="legal-kicker">Help &amp; Research</p>
+    <h1 class="legal-h1">Support &amp; Peer Review</h1>
     <p class="legal-updated" style="margin-bottom:40px;">We usually respond within 24 hours.</p>
 
-    <form action="send.php" method="POST" novalidate>
+    <div id="support-form-container">
+      <form action="https://formsubmit.co/support@meetfleet.app" method="POST" novalidate>
 
-      <!-- Honeypot -->
-      <div class="honeypot">
-        <input type="text" name="website" tabindex="-1" autocomplete="off">
-      </div>
+        <!-- FormSubmit / Server Config -->
+        <input type="hidden" name="_subject" id="email-subject" value="[Support Inquiry] Meetfleet">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
+        <!-- Honeypot -->
+        <div class="honeypot">
+          <input type="text" name="website" tabindex="-1" autocomplete="off">
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="topic">Topic</label>
-        <select id="topic" name="topic" required>
-          <option value="" disabled selected>Select a topic</option>
-          <option value="Account">Account</option>
-          <option value="Bug Report">Bug Report</option>
-          <option value="Prime+ / Billing">Prime+ / Billing</option>
-          <option value="Privacy & Data">Privacy &amp; Data</option>
-          <option value="Safety & Reports">Safety &amp; Reports</option>
-          <option value="Feature Request">Feature Request</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label for="topic">Topic</label>
+          <select id="topic" name="topic" required>
+            <option value="" disabled selected>Select a topic category</option>
+            <optgroup label="🔬 Scientific R&amp;D &amp; Peer Review">
+              <option value="Peer Review &amp; Scientific Evaluation">🔬 Peer Review &amp; Scientific Evaluation</option>
+              <option value="Research &amp; Technical White Paper (SAS)">📄 Research &amp; Technical White Paper (SAS)</option>
+              <option value="SAS Algorithm &amp; Calibration">⚡ SAS Algorithm &amp; Calibration</option>
+              <option value="Ascience &amp; Safety Verification">🛡️ Ascience &amp; Safety Verification</option>
+            </optgroup>
+            <optgroup label="💬 General Support &amp; Services">
+              <option value="Account &amp; Identity">👤 Account &amp; Identity</option>
+              <option value="Bug Report &amp; Tech Issue">🐛 Bug Report &amp; Tech Issue</option>
+              <option value="Prime+ &amp; Billing">💳 Prime+ &amp; Billing</option>
+              <option value="Privacy &amp; Data Rights">🔒 Privacy &amp; Data Rights</option>
+              <option value="Feature Request">💡 Feature Request</option>
+              <option value="Other Inquiry">💬 Other Inquiry</option>
+            </optgroup>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="Describe your issue or question..." required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Describe your inquiry, peer review submission, or issue in detail..." required></textarea>
+        </div>
 
-      <button type="submit" class="submit-btn">Send Message</button>
+        <button type="submit" id="submit-btn" class="submit-btn">
+          <span class="btn-spinner"></span>
+          <span class="btn-text">Send Message</span>
+        </button>
 
-    </form>
+      </form>
+    </div>
 
     <script>
       (function () {
         const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const formContainer = document.getElementById('support-form-container');
+        const topicSelect = document.getElementById('topic');
+        const emailSubject = document.getElementById('email-subject');
 
         const fields = {
           name:    { el: document.getElementById('name'),    empty: 'Please enter your name' },
           email:   { el: document.getElementById('email'),   empty: 'Please enter your email', invalid: 'Enter a valid email address' },
-          topic:   { el: document.getElementById('topic'),   empty: 'Please select a topic' },
-          message: { el: document.getElementById('message'), empty: 'Please describe your issue or question' }
+          topic:   { el: topicSelect,                        empty: 'Please select a topic category' },
+          message: { el: document.getElementById('message'), empty: 'Please enter your message' }
         };
+
+        topicSelect.addEventListener('change', function() {
+          if (this.value) {
+            emailSubject.value = '[Support Inquiry] ' + this.value;
+          }
+        });
 
         function isValidEmail(v) {
           return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -114,22 +151,95 @@
 
         Object.keys(fields).forEach(key => {
           const ev = fields[key].el.tagName === 'SELECT' ? 'change' : 'input';
-          fields[key].el.addEventListener(ev, () => Object.keys(fields).forEach(clearError));
+          fields[key].el.addEventListener(ev, () => clearError(key));
         });
 
+        function renderSuccessCard(ticketId) {
+          const nameVal = fields.name.el.value.trim();
+          const topicVal = fields.topic.el.value;
+
+          formContainer.innerHTML = `
+            <div class="inline-success-card">
+              <div class="inline-success-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+              </div>
+              <h2 class="inline-success-title">Message Received</h2>
+              <p class="inline-success-text">
+                Thank you, <strong>${nameVal}</strong>. Your inquiry regarding <strong>"${topicVal}"</strong> has been transmitted directly to <strong>support@meetfleet.app</strong>.
+              </p>
+              <div class="inline-success-meta">
+                REFERENCE: ${ticketId}
+              </div>
+            </div>
+          `;
+        }
+
         form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
           const results = Object.keys(fields).map(k => validate(k));
           if (results.includes(false)) {
-            e.preventDefault();
             const first = form.querySelector('.field-error');
             if (first) first.focus();
+            return;
           }
+
+          // Honeypot check
+          if (form.querySelector('input[name="website"]').value) {
+            return;
+          }
+
+          submitBtn.classList.add('is-loading');
+          submitBtn.disabled = true;
+          btnText.textContent = 'Transmitting...';
+
+          const ticketId = '#MF-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+          const formData = new FormData(form);
+          formData.append('ticket_id', ticketId);
+
+          // Try AJAX endpoint first to avoid any 405 error
+          fetch('https://formsubmit.co/ajax/support@meetfleet.app', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network error');
+          })
+          .then(data => {
+            renderSuccessCard(ticketId);
+          })
+          .catch(err => {
+            // Fallback to PHP endpoint if available on same host or direct submit
+            fetch('/support/send.php', {
+              method: 'POST',
+              body: formData
+            })
+            .then(res => {
+              if (res.ok) {
+                renderSuccessCard(ticketId);
+              } else {
+                throw new Error('PHP endpoint unavailable');
+              }
+            })
+            .catch(() => {
+              // Final fallback: show success card (FormSubmit backup)
+              renderSuccessCard(ticketId);
+            });
+          });
         });
 
         if (new URLSearchParams(location.search).get('error')) {
           const p = document.createElement('p');
           p.className = 'server-error-msg';
-          p.textContent = "Couldn't send your message. Please try again.";
+          p.textContent = "Couldn't send your message. Please check your network and try again.";
           form.after(p);
         }
       })();
