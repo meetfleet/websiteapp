@@ -12,6 +12,7 @@
   <link rel="preload" href="../assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="../assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="../legal.css">
+  <script src="../assets/js/lottie_svg.min.js" defer></script>
 </head>
 <body>
 
@@ -160,20 +161,27 @@
 
           formContainer.innerHTML = `
             <div class="inline-success-card">
-              <div class="inline-success-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 6 9 17l-5-5"/>
-                </svg>
-              </div>
-              <h2 class="inline-success-title">Message Received</h2>
+              <div class="inline-success-anim" id="inline-success-anim" aria-hidden="true"></div>
+              <p class="inline-success-eyebrow">Message received</p>
+              <h2 class="inline-success-title">Thank you, ${nameVal}.</h2>
               <p class="inline-success-text">
-                Thank you, <strong>${nameVal}</strong>. Your inquiry regarding <strong>"${topicVal}"</strong> has been transmitted directly to <strong>support@meetfleet.app</strong>.
+                Your inquiry regarding <strong>"${topicVal}"</strong> has been sent to <strong>support@meetfleet.app</strong>. We'll reply within 24 hours.
               </p>
-              <div class="inline-success-meta">
-                REFERENCE: ${ticketId}
-              </div>
+              <div class="inline-success-meta">REFERENCE&nbsp;·&nbsp;${ticketId}</div>
             </div>
           `;
+
+          const animEl = document.getElementById('inline-success-anim');
+          if (animEl && window.lottie) {
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            window.lottie.loadAnimation({
+              container: animEl,
+              renderer: 'svg',
+              loop: false,
+              autoplay: !reduce,
+              path: '../assets/images/message-sent-gray.json'
+            });
+          }
         }
 
         form.addEventListener('submit', function (e) {

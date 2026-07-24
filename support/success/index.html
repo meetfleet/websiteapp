@@ -23,17 +23,33 @@
 
   <main class="success-wrap">
 
-    <div class="success-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 6 9 17l-5-5"/>
-      </svg>
-    </div>
+    <div class="success-anim" id="success-anim" aria-hidden="true"></div>
 
-    <h1 class="success-h1">Message sent.</h1>
+    <p class="success-eyebrow">Message received</p>
+    <h1 class="success-h1">You're all set.</h1>
     <p class="success-p">We've received your message and will get back to you at your email address within 24 hours.</p>
-    <a href="https://meetfleet.app" class="success-back">Back to Meetfleet</a>
+    <a href="https://meetfleet.app" class="success-back">
+      Back to Meetfleet
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
 
   </main>
+
+  <script src="../../assets/js/lottie_svg.min.js"></script>
+  <script>
+    (function () {
+      var el = document.getElementById('success-anim');
+      if (!el || !window.lottie) return;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      lottie.loadAnimation({
+        container: el,
+        renderer: 'svg',
+        loop: false,
+        autoplay: !reduce,
+        path: '../../assets/images/message-sent-gray.json'
+      });
+    })();
+  </script>
 
   <footer class="legal-footer">
     <div class="footer-links">
