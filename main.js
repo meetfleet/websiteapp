@@ -123,6 +123,7 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
   const sliderZone = document.querySelector('.activity-slider') || document.body;
 
   sliderZone.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.appstore-link') || e.target.closest('.appstore-container')) return;
     isDragging = true;
     startX = e.clientX;
     startY = e.clientY;

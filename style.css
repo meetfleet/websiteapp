@@ -158,6 +158,7 @@ main {
   top: 50%;
   width: 100%;
   max-width: 400px;
+  z-index: 30;
   animation: fadeUpCenter 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
 
@@ -220,6 +221,9 @@ main {
   margin-top: 20px;
   display: inline-block;
   overflow: visible;
+  position: relative;
+  z-index: 40;
+  pointer-events: auto;
 }
 
 .appstore-link {
@@ -227,6 +231,9 @@ main {
   text-decoration: none;
   cursor: pointer;
   overflow: visible;
+  position: relative;
+  z-index: 45;
+  pointer-events: auto;
 }
 
 .appstore-badge-wrap {
@@ -341,6 +348,7 @@ body.hide-floats .float-action {
   height: 380px;
   touch-action: pan-y;
   user-select: none;
+  pointer-events: none;
 }
 
 .activity-track {
@@ -832,13 +840,14 @@ body.hide-floats .float-action {
     right: 36px;
   }
 
-  /* Hero — shift down so it clears the cards */
+  /* Hero — position neatly above activity cards */
   .hero {
     left: 36px;
     right: 36px;
-    top: calc(30% - 3px);
+    top: calc(16% + 10px);
     width: auto;
     max-width: none;
+    z-index: 30;
   }
 
   .hero-icon {
@@ -860,7 +869,10 @@ body.hide-floats .float-action {
   }
 
   .appstore-container {
-    margin-top: 20px;
+    margin-top: 18px;
+    position: relative;
+    z-index: 40;
+    pointer-events: auto;
   }
 
 
