@@ -844,10 +844,11 @@ body.hide-floats .float-action {
   .hero {
     left: 36px;
     right: 36px;
-    top: calc(16% + 10px);
+    top: clamp(80px, 12vh, 105px);
     width: auto;
     max-width: none;
     z-index: 30;
+    animation: fadeUp 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
   }
 
   .hero-icon {
