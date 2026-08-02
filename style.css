@@ -225,7 +225,7 @@ main {
 .appstore-link {
   display: inline-block;
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
   overflow: visible;
 }
 
