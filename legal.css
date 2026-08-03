@@ -579,7 +579,6 @@ ol li {
 }
 
 .success-back:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
-.success-back:active { transform: scale(0.97); }
 
 .success-actions {
   display: flex;
@@ -604,14 +603,13 @@ ol li {
   padding: 12px 22px;
   border-radius: 12px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 14px rgba(0, 51, 255, 0.25);
 }
 
 .btn-cta-primary:hover {
   background: #0029cc;
   box-shadow: 0 6px 20px rgba(0, 51, 255, 0.35);
-  transform: translateY(-1px);
 }
 
 .btn-cta-secondary {
@@ -627,13 +625,12 @@ ol li {
   padding: 12px 22px;
   border-radius: 12px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-cta-secondary:hover {
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.25);
-  transform: translateY(-1px);
 }
 
 /* ── MOBILE ── */
