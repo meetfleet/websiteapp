@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "research.meetfleet.org"
+        }
+      ],
+      "destination": "/peer-review/:path*"
+    }
+  ]
+}
