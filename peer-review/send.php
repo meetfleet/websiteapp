@@ -21,6 +21,7 @@ $message     = trim(strip_tags($_POST['message']     ?? ''));
 if (
     empty($name) ||
     empty($email) ||
+    empty($institution) ||
     empty($message) ||
     !filter_var($email, FILTER_VALIDATE_EMAIL)
 ) {

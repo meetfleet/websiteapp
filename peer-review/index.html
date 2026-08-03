@@ -58,9 +58,10 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="institution">Institution / Affiliation <span style="font-weight:400; opacity:0.6;">(Optional)</span></label>
-          <input type="text" id="institution" name="institution" placeholder="University, Institute, or Independent Research">
+        <div class="form-group" style="position: relative;">
+          <label for="institution">Institution / Affiliation</label>
+          <input type="text" id="institution" name="institution" placeholder="Search institution (e.g. Harvard, MIT, Stanford, Oxford)..." required autocomplete="off">
+          <div id="institution-dropdown" class="institution-dropdown" hidden></div>
         </div>
 
         <div class="form-group">
@@ -99,10 +100,11 @@
         const emailSubject = document.getElementById('email-subject');
 
         const fields = {
-          name:    { el: document.getElementById('name'),    empty: 'Please enter your name and title' },
-          email:   { el: document.getElementById('email'),   empty: 'Please enter your email', invalid: 'Enter a valid email address' },
-          topic:   { el: topicSelect,                        empty: 'Please select a scientific topic' },
-          message: { el: document.getElementById('message'), empty: 'Please detail your review or inquiry' }
+          name:        { el: document.getElementById('name'),        empty: 'Please enter your name and title' },
+          email:       { el: document.getElementById('email'),       empty: 'Please enter your email', invalid: 'Enter a valid email address' },
+          institution: { el: document.getElementById('institution'), empty: 'Please select or enter your institution' },
+          topic:       { el: topicSelect,                            empty: 'Please select a scientific topic' },
+          message:     { el: document.getElementById('message'),     empty: 'Please detail your review or inquiry' }
         };
 
         topicSelect.addEventListener('change', function() {
@@ -243,6 +245,152 @@
           p.textContent = "Couldn't send your peer review submission. Please check your network and try again.";
           form.after(p);
         }
+
+        // Live Institution Search & Autocomplete (ROR Global Registry API)
+        (function initInstitutionAutocomplete() {
+          const input = document.getElementById('institution');
+          const dropdown = document.getElementById('institution-dropdown');
+          if (!input || !dropdown) return;
+
+          const TOP_INSTITUTIONS = [
+            { name: "Harvard University", location: "Cambridge, United States", type: "Education" },
+            { name: "Massachusetts Institute of Technology (MIT)", location: "Cambridge, United States", type: "Education" },
+            { name: "Stanford University", location: "Stanford, United States", type: "Education" },
+            { name: "University of Oxford", location: "Oxford, United Kingdom", type: "Education" },
+            { name: "University of Cambridge", location: "Cambridge, United Kingdom", type: "Education" },
+            { name: "ETH Zurich", location: "Zurich, Switzerland", type: "Education" },
+            { name: "Imperial College London", location: "London, United Kingdom", type: "Education" },
+            { name: "Princeton University", location: "Princeton, United States", type: "Education" },
+            { name: "Yale University", location: "New Haven, United States", type: "Education" },
+            { name: "California Institute of Technology (Caltech)", location: "Pasadena, United States", type: "Education" },
+            { name: "University of California, Berkeley (UC Berkeley)", location: "Berkeley, United States", type: "Education" },
+            { name: "Max Planck Institute", location: "Munich, Germany", type: "Facility" },
+            { name: "CERN (European Organization for Nuclear Research)", location: "Geneva, Switzerland", type: "Facility" },
+            { name: "Google DeepMind", location: "London, United Kingdom", type: "Company" }
+          ];
+
+          let debounceTimer = null;
+          let activeIndex = -1;
+
+          function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+          }
+
+          function renderList(items) {
+            if (!items || items.length === 0) {
+              dropdown.innerHTML = '<div class="institution-empty">No institutions found. You can still type your institution manually.</div>';
+              dropdown.removeAttribute('hidden');
+              return;
+            }
+
+            dropdown.innerHTML = items.map((item, idx) => `
+              <div class="institution-item" data-index="${idx}" data-name="${escapeHtml(item.name)}">
+                <span class="institution-name">${escapeHtml(item.name)}</span>
+                <span class="institution-meta">${escapeHtml(item.location || '')}${item.type ? ` <span class="institution-badge">${escapeHtml(item.type)}</span>` : ''}</span>
+              </div>
+            `).join('');
+            
+            dropdown.removeAttribute('hidden');
+            activeIndex = -1;
+          }
+
+          function selectItem(name) {
+            input.value = name;
+            dropdown.setAttribute('hidden', '');
+            clearError('institution');
+            input.focus();
+          }
+
+          dropdown.addEventListener('click', (e) => {
+            const itemEl = e.target.closest('.institution-item');
+            if (itemEl) {
+              selectItem(itemEl.dataset.name);
+            }
+          });
+
+          input.addEventListener('focus', () => {
+            const query = input.value.trim().toLowerCase();
+            if (!query) {
+              renderList(TOP_INSTITUTIONS);
+            }
+          });
+
+          input.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            const query = input.value.trim();
+
+            if (!query) {
+              renderList(TOP_INSTITUTIONS);
+              return;
+            }
+
+            const localMatches = TOP_INSTITUTIONS.filter(inst => inst.name.toLowerCase().includes(query.toLowerCase()));
+            
+            dropdown.innerHTML = '<div class="institution-loading">Searching global research institutions...</div>';
+            dropdown.removeAttribute('hidden');
+
+            debounceTimer = setTimeout(() => {
+              fetch(`https://api.ror.org/v2/organizations?query=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                  if (!data || !data.items) {
+                    renderList(localMatches);
+                    return;
+                  }
+                  const results = data.items.slice(0, 8).map(item => {
+                    const displayName = item.names?.find(n => n.types?.includes('ror_display') || n.types?.includes('label'))?.value || item.names?.[0]?.value || '';
+                    const loc = item.locations?.[0]?.geonames_details;
+                    const locationStr = loc ? `${loc.name || ''}, ${loc.country_name || ''}`.replace(/^,\s*/, '') : '';
+                    const typeStr = item.types?.[0] ? item.types[0].charAt(0).toUpperCase() + item.types[0].slice(1) : '';
+                    return { name: displayName, location: locationStr, type: typeStr };
+                  }).filter(inst => inst.name);
+
+                  renderList(results.length > 0 ? results : localMatches);
+                })
+                .catch(() => {
+                  renderList(localMatches);
+                });
+            }, 250);
+          });
+
+          input.addEventListener('keydown', (e) => {
+            const items = dropdown.querySelectorAll('.institution-item');
+            if (dropdown.hasAttribute('hidden') || items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              activeIndex = (activeIndex + 1) % items.length;
+              updateActive(items);
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              activeIndex = (activeIndex - 1 + items.length) % items.length;
+              updateActive(items);
+            } else if (e.key === 'Enter' && activeIndex >= 0) {
+              e.preventDefault();
+              selectItem(items[activeIndex].dataset.name);
+            } else if (e.key === 'Escape') {
+              dropdown.setAttribute('hidden', '');
+            }
+          });
+
+          function updateActive(items) {
+            items.forEach((item, idx) => {
+              if (idx === activeIndex) {
+                item.classList.add('is-selected');
+                item.scrollIntoView({ block: 'nearest' });
+              } else {
+                item.classList.remove('is-selected');
+              }
+            });
+          }
+
+          document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.setAttribute('hidden', '');
+            }
+          });
+        })();
       })();
     </script>
 
