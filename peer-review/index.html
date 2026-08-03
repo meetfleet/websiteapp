@@ -11,19 +11,19 @@
   <meta property="og:description" content="Submit academic feedback, methodology reviews, SAS algorithm audits, and peer review submissions for Meetfleet research papers.">
   <meta property="og:url" content="https://research.meetfleet.app/">
   <meta property="og:type" content="website">
-  <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/light.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/light.png" media="(prefers-color-scheme: light)">
-  <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/dark.png" media="(prefers-color-scheme: dark)">
-  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="../legal.css">
-  <script src="../assets/js/lottie_svg.min.js" defer></script>
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/images/light.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/images/light.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/images/dark.png" media="(prefers-color-scheme: dark)">
+  <link rel="preload" href="assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="legal.css">
+  <script src="assets/js/lottie_svg.min.js" defer></script>
 </head>
 <body>
 
   <header class="legal-header">
-    <a href="https://meetfleet.app">
-      <img src="../assets/images/logo.svg" class="legal-logo" alt="Meetfleet">
+    <a href="https://meetfleet.org">
+      <img src="assets/images/logo.svg" class="legal-logo" alt="Meetfleet">
     </a>
     <a href="https://meetfleet.app" class="back-link">meetfleet.app ↗</a>
   </header>
@@ -222,7 +222,7 @@
           })
           .catch(err => {
             // Fallback to PHP endpoint if available on same host
-            fetch('/peer-review/send.php', {
+            fetch('send.php', {
               method: 'POST',
               body: formData
             })

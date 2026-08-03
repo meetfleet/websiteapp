@@ -1,13 +1,13 @@
 <?php
 // Reject anything that isn't a POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /peer-review/');
+    header('Location: /');
     exit;
 }
 
 // Honeypot — bots fill this, humans don't
 if (!empty($_POST['website'])) {
-    header('Location: /peer-review/');
+    header('Location: /');
     exit;
 }
 
@@ -24,7 +24,7 @@ if (
     empty($message) ||
     !filter_var($email, FILTER_VALIDATE_EMAIL)
 ) {
-    header('Location: /peer-review/?error=1');
+    header('Location: /?error=1');
     exit;
 }
 
@@ -74,11 +74,11 @@ if ($template === false) {
 $extra = '-f support@meetfleet.app';
 
 if (mail($to, $subject, $body, $headers, $extra)) {
-    header('Location: /peer-review/success/');
+    header('Location: /success/');
     exit;
 }
 
 // Log failure
 error_log('[Meetfleet Peer Review] mail() failed for: ' . $email);
-header('Location: /peer-review/?error=1');
+header('Location: /?error=1');
 exit;

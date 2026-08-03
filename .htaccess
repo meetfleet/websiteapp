@@ -1,7 +1,14 @@
-# ── Subdomain Routing ──
+# ── Subdomain & Redirect Routing ──
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteCond %{HTTP_HOST} ^research\.meetfleet\.app$ [NC]
+
+  # Redirect old /peer-review/ paths to research.meetfleet.org
+  RewriteCond %{HTTP_HOST} !^research\.meetfleet\.org$ [NC]
+  RewriteCond %{REQUEST_URI} ^/peer-review/?(.*)$ [NC]
+  RewriteRule ^peer-review/?(.*)$ https://research.meetfleet.org/$1 [R=301,L]
+
+  # Subdomain routing for research.meetfleet.org
+  RewriteCond %{HTTP_HOST} ^research\.meetfleet\.(org|app)$ [NC]
   RewriteCond %{REQUEST_URI} !^/peer-review/
   RewriteRule ^(.*)$ /peer-review/$1 [L]
 </IfModule>
