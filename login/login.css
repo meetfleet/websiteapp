@@ -1,0 +1,40 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Meetfleet — login
+
+   /login wears signup.css wholesale; the chain is a strict subset of the
+   signup one and every control, step, sheet and toast is already defined
+   there. This file only carries the handful of differences, so the two pages
+   can never drift apart visually.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Inline links inside an error line ────────────────────────────────────
+   Unknown identifiers are answered with "No account uses that number. Create
+   an account instead." — the anchor has to read as a link without breaking
+   the red error line it lives in.
+   ─────────────────────────────────────────────────────────────────────────*/
+.error-text a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.error-text a:hover {
+  opacity: 0.78;
+}
+
+/* signup.css hides `.error-text:empty`, but an error carrying markup is never
+   `:empty` even when its text is cleared. Clearing goes through textContent,
+   which removes the child nodes too, so the base rule still applies — this
+   just guards the case where only whitespace is left behind. */
+.error-text:blank {
+  display: none;
+}
+
+/* ── Success ──────────────────────────────────────────────────────────────
+   The signup success screen is a destination; this one is a waypoint on the
+   way to /messages, so it gets a little less vertical drama.
+   ─────────────────────────────────────────────────────────────────────────*/
+#step-success .success-wrap {
+  padding: 24px 0;
+}

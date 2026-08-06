@@ -1,0 +1,1533 @@
+/* ==========================================================================
+   Meetfleet — Signup
+   Vanilla CSS written in shadcn/ui's visual language: slate palette, hairline
+   borders, 0.65rem radii, soft layered shadows, no gradients, no gloss.
+   Tokens mirror shadcn's `slate` theme so the page reads as the same system
+   as the mobile app's auth chain (#0F172A ink, #64748B muted, #E2E8F0 border).
+   ========================================================================== */
+
+/* ── FONTS ───────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Aeonik';
+  src: url('../assets/fonts/Aeonik-Pro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aeonik';
+  src: url('../assets/fonts/Aeonik-Pro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ── TOKENS ──────────────────────────────────────────────────────────────── */
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --subtle-foreground: #94a3b8;
+  --placeholder: #cbd5e1;
+  --border: #e2e8f0;
+  --input: #f8fafc;
+  --ring: #0f172a;
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
+  --accent: #0033ff;
+  --accent-soft: #f0f4ff;
+  --accent-border: #c7d2fe;
+  --info: #0369a1;
+  --info-soft: #f0f9ff;
+  --info-border: #bae6fd;
+  --destructive: #ef4444;
+  --destructive-soft: #fef2f2;
+  --destructive-border: #fecaca;
+  --success: #16a34a;
+
+  --radius: 0.65rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.08);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── RESET ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Aeonik', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ── SHELL ───────────────────────────────────────────────────────────────── */
+/* Mobile-first: one column. The desktop split lives in the ≥960px block at the
+   bottom of this file, where the shell becomes a two-panel grid. */
+.auth-shell {
+  min-height: 100dvh;
+}
+
+.form-panel {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 24px calc(24px + env(safe-area-inset-bottom));
+}
+
+/* The brand panel is desktop-only furniture. */
+.brand-panel {
+  display: none;
+}
+
+.auth-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px 0 8px;
+}
+
+.auth-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.3px;
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.auth-wordmark svg {
+  display: block;
+}
+
+.auth-topbar-link {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.auth-topbar-link:hover {
+  color: var(--foreground);
+}
+
+.auth-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+}
+
+/* ── STEPS ───────────────────────────────────────────────────────────────── */
+.step {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  /* `display:none` alone still lets a compositor promote descendant media (the
+     avatar <img>, which has a src from boot) onto its own layer, where it can
+     paint over the video in the brand panel. content-visibility keeps inactive
+     steps out of rendering entirely, which also skips their layout/paint cost. */
+  content-visibility: hidden;
+}
+
+.step.is-active {
+  display: flex;
+  content-visibility: visible;
+  animation: stepIn 0.32s var(--ease) both;
+}
+
+@keyframes stepIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step.is-active {
+    animation: none;
+  }
+}
+
+/* ── STEP HEADER ─────────────────────────────────────────────────────────── */
+.step-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 32px;
+  margin-bottom: 24px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: -6px;
+  border-radius: var(--radius);
+  color: var(--foreground);
+  transition: background-color 0.15s ease;
+}
+
+.back-btn:hover {
+  background: var(--muted);
+}
+
+.progress {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--subtle-foreground);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.step-head {
+  margin-bottom: 28px;
+}
+
+.step-head.is-centered {
+  text-align: center;
+}
+
+.step-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  color: var(--foreground);
+  margin-bottom: 8px;
+}
+
+.step-sub {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+.step-sub strong {
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+/* ── CARD ────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--background);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+/* ── TABS (segmented control) ────────────────────────────────────────────── */
+.tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  background: #f1f5f9;
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  margin-bottom: 18px;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 40px;
+  border-radius: 0.55rem;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--subtle-foreground);
+  transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tab svg {
+  width: 16px;
+  height: 16px;
+}
+
+.tab[aria-selected='true'] {
+  background: var(--background);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── FIELDS ──────────────────────────────────────────────────────────────── */
+.field {
+  margin-bottom: 14px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 8px;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 16px;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.control:hover:not(:focus-within) {
+  border-color: #cbd5e1;
+}
+
+.control:focus-within {
+  background: var(--background);
+  border-color: var(--foreground);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.06);
+}
+
+.control.is-invalid {
+  border-color: var(--destructive);
+  background: #fff5f5;
+}
+
+.control.is-invalid:focus-within {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.control input,
+.control select {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: none;
+  border: none;
+  font-size: 16px; /* 16px avoids iOS zoom-on-focus */
+  color: var(--foreground);
+}
+
+.control input:focus,
+.control select:focus {
+  outline: none;
+}
+
+.control input::placeholder {
+  color: var(--placeholder);
+}
+
+.control .prefix {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--subtle-foreground);
+  flex-shrink: 0;
+}
+
+.control .icon {
+  flex-shrink: 0;
+  color: var(--subtle-foreground);
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--subtle-foreground);
+}
+
+.error-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--destructive);
+}
+
+.error-text:empty,
+.hint:empty {
+  display: none;
+}
+
+/* Phone control — country picker fused into the left of the field */
+.control.phone {
+  padding-left: 0;
+  gap: 0;
+}
+
+.country-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: stretch;
+  padding: 0 10px 0 16px;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.country-btn:hover {
+  background: rgba(15, 23, 42, 0.03);
+}
+
+.country-btn img {
+  width: 20px;
+  height: 14px;
+  border-radius: 2px;
+  object-fit: cover;
+  display: block;
+}
+
+.country-btn svg {
+  width: 10px;
+  height: 10px;
+  color: var(--subtle-foreground);
+}
+
+.control.phone .divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.control.phone .dial {
+  font-size: 16px;
+  color: var(--foreground);
+  margin-right: 6px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.control.phone input {
+  padding-right: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── STATUS PILL (existing account / new here) ───────────────────────────── */
+.status-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: 1px solid;
+  border-radius: var(--radius);
+  font-size: 11px;
+  animation: stepIn 0.25s var(--ease) both;
+}
+
+.status-pill .left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-pill .action {
+  font-weight: 700;
+}
+
+.status-pill.login {
+  background: var(--info-soft);
+  border-color: var(--info-border);
+  color: var(--info);
+}
+
+.status-pill.signup {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.status-pill svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 52px;
+  padding: 0 20px;
+  border-radius: var(--radius-lg);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  /* Anchors are used as buttons on the success step — kill the link underline
+     the browser would otherwise inherit onto them. */
+  text-decoration: none;
+  transition: opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: #1e293b;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+}
+
+.btn-primary:not(:disabled):active {
+  background: #0f172a;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18);
+}
+
+/* A disabled primary should read as a dimmed dark button, not a grey slab. */
+.btn-primary:disabled {
+  background: var(--primary);
+  opacity: 0.28;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow);
+  font-weight: 400;
+}
+
+.btn-secondary:not(:disabled):hover {
+  background: var(--muted);
+}
+
+.btn-ghost {
+  height: auto;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--foreground);
+  width: auto;
+}
+
+.btn-ghost:hover {
+  opacity: 0.7;
+}
+
+/* Spinner shown inside a button while a request is in flight */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── FOOTER ACTION AREA ──────────────────────────────────────────────────── */
+.step-foot {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.foot-note {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--subtle-foreground);
+  line-height: 1.6;
+}
+
+.foot-note a {
+  color: var(--muted-foreground);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── DIVIDER ─────────────────────────────────────────────────────────────── */
+.divider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 14px;
+}
+
+.divider-row::before,
+.divider-row::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.divider-row span {
+  font-size: 12px;
+  color: var(--subtle-foreground);
+}
+
+/* ── SOCIAL ──────────────────────────────────────────────────────────────── */
+/* Apple is the only social provider on the web, so it takes the full width
+   rather than sitting in a half-empty two-up grid. */
+.social-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.social-row .btn {
+  font-size: 14px;
+}
+
+.social-row svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* ── OTP ─────────────────────────────────────────────────────────────────── */
+.otp-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.otp-box {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s ease;
+}
+
+.otp-box.is-filled {
+  border-color: var(--foreground);
+}
+
+.otp-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.otp-proxy {
+  position: relative;
+  cursor: text;
+}
+
+/* ── AVATAR PICKER ───────────────────────────────────────────────────────── */
+.avatar-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.avatar-hero img {
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--muted);
+  object-fit: cover;
+}
+
+.avatar-hero img.is-bouncing {
+  animation: bounce 0.4s var(--ease);
+}
+
+@keyframes bounce {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.dice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  background: var(--background);
+  box-shadow: var(--shadow);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dice-btn:hover {
+  background: var(--muted);
+}
+
+.dice-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.style-scroller {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 0 12px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.style-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.style-thumb {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  background: var(--muted);
+  padding: 3px;
+  transition: border-color 0.15s ease;
+}
+
+.style-thumb img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.6rem;
+  object-fit: cover;
+  display: block;
+}
+
+.style-thumb[aria-pressed='true'] {
+  border-color: var(--foreground);
+}
+
+/* ── CHIPS (gender / interests) ──────────────────────────────────────────── */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--background);
+  font-size: 14px;
+  color: var(--foreground);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+  background: var(--muted);
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* ── TEXTAREA ────────────────────────────────────────────────────────────── */
+.textarea {
+  width: 100%;
+  min-height: 108px;
+  padding: 14px 16px;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--foreground);
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.textarea::placeholder {
+  color: var(--placeholder);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--foreground);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.06);
+}
+
+.counter {
+  margin-top: 8px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--subtle-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── COUNTRY SHEET ───────────────────────────────────────────────────────── */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(15, 23, 42, 0.32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.sheet-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet {
+  position: fixed;
+  z-index: 91;
+  left: 50%;
+  bottom: 0;
+  width: min(480px, 100%);
+  max-height: 80dvh;
+  transform: translate(-50%, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.32s var(--ease);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.sheet.is-open {
+  transform: translate(-50%, 0);
+}
+
+.sheet-head {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sheet-grip {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+  margin: 0 auto 14px;
+}
+
+.sheet-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.sheet-list {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 0 12px;
+}
+
+.country-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 13px 20px;
+  text-align: left;
+  transition: background-color 0.12s ease;
+}
+
+.country-row:hover,
+.country-row.is-selected {
+  background: #f1f5f9;
+}
+
+.country-row img {
+  width: 24px;
+  height: 17px;
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.country-row .name {
+  flex: 1;
+  font-size: 15px;
+}
+
+.country-row .dial {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.sheet-empty {
+  padding: 28px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--subtle-foreground);
+}
+
+/* ── TOAST ───────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  z-index: 95;
+  top: calc(16px + env(safe-area-inset-top));
+  left: 50%;
+  width: min(432px, calc(100% - 32px));
+  transform: translate(-50%, -12px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--background);
+  border: 1px solid #f1f5f9;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.25s var(--ease);
+}
+
+.toast.is-open {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+/* ── SUCCESS ─────────────────────────────────────────────────────────────── */
+.success-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 40px 0;
+}
+
+.success-mark {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  margin-bottom: 20px;
+  animation: popIn 0.45s var(--ease) both;
+}
+
+.success-mark svg {
+  width: 34px;
+  height: 34px;
+  color: var(--accent);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Handoff card — the account's identity, so they know what to sign in with
+   once they open the app on their phone. */
+.handoff {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 22px;
+  padding: 14px 22px;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.handoff-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.handoff-handle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.success-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  margin-bottom: 18px;
+  object-fit: cover;
+}
+
+/* ── UTIL ────────────────────────────────────────────────────────────────── */
+.is-hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DATE PICKER — iOS-style three-wheel selector
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* The closed state: a summary row that matches .control's geometry exactly, so
+   it sits in the form as a peer of the other fields. */
+.date-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-align: left;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.date-field:hover {
+  border-color: #cbd5e1;
+}
+
+.date-field[aria-expanded='true'] {
+  border-color: var(--foreground);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.06);
+}
+
+.date-field.is-invalid {
+  border-color: var(--destructive);
+  background: #fff5f5;
+}
+
+.date-value {
+  font-size: 16px;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.date-value.is-placeholder {
+  color: var(--placeholder);
+}
+
+/* Sheet chrome: Cancel / title / Done, as on iOS. */
+.date-sheet {
+  max-height: none;
+}
+
+.date-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 12px;
+}
+
+.date-head .sheet-title {
+  margin-bottom: 0;
+  font-size: 15px;
+}
+
+.date-cancel,
+.date-done {
+  padding: 8px 10px;
+  font-size: 15px;
+}
+
+.date-cancel {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.date-done {
+  color: var(--accent);
+}
+
+/* The wheels themselves. Each is an independently scrolling column with CSS
+   scroll-snap doing the detent work — no scroll-position maths per frame, and
+   it inherits native momentum on trackpads and touch. */
+.wheels {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.35fr 0.75fr 1fr;
+  gap: 4px;
+  height: 236px;
+  padding: 0 16px 16px;
+  /* Fade the ends so rows dissolve rather than clip — the iOS drum effect. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 2%, #000 32%, #000 68%, transparent 98%);
+  mask-image: linear-gradient(to bottom, transparent 2%, #000 32%, #000 68%, transparent 98%);
+}
+
+/* The stationary highlight band the selected row sits within. */
+.wheel-selection {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 50%;
+  height: 40px;
+  transform: translateY(-50%);
+  background: #f1f5f9;
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+
+.wheel {
+  position: relative;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  /* Exactly (track height - row height) / 2 = (236 - 40) / 2, so the first and
+     last entries can each reach the centre band. If either the .wheels height
+     or --wheel-row changes, this must change with them. */
+  padding: 98px 0;
+  text-align: center;
+}
+
+.wheel::-webkit-scrollbar {
+  display: none;
+}
+
+.wheel:focus-visible {
+  outline: none;
+}
+
+.wheel:focus-visible .wheel-item[aria-selected='true'] {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+  border-radius: var(--radius);
+}
+
+.wheel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  scroll-snap-align: center;
+  font-size: 17px;
+  color: var(--subtle-foreground);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: color 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
+  user-select: none;
+}
+
+.wheel-item[aria-selected='true'] {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+/* Rows recede with distance from the centre, mimicking the drum's curvature. */
+.wheel-item.is-near {
+  opacity: 0.72;
+  transform: scale(0.97);
+}
+
+.wheel-item.is-far {
+  opacity: 0.42;
+  transform: scale(0.93);
+}
+
+.wheel-item.is-farthest {
+  opacity: 0.2;
+  transform: scale(0.88);
+}
+
+.wheel-item.is-disabled {
+  opacity: 0.22;
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wheel {
+    scroll-behavior: auto;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DESKTOP — two-panel split
+   Below 960px the page stays exactly as it was: a single centred column.
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 960px) {
+  /* Declared on :root, not .auth-shell — the sheets and their backdrops are
+     siblings of the shell, and they position themselves against the form
+     column, which is defined as "everything right of the square". */
+  :root {
+    --brand-square: min(100dvh, 62vw);
+  }
+
+  .auth-shell {
+    display: grid;
+    /* The brand panel is a hard square: the video must never be cropped or
+       zoomed, so the panel's box is driven by the video's 1:1 aspect rather
+       than by a share of the viewport. Its side is the viewport height, capped
+       at 62vw so a tall/narrow window can't starve the form column. The form
+       column takes whatever is left and stays fully responsive. */
+    grid-template-columns: var(--brand-square) 1fr;
+    min-height: 100dvh;
+  }
+
+  /* ── Brand panel ── */
+  /* Ambient video over the brand blue. The colour stays as the backdrop so the
+     panel is never blank while the video loads, and remains the whole treatment
+     when the video is suppressed (reduced motion, save-data, decode failure).
+
+     Padding mirrors the home page header (top: 32px, left/right: 7%) so the
+     wordmark lands in the same place on both pages. */
+  /* The panel fills the column edge-to-edge so the page never shows a white
+     gap beside the form, but the VIDEO inside it is a strict square. When the
+     62vw cap binds (wide-but-short windows) the square is shorter than the
+     viewport, so it is centred vertically against the brand blue rather than
+     being stretched to fit — stretching is what cropped the video. */
+  .brand-panel {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100dvh;
+    padding: 0;
+    margin: 0;
+    background: var(--accent);
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  /* Ambient loop. The source is 960×960 and the panel is locked to 1:1, so the
+     two ratios match exactly and the full frame is always visible — nothing is
+     cropped or zoomed at any viewport size. `cover` rather than `contain` only
+     as a guard: if subpixel rounding leaves the panel a fraction off-square,
+     cover eats the fraction instead of showing brand-blue bars. It sits under
+     .brand-panel-inner (z-index 1) and is faded in once it actually starts
+     playing, avoiding a poster-to-video pop. */
+  .brand-video {
+    position: absolute;
+    /* The square itself: side = --brand-square, centred in the panel. Both
+       dimensions come from the same variable, so the box is 1:1 at every
+       viewport size and matches the 960×960 source exactly. */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(0);
+    width: var(--brand-square);
+    height: var(--brand-square);
+    object-fit: cover;
+    object-position: center;
+    opacity: 1;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+    /* translateZ(0) for GPU compositing is folded into the centring transform
+       above; a second `transform` here would override it and un-centre the
+       square. */
+    backface-visibility: hidden;
+  }
+
+  .brand-video.is-playing {
+    opacity: 1;
+  }
+
+  /* Chrome/WebKit paint a centred play affordance over a poster-bearing video.
+     It is not a control we ship, and it renders as a grey disc behind the
+     wordmark until the first frame arrives. */
+  .brand-video::-webkit-media-controls,
+  .brand-video::-webkit-media-controls-start-playback-button,
+  .brand-video::-webkit-media-controls-overlay-play-button,
+  .brand-video::-webkit-media-controls-panel {
+    display: none !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Dark overlay removed per user request */
+  .brand-panel-inner::before {
+    display: none;
+  }
+
+  /* Flush to the panel's 7% padding, so the wordmark sits exactly where the
+     home page puts it rather than being centred inside a narrower block. */
+  .brand-panel-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    padding: 32px 7% 40px;
+    box-sizing: border-box;
+  }
+
+  /* Top meetfleet text logo in brand panel set to opacity 0 while home page logo stays intact. */
+  .auth-wordmark.on-dark {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* 2-second delayed ultra-smooth blurry motion entrance animation for text above video */
+  @keyframes blurrySmoothEntrance {
+    0% {
+      opacity: 0;
+      filter: blur(12px);
+      transform: translateY(24px) translateZ(0);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translateY(0) translateZ(0);
+    }
+  }
+
+  .brand-copy {
+    margin-top: auto;
+    max-width: 620px;
+    opacity: 0;
+    will-change: opacity, transform, filter;
+    animation: blurrySmoothEntrance 2.4s cubic-bezier(0.16, 1, 0.3, 1) 2s forwards;
+  }
+
+  .brand-headline {
+    font-size: clamp(34px, 3vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1.4px;
+    margin-bottom: 18px;
+  }
+
+  .brand-sub {
+    font-size: 16px;
+    line-height: 1.65;
+    /* Lifted against the solid blue — the old 0.72 was tuned for a dark navy
+       and reads muddy here. */
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 44ch;
+  }
+
+  .brand-foot {
+    margin-top: auto;
+    padding-top: 40px;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.55);
+    opacity: 0;
+    will-change: opacity, transform, filter;
+    animation: blurrySmoothEntrance 2.4s cubic-bezier(0.16, 1, 0.3, 1) 2.3s forwards;
+  }
+
+  /* The legal entity sits a step quieter than the product name — present for
+     the people who need it, not competing with the brand. */
+  .brand-foot-sep {
+    margin: 0 6px;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .brand-foot-legal {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* ── Form panel ── */
+  .form-panel {
+    max-width: none;
+    justify-content: center;
+    /* Centre the form within its own column. Without this the column's padding
+       alone leaves the fields drifting toward the outer edge on wide screens. */
+    align-items: center;
+    padding: 40px clamp(40px, 4vw, 72px);
+  }
+
+  /* The wordmark is already in the brand panel; the topbar keeps only the
+     escape hatch, right-aligned. */
+  .auth-topbar {
+    position: absolute;
+    top: 0;
+    right: clamp(40px, 5vw, 88px);
+    padding: 32px 0 0;
+  }
+
+  .auth-topbar .auth-wordmark {
+    display: none;
+  }
+
+  .auth-main {
+    flex: 0 1 auto;
+    /* align-items:center on the panel would otherwise shrink this to its
+       content width; the explicit width keeps the fields full-bleed within the
+       capped column. */
+    width: min(100%, 460px);
+    margin: 0;
+    padding-top: 0;
+  }
+
+  /* On desktop a step is content-height, not viewport-height — that dead
+     stretch between the field and a bottom-pinned button is exactly what made
+     the page feel like a phone screen. */
+  .step {
+    flex: 0 1 auto;
+  }
+
+  .step-foot {
+    margin-top: 0;
+    padding-top: 28px;
+  }
+
+  .step-title {
+    font-size: 32px;
+  }
+
+  .success-wrap {
+    padding: 0;
+  }
+
+  /* Sheets stay bottom-anchored (the mobile behaviour), but confined to the
+     FORM column and matched to the input width — a page-centred dialog floats
+     over the brand panel and reads as unrelated to the field that opened it.
+     The form column is the right grid track, hence the 50% left offset. */
+  .sheet {
+    /* The form column is everything right of the brand square, so its centre
+       is the midpoint between that square's edge and the right edge. Size the
+       sheet to the form itself (460px, matching .auth-main). */
+    left: calc(var(--brand-square) + (100% - var(--brand-square)) / 2);
+    right: auto;
+    bottom: 0;
+    width: min(460px, calc(100% - var(--brand-square) - 48px));
+    max-height: min(560px, 78dvh);
+    transform: translate(-50%, 100%);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+
+  .sheet.is-open {
+    transform: translate(-50%, 0);
+  }
+
+  /* Dim only the form side, so the brand panel stays clean. */
+  .sheet-backdrop {
+    left: var(--brand-square);
+  }
+
+  .toast {
+    top: 24px;
+  }
+}
+
+/* ── Ultrawide: stop the two columns stretching without limit. ──────────────
+   Past ~1800px the brand panel keeps its flush left edge (it is the page's
+   background), while the form column stops widening and its content settles
+   toward the inner edge rather than drifting to the far right. */
+@media (min-width: 1800px) {
+  /* The brand square is unchanged here — it stays 100dvh on a side. The form
+     column simply absorbs the extra width, so its content is centred rather
+     than drifting to the far right. */
+  .auth-main {
+    width: min(100%, 480px);
+  }
+}
+
+/* ── Between phone and desktop: keep one column, but let it breathe. ── */
+@media (min-width: 560px) and (max-width: 959px) {
+  .form-panel {
+    max-width: 560px;
+    padding-bottom: 48px;
+  }
+
+  .step-title {
+    font-size: 32px;
+  }
+}

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Sign up · Meetfleet</title>
+  <meta name="description"
+    content="Create your Meetfleet account. Hyper-local coordination for the spontaneous era. Discover real-time activities near you and join friends instantly.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://meetfleet.app/signup/">
+
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Meetfleet">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Meetfleet">
+  <meta property="og:title" content="Sign up · Meetfleet">
+  <meta property="og:description" content="Create your Meetfleet account and start coordinating spontaneously.">
+  <meta property="og:image" content="https://meetfleet.app/assets/images/og.webp">
+  <meta property="og:url" content="https://meetfleet.app/signup/">
+
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/light.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/light.png"
+    media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/dark.png" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="../assets/images/icon.png">
+
+  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preconnect" href="https://api.dicebear.com">
+  <link rel="preconnect" href="https://flagcdn.com">
+
+  <link rel="stylesheet" href="signup.css">
+</head>
+
+<body>
+
+  <div class="auth-shell">
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         Brand panel — desktop only. Gives the page a real left edge so the
+         form reads as one half of a composition rather than a phone screen
+         floating in whitespace.
+         ═════════════════════════════════════════════════════════════════════ -->
+    <aside class="brand-panel" aria-hidden="true">
+      <video class="brand-video" id="brand-video" autoplay muted loop playsinline disablepictureinpicture
+        preload="auto" tabindex="-1" aria-hidden="true" poster="../assets/video/signup-poster.jpg"
+        width="960" height="960">
+        <source src="../assets/video/signup.webm" type="video/webm">
+        <source src="../assets/video/signup.mp4" type="video/mp4">
+      </video>
+      <div class="brand-panel-inner">
+        <!-- Text-only wordmark, matching the home page header exactly. -->
+        <a class="auth-wordmark on-dark" href="/" aria-label="Meetfleet home">meetfleet</a>
+
+        <div class="brand-copy">
+          <h2 class="brand-headline">Half is virtual.<br>The other 90% is real.</h2>
+          <p class="brand-sub">
+            Hyper-local coordination for the spontaneous era. Create your account, then pick up
+            where you left off on your phone.
+          </p>
+        </div>
+
+        <p class="brand-foot">
+          © <span id="brand-year">2026</span> Meetfleet
+          <span class="brand-foot-sep" aria-hidden="true">·</span>
+          <span class="brand-foot-legal">a Noble Fleet company</span>
+        </p>
+      </div>
+    </aside>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         Form panel
+         ═════════════════════════════════════════════════════════════════════ -->
+    <div class="form-panel">
+
+      <div class="auth-topbar">
+        <a class="auth-wordmark" href="/" aria-label="Meetfleet home">
+          <svg width="22" height="21" viewBox="0 0 43 41" fill="none" aria-hidden="true">
+            <path
+              d="M42.0887 25.854C38.7556 34.4688 30.5921 40.564 21.0436 40.5641C11.4954 40.5639 3.3331 34.4685 0 25.854L4.78332 23.8834C7.36172 30.5478 13.6735 35.2502 21.0436 35.2504C28.4138 35.2504 34.7269 30.548 37.3054 23.8834L42.0887 25.854ZM21.0436 0C30.6896 8.19935e-05 38.5103 7.83896 38.5106 17.5092C38.5106 19.7569 38.0871 21.906 37.3174 23.8804L32.1861 21.8707C30.4424 26.3432 26.103 29.4968 21.0436 29.4969C15.9845 29.4966 11.6463 26.343 9.9026 21.8707L4.77127 23.8804C4.00161 21.906 3.57807 19.7569 3.57807 17.5092C3.57837 7.83912 11.3978 0.000344619 21.0436 0Z"
+              fill="#0033FF" />
+          </svg>
+          meetfleet
+        </a>
+        <a class="auth-topbar-link" href="/">Back to site</a>
+      </div>
+
+      <main class="auth-main">
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 1 — Identifier (phone / username / email) + social
+           Mirrors app/(auth)/auth.tsx
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step is-active" id="step-identifier" data-step="identifier">
+        <div class="step-head">
+          <h1 class="step-title">Let's get you in.</h1>
+          <p class="step-sub">Real plans, real people, right where you are.</p>
+        </div>
+
+        <div class="card">
+          <div class="tabs" role="tablist" aria-label="Sign-in method">
+            <button class="tab" type="button" role="tab" data-tab="phone" aria-selected="false"
+              aria-controls="identifier-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <span class="sr-only">Phone</span>
+            </button>
+            <button class="tab" type="button" role="tab" data-tab="username" aria-selected="true"
+              aria-controls="identifier-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="5" />
+                <path d="M20 21a8 8 0 0 0-16 0" />
+              </svg>
+              <span class="sr-only">Username</span>
+            </button>
+            <button class="tab" type="button" role="tab" data-tab="email" aria-selected="false"
+              aria-controls="identifier-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <span class="sr-only">Email</span>
+            </button>
+          </div>
+
+          <div id="identifier-field">
+            <label class="label" for="identifier-input" id="identifier-label">Username</label>
+
+            <!-- Phone control -->
+            <div class="control phone is-hidden" id="ctl-phone">
+              <button class="country-btn" type="button" id="country-btn" aria-label="Select country">
+                <img id="country-flag" src="" alt="" width="20" height="14">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                  stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              <span class="divider" aria-hidden="true"></span>
+              <span class="dial" id="country-dial">+1</span>
+              <input type="tel" id="phone-input" inputmode="numeric" autocomplete="tel-national" maxlength="13"
+                placeholder="612 345 678" aria-labelledby="identifier-label">
+            </div>
+
+            <!-- Username control -->
+            <div class="control" id="ctl-username">
+              <span class="prefix" aria-hidden="true">@</span>
+              <input type="text" id="username-input" autocomplete="username" autocapitalize="none" autocorrect="off"
+                spellcheck="false" maxlength="20" placeholder="yourname" aria-labelledby="identifier-label">
+            </div>
+
+            <!-- Email control -->
+            <div class="control is-hidden" id="ctl-email">
+              <input type="email" id="email-input" autocomplete="email" autocapitalize="none" autocorrect="off"
+                spellcheck="false" placeholder="you@example.com" aria-labelledby="identifier-label">
+            </div>
+
+            <div id="identifier-status" aria-live="polite"></div>
+            <p class="error-text" id="identifier-error" role="alert"></p>
+          </div>
+
+          <div class="divider-row"><span>or</span></div>
+
+          <div class="social-row">
+            <button class="btn btn-secondary" type="button" id="btn-apple">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M17.05 12.53c-.02-2.2 1.8-3.26 1.88-3.31-1.02-1.5-2.61-1.7-3.18-1.73-1.35-.14-2.64.79-3.33.79-.69 0-1.75-.77-2.87-.75-1.48.02-2.84.86-3.6 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.74 2.2 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.7.71 2.86.69 1.18-.02 1.93-1.08 2.65-2.14.84-1.23 1.18-2.42 1.2-2.48-.03-.01-2.29-.88-2.3-3.5zM14.9 5.6c.6-.74 1.01-1.76.9-2.78-.87.04-1.93.58-2.56 1.31-.56.65-1.05 1.7-.92 2.7.97.08 1.96-.5 2.58-1.23z" />
+              </svg>
+              Continue with Apple
+            </button>
+          </div>
+        </div>
+
+        <div class="step-foot">
+          <button class="btn btn-primary" type="button" id="btn-identifier-next" disabled>Next</button>
+          <p class="foot-note">
+            By continuing you agree to our
+            <a href="/terms-of-service/">Terms</a> and <a href="/privacy-policy/">Privacy Policy</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 2 — OTP verify (email or phone/WhatsApp)
+           Mirrors app/(auth)/email-verify.tsx + phone-verify.tsx
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step" id="step-otp" data-step="otp">
+        <div class="step-nav">
+          <button class="back-btn" type="button" data-back aria-label="Go back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="step-head is-centered">
+          <h2 class="step-title">Check your inbox</h2>
+          <p class="step-sub" id="otp-sub">We sent a 6-digit code to <strong id="otp-target"></strong></p>
+        </div>
+
+        <div class="otp-proxy" id="otp-proxy">
+          <input class="otp-hidden" type="text" id="otp-hidden" inputmode="numeric" autocomplete="one-time-code"
+            maxlength="6" aria-label="6-digit verification code">
+          <div class="otp-row" id="otp-row" aria-hidden="true">
+            <div class="otp-box"></div>
+            <div class="otp-box"></div>
+            <div class="otp-box"></div>
+            <div class="otp-box"></div>
+            <div class="otp-box"></div>
+            <div class="otp-box"></div>
+          </div>
+        </div>
+
+        <p class="error-text" id="otp-error" role="alert" style="text-align:center;margin-bottom:12px"></p>
+
+        <div style="text-align:center">
+          <button class="btn btn-ghost" type="button" id="btn-resend">Resend code</button>
+        </div>
+
+        <div class="step-foot">
+          <button class="btn btn-primary" type="button" id="btn-otp-verify" disabled>Verify</button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 3 — Password (login for existing user, create for new)
+           Mirrors app/(auth)/password.tsx
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step" id="step-password" data-step="password">
+        <div class="step-nav">
+          <button class="back-btn" type="button" data-back aria-label="Go back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="step-head">
+          <h2 class="step-title" id="password-title">Create a password</h2>
+          <p class="step-sub" id="password-sub">Pick something you'll remember, at least 8 characters.</p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="password-input">Password</label>
+          <div class="control" id="ctl-password">
+            <input type="password" id="password-input" autocomplete="new-password" placeholder="••••••••">
+            <button class="icon" type="button" id="btn-toggle-password" aria-label="Show password">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+          <p class="error-text" id="password-error" role="alert"></p>
+        </div>
+
+        <div class="step-foot">
+          <button class="btn btn-primary" type="button" id="btn-password-next" disabled>Continue</button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 4 — Username (for email/social signups that have no handle yet)
+           Mirrors app/(auth)/email-username.tsx
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step" id="step-handle" data-step="handle">
+        <div class="step-nav">
+          <button class="back-btn" type="button" data-back aria-label="Go back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <span class="progress">1 / 4</span>
+        </div>
+
+        <div class="step-head">
+          <h2 class="step-title">Pick your handle</h2>
+          <p class="step-sub">This is how people find and mention you. You can't change it later.</p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="handle-input">Username</label>
+          <div class="control" id="ctl-handle">
+            <span class="prefix" aria-hidden="true">@</span>
+            <input type="text" id="handle-input" autocomplete="username" autocapitalize="none" autocorrect="off"
+              spellcheck="false" maxlength="20" placeholder="yourname">
+          </div>
+          <p class="hint" id="handle-hint">3 to 20 characters. Letters, numbers and underscores.</p>
+          <p class="error-text" id="handle-error" role="alert"></p>
+        </div>
+
+        <div class="step-foot">
+          <button class="btn btn-primary" type="button" id="btn-handle-next" disabled>Continue</button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 5 — Avatar (DiceBear)
+           Mirrors app/(auth)/emoji.tsx
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step" id="step-avatar" data-step="avatar">
+        <div class="step-nav">
+          <button class="back-btn" type="button" data-back aria-label="Go back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <span class="progress">2 / 4</span>
+        </div>
+
+        <div class="step-head is-centered">
+          <h2 class="step-title">Pick your face</h2>
+          <p class="step-sub">Choose a style, then roll for a look you like.</p>
+        </div>
+
+        <div class="avatar-hero">
+          <img id="avatar-hero-img" src="" alt="Your avatar preview" width="148" height="148">
+          <button class="dice-btn" type="button" id="btn-dice">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="3" />
+              <path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01" />
+            </svg>
+            Shuffle
+          </button>
+        </div>
+
+        <div class="style-scroller" id="style-scroller" role="group" aria-label="Avatar styles"></div>
+
+        <div class="step-foot">
+          <button class="btn btn-primary" type="button" id="btn-avatar-next">Continue</button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 6 — Identity (name, gender, date of birth)
+           Mirrors app/(auth)/identity.tsx
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step" id="step-identity" data-step="identity">
+        <div class="step-nav">
+          <button class="back-btn" type="button" data-back aria-label="Go back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <span class="progress">3 / 4</span>
+        </div>
+
+        <div class="step-head">
+          <h2 class="step-title">About you</h2>
+          <p class="step-sub">Just the basics. You can refine your profile later.</p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="name-input">Full name</label>
+          <div class="control" id="ctl-name">
+            <input type="text" id="name-input" autocomplete="name" autocapitalize="words" placeholder="Alex Rivera"
+              maxlength="60">
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label" id="gender-label">Gender</span>
+          <div class="chip-row" role="group" aria-labelledby="gender-label" id="gender-row">
+            <button class="chip" type="button" data-gender="Man" aria-pressed="false">Man</button>
+            <button class="chip" type="button" data-gender="Woman" aria-pressed="false">Woman</button>
+            <button class="chip" type="button" data-gender="Non-binary" aria-pressed="false">Non-binary</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label" id="dob-label">Date of birth</span>
+
+          <!-- iOS-style date field: a summary row that opens a three-wheel
+               picker. The real value lives in the hidden input so form
+               semantics and the existing validation stay unchanged. -->
+          <input type="hidden" id="dob-input" autocomplete="bday">
+          <button class="date-field" type="button" id="dob-trigger" aria-labelledby="dob-label"
+            aria-haspopup="dialog" aria-expanded="false">
+            <span class="date-value is-placeholder" id="dob-display">Select your birthday</span>
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="4" rx="4" />
+              <path d="M3 10h18M8 2v4M16 2v4" />
+            </svg>
+          </button>
+
+          <p class="hint">You must be 18 or older to use Meetfleet.</p>
+          <p class="error-text" id="dob-error" role="alert"></p>
+        </div>
+
+        <div class="step-foot">
+          <button class="btn btn-primary" type="button" id="btn-identity-next" disabled>Continue</button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 7 — Bio → creates the account
+           Mirrors app/(auth)/bio.tsx + photo-upload.tsx register()
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step" id="step-bio" data-step="bio">
+        <div class="step-nav">
+          <button class="back-btn" type="button" data-back aria-label="Go back">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <span class="progress">4 / 4</span>
+        </div>
+
+        <div class="step-head">
+          <h2 class="step-title">Say hello</h2>
+          <p class="step-sub">One line about what you're up for. Optional, so skip it if you'd rather.</p>
+        </div>
+
+        <div class="field">
+          <label class="label" for="bio-input">Bio</label>
+          <textarea class="textarea" id="bio-input" maxlength="160"
+            placeholder="Always up for a spontaneous hike or a long dinner."></textarea>
+          <p class="counter"><span id="bio-count">0</span> / 160</p>
+          <p class="error-text" id="bio-error" role="alert"></p>
+        </div>
+
+        <div class="step-foot">
+          <button class="btn btn-primary" type="button" id="btn-create">Create account</button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           STEP 8 — Success
+           Mirrors app/(auth)/success.tsx
+           ═══════════════════════════════════════════════════════════════════ -->
+      <section class="step" id="step-success" data-step="success">
+        <div class="success-wrap">
+          <img class="success-avatar is-hidden" id="success-avatar" src="" alt="" width="84" height="84">
+          <div class="success-mark" id="success-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </div>
+          <h2 class="step-title" id="success-title">Your account is ready</h2>
+          <p class="step-sub" id="success-sub">
+            Meetfleet lives on your phone. Download the app and sign in with the details you just created to start
+            joining plans near you.
+          </p>
+
+          <div class="handoff" id="handoff">
+            <span class="handoff-label">Sign in on mobile as</span>
+            <span class="handoff-handle" id="handoff-handle">@yourname</span>
+          </div>
+        </div>
+
+        <div class="step-foot">
+          <a class="btn btn-primary" id="btn-testflight" href="https://testflight.apple.com/join/nXyfPMSc"
+            target="_blank" rel="noopener noreferrer">Download the app</a>
+          <div style="height:10px"></div>
+          <a class="btn btn-secondary" href="/">Go to Home</a>
+        </div>
+      </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ── Country picker sheet ────────────────────────────────────────────── -->
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+  <div class="sheet" id="country-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="sheet-head">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <h3 class="sheet-title" id="sheet-title">Select country</h3>
+      <div class="control" style="height:44px">
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+        <input type="search" id="country-search" placeholder="Search country or code" autocomplete="off">
+      </div>
+    </div>
+    <div class="sheet-list" id="country-list"></div>
+  </div>
+
+  <!-- ── Date picker (iOS-style three-wheel) ────────────────────────────── -->
+  <div class="sheet-backdrop" id="date-backdrop"></div>
+  <div class="sheet date-sheet" id="date-sheet" role="dialog" aria-modal="true" aria-labelledby="date-sheet-title">
+    <div class="sheet-head date-head">
+      <button class="btn-ghost date-cancel" type="button" id="date-cancel">Cancel</button>
+      <h3 class="sheet-title" id="date-sheet-title">Date of birth</h3>
+      <button class="btn-ghost date-done" type="button" id="date-done">Done</button>
+    </div>
+
+    <div class="wheels" id="date-wheels">
+      <!-- The highlight band the selected row sits inside, as on iOS. -->
+      <div class="wheel-selection" aria-hidden="true"></div>
+      <div class="wheel" id="wheel-month" role="listbox" aria-label="Month" tabindex="0"></div>
+      <div class="wheel" id="wheel-day" role="listbox" aria-label="Day" tabindex="0"></div>
+      <div class="wheel" id="wheel-year" role="listbox" aria-label="Year" tabindex="0"></div>
+    </div>
+  </div>
+
+  <!-- ── Toast ──────────────────────────────────────────────────────────── -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round" aria-hidden="true">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z" />
+      <path d="M12 9v4M12 17h.01" />
+    </svg>
+    <span id="toast-text"></span>
+  </div>
+
+  <script type="module" src="signup.js"></script>
+</body>
+
+</html>

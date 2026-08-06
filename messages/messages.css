@@ -1,0 +1,1343 @@
+/* ==========================================================================
+   Meetfleet — Messages (web)
+
+   Same visual language as /signup: slate palette, hairline borders, soft
+   layered shadows, no gradients. The layout is a three-pane desktop client —
+   rail, conversation list, thread — that collapses to a single pane on narrow
+   screens, where the list and the thread take turns owning the viewport.
+
+   Bubble colours come from the app so a screenshot from either surface reads
+   as the same product: #0033FF on white for you, #EEF0F6 on #0F172A for them.
+   ========================================================================== */
+
+/* ── FONTS ───────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Aeonik';
+  src: url('../assets/fonts/Aeonik-Pro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aeonik';
+  src: url('../assets/fonts/Aeonik-Pro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ── TOKENS ──────────────────────────────────────────────────────────────── */
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --subtle-foreground: #94a3b8;
+  --placeholder: #cbd5e1;
+  --border: #e2e8f0;
+  --input: #f8fafc;
+  --accent: #0033ff;
+  --accent-soft: #f0f4ff;
+  --accent-border: #c7d2fe;
+  --destructive: #ef4444;
+  --success: #16a34a;
+  --warning: #d97706;
+
+  /* Chat surfaces — lifted from the app's createStyles(). */
+  --bubble-me: #0033ff;
+  --bubble-me-ink: #ffffff;
+  --bubble-them: #eef0f6;
+  --bubble-them-ink: #0f172a;
+
+  --radius: 0.65rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --bubble-radius: 20px;
+  --bubble-radius-tight: 6px;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.08);
+
+  --rail-w: 92px;
+  --list-w: 320px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── RESET ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  height: 100dvh;
+  overflow: hidden;
+  background: #f1f3f7;
+  color: var(--foreground);
+  font-family: 'Aeonik', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  outline: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+/* ── BOOT GATE ───────────────────────────────────────────────────────────── */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  background: #f1f3f7;
+}
+
+.boot[hidden] {
+  display: none;
+}
+
+.boot-mark {
+  animation: pulse 1.6s var(--ease) infinite;
+}
+
+.boot-text {
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.45; transform: scale(0.94); }
+}
+
+/* ── APP SHELL ───────────────────────────────────────────────────────────── */
+.app {
+  height: 100dvh;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: var(--rail-w) var(--list-w) 1fr;
+  gap: 16px;
+}
+
+.app[hidden] {
+  display: none;
+}
+
+/* ── RAIL ────────────────────────────────────────────────────────────────── */
+.rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 12px;
+  background: var(--background);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.rail-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 2px;
+  border: 2px solid var(--accent);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.rail-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--muted);
+}
+
+.rail-name {
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--muted-foreground);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rail-actions {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.rail-btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  color: var(--subtle-foreground);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.rail-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.rail-btn:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.rail-btn.is-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.rail-btn-quiet:hover {
+  background: #fef2f2;
+  color: var(--destructive);
+}
+
+/* Connection dot — quiet when healthy, only asks for attention when not. */
+.rail-status {
+  margin-top: auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  transition: background-color 0.2s ease;
+}
+
+.rail-status[data-state='reconnecting'] {
+  background: var(--warning);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.rail-status[data-state='offline'] {
+  background: var(--destructive);
+}
+
+/* ── LIST PANE ───────────────────────────────────────────────────────────── */
+.list-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--background);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.list-search {
+  padding: 18px 16px 12px;
+}
+
+.search-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 40px 0 16px;
+  background: var(--input);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.search-control:focus-within {
+  background: var(--background);
+  border-color: var(--accent-border);
+}
+
+.search-control input {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+}
+
+.search-control input::placeholder {
+  color: var(--placeholder);
+}
+
+/* Safari draws its own clear affordance on search inputs; it collides with
+   the icon and does not match anything else on the page. */
+.search-control input::-webkit-search-decoration,
+.search-control input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  width: 16px;
+  height: 16px;
+  color: var(--subtle-foreground);
+  pointer-events: none;
+}
+
+.list-heading {
+  padding: 4px 20px 8px;
+  font-size: 12px;
+  color: var(--subtle-foreground);
+}
+
+.list-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 10px 14px;
+}
+
+/* ── CONVERSATION ROW ────────────────────────────────────────────────────── */
+.convo {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 10px;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  transition: background-color 0.14s ease;
+}
+
+.convo:hover {
+  background: var(--muted);
+}
+
+.convo.is-active {
+  background: var(--accent-soft);
+}
+
+.convo-avatar {
+  position: relative;
+  width: 46px;
+  height: 46px;
+}
+
+.convo-avatar img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--muted);
+}
+
+.convo-avatar .fallback {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.convo-body {
+  min-width: 0;
+}
+
+.convo-name {
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.convo-preview {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.convo.is-unread .convo-preview {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+.convo-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.convo-time {
+  font-size: 11px;
+  color: var(--subtle-foreground);
+  white-space: nowrap;
+}
+
+.convo-badge {
+  min-width: 19px;
+  height: 19px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.convo-skeleton {
+  height: 68px;
+  margin: 4px 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, #f8fafc 25%, #eef2f7 50%, #f8fafc 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+.list-empty,
+.chat-empty {
+  flex: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 4px;
+  padding: 40px 28px;
+  text-align: center;
+}
+
+.empty-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.empty-body {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  max-width: 30ch;
+}
+
+.chat-empty-mark {
+  width: 62px;
+  height: 62px;
+  margin-bottom: 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.chat-empty-mark svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ── CHAT PANE ───────────────────────────────────────────────────────────── */
+.chat-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--background);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.chat-back {
+  display: none;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+}
+
+.chat-back svg {
+  width: 20px;
+  height: 20px;
+}
+
+.chat-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--muted);
+  flex-shrink: 0;
+}
+
+.chat-identity {
+  min-width: 0;
+}
+
+.chat-name {
+  font-size: 16px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-meta {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  min-height: 18px;
+}
+
+/* ── THREAD ──────────────────────────────────────────────────────────────── */
+.thread {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px 26px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  scrollbar-gutter: stable;
+}
+
+/* Date separator — a centered pill, as in the app. */
+.date-sep {
+  align-self: center;
+  margin: 18px 0 12px;
+  padding: 6px 15px;
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.system-pill {
+  align-self: center;
+  margin: 8px 0;
+  padding: 7px 15px;
+  max-width: 70%;
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+/* ── BUBBLE ROW ──────────────────────────────────────────────────────────── */
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.row.from-me {
+  flex-direction: row-reverse;
+}
+
+/* Consecutive messages from the same person sit tighter than a change of
+   speaker, which is what makes a thread scannable without avatars on every
+   line. */
+.row + .row {
+  margin-top: 2px;
+}
+
+.row.is-group-start {
+  margin-top: 12px;
+}
+
+.row-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--muted);
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+/* Keeps bubbles aligned when the avatar is omitted mid-group. */
+.row-avatar-spacer {
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.row-stack {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: min(560px, 68%);
+}
+
+.row.from-me .row-stack {
+  align-items: flex-end;
+}
+
+.bubble {
+  padding: 11px 15px;
+  border-radius: var(--bubble-radius);
+  font-size: 14.5px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.from-me .bubble {
+  background: var(--bubble-me);
+  color: var(--bubble-me-ink);
+  border-bottom-right-radius: var(--bubble-radius-tight);
+}
+
+.from-them .bubble {
+  background: var(--bubble-them);
+  color: var(--bubble-them-ink);
+  border-bottom-left-radius: var(--bubble-radius-tight);
+}
+
+/* Mid-group bubbles keep the tight corner on their own side only, so a run
+   reads as one block rather than a stack of identical lozenges. */
+.row:not(.is-group-end).from-me .bubble {
+  border-bottom-right-radius: var(--bubble-radius);
+}
+
+.row:not(.is-group-end).from-them .bubble {
+  border-bottom-left-radius: var(--bubble-radius);
+}
+
+.bubble a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.from-them .bubble a {
+  color: var(--accent);
+}
+
+.bubble-time {
+  margin-top: 4px;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--subtle-foreground);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bubble-time .receipt {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.bubble-pending {
+  opacity: 0.62;
+}
+
+/* ── MEDIA BUBBLES ───────────────────────────────────────────────────────── */
+.bubble-media {
+  padding: 0;
+  overflow: hidden;
+  background: var(--muted);
+  border-radius: var(--bubble-radius);
+  line-height: 0;
+  position: relative;
+  max-width: 320px;
+}
+
+.bubble-media img,
+.bubble-media video {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: cover;
+  cursor: zoom-in;
+}
+
+.bubble-media video {
+  cursor: pointer;
+}
+
+/* Play glyph over a video poster. */
+.media-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.media-play span {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.media-play svg {
+  width: 22px;
+  height: 22px;
+  color: #fff;
+  margin-left: 3px;
+}
+
+/* Upload progress veil — the bubble is on screen from the first byte. */
+.bubble-media.is-uploading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.bubble-media.is-uploading .upload-spinner {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+
+.upload-spinner span {
+  width: 26px;
+  height: 26px;
+  border: 2.5px solid var(--accent-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── VOICE NOTE BUBBLE ───────────────────────────────────────────────────── */
+.voice {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 14px;
+  min-width: 208px;
+  border-radius: var(--bubble-radius);
+}
+
+.from-me .voice {
+  background: var(--bubble-me);
+  color: var(--bubble-me-ink);
+  border-bottom-right-radius: var(--bubble-radius-tight);
+}
+
+.from-them .voice {
+  background: var(--bubble-them);
+  color: var(--bubble-them-ink);
+  border-bottom-left-radius: var(--bubble-radius-tight);
+}
+
+.voice-play {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.from-them .voice-play {
+  background: rgba(0, 51, 255, 0.1);
+  color: var(--accent);
+}
+
+.voice-play svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Bars are rendered as flex children so playback progress can be expressed by
+   colouring a prefix of them, with no canvas repaint per frame. */
+.voice-wave {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.voice-wave i {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.32;
+  transition: opacity 0.1s linear;
+}
+
+.voice-wave i.is-played {
+  opacity: 1;
+}
+
+.voice-time {
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+/* ── CONTACT + LOCATION BUBBLES ──────────────────────────────────────────── */
+.card-bubble {
+  width: 230px;
+  border-radius: var(--bubble-radius);
+  overflow: hidden;
+}
+
+.from-me .card-bubble {
+  background: var(--bubble-me);
+  color: var(--bubble-me-ink);
+  border-bottom-right-radius: var(--bubble-radius-tight);
+}
+
+.from-them .card-bubble {
+  background: var(--bubble-them);
+  color: var(--bubble-them-ink);
+  border-bottom-left-radius: var(--bubble-radius-tight);
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+}
+
+.contact-initials {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.from-them .contact-initials {
+  background: #d6ddf7;
+  color: var(--accent);
+}
+
+.contact-info {
+  min-width: 0;
+}
+
+.contact-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-detail {
+  font-size: 12.5px;
+  opacity: 0.78;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.location-map {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  background: var(--muted);
+}
+
+.location-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 14px;
+  font-size: 13.5px;
+}
+
+.location-label svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* ── APP-ONLY BUBBLE ─────────────────────────────────────────────────────────
+   Plans, shared music and Dark Room invites are live, interactive surfaces in
+   the app — a static approximation here would misrepresent them. One honest
+   placeholder is better than six half-widgets.
+   ───────────────────────────────────────────────────────────────────────── */
+.app-only {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 268px;
+  padding: 13px 15px;
+  border-radius: var(--bubble-radius);
+  border: 1px dashed var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--foreground);
+}
+
+.app-only-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--background);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.app-only-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.app-only-title {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.app-only-body {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  line-height: 1.35;
+}
+
+/* ── TYPING INDICATOR ────────────────────────────────────────────────────── */
+.typing {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 6px 0 2px 36px;
+  padding: 12px 16px;
+  border-radius: var(--bubble-radius);
+  border-bottom-left-radius: var(--bubble-radius-tight);
+  background: var(--bubble-them);
+}
+
+.typing i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--subtle-foreground);
+  animation: bounce 1.15s ease-in-out infinite;
+}
+
+.typing i:nth-child(2) { animation-delay: 0.15s; }
+.typing i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+
+/* ── COMPOSER ────────────────────────────────────────────────────────────── */
+.composer {
+  flex-shrink: 0;
+  padding: 12px 22px 20px;
+}
+
+.composer-row,
+.recorder {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 7px 8px 7px 10px;
+  background: var(--input);
+  border: 1px solid transparent;
+  border-radius: var(--radius-xl);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.composer-row:focus-within {
+  background: var(--background);
+  border-color: var(--accent-border);
+}
+
+.composer-row textarea {
+  flex: 1;
+  min-width: 0;
+  max-height: 132px;
+  padding: 9px 4px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  resize: none;
+  overflow-y: auto;
+}
+
+.composer-row textarea::placeholder {
+  color: var(--placeholder);
+}
+
+.composer-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition: background-color 0.14s ease, color 0.14s ease;
+}
+
+.composer-btn svg {
+  width: 19px;
+  height: 19px;
+}
+
+.composer-btn:hover {
+  background: rgba(15, 23, 42, 0.05);
+  color: var(--foreground);
+}
+
+.composer-send {
+  background: var(--accent);
+  color: #fff;
+}
+
+.composer-send:hover {
+  background: var(--accent);
+  color: #fff;
+  opacity: 0.9;
+}
+
+.composer-send svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* ── RECORDER ────────────────────────────────────────────────────────────── */
+.recorder {
+  align-items: center;
+  padding: 8px 10px;
+}
+
+.recorder-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--destructive);
+  flex-shrink: 0;
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+.recorder-time {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  min-width: 36px;
+}
+
+.recorder-wave {
+  flex: 1;
+  height: 36px;
+  min-width: 0;
+}
+
+.recorder-cancel,
+.recorder-send {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.recorder-cancel {
+  color: var(--muted-foreground);
+}
+
+.recorder-cancel:hover {
+  background: #fef2f2;
+  color: var(--destructive);
+}
+
+.recorder-cancel svg,
+.recorder-send svg {
+  width: 18px;
+  height: 18px;
+}
+
+.recorder-send {
+  background: var(--accent);
+  color: #fff;
+}
+
+.recorder-send:hover {
+  opacity: 0.9;
+}
+
+/* ── VIEWER ──────────────────────────────────────────────────────────────── */
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.viewer[hidden] {
+  display: none;
+}
+
+.viewer-stage img,
+.viewer-stage video {
+  max-width: min(92vw, 1400px);
+  max-height: 88dvh;
+  width: auto;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
+.viewer-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.viewer-close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.viewer-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── TOAST ───────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  z-index: 95;
+  top: 20px;
+  left: 50%;
+  width: min(420px, calc(100% - 32px));
+  transform: translate(-50%, -12px);
+  padding: 12px 16px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.25s var(--ease);
+}
+
+.toast.is-open {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────────────────────
+   Below 1100px the rail folds into a horizontal strip and the list narrows.
+   Below 820px the list and the thread take turns owning the viewport, which
+   is the only honest way to show a chat client on a phone.
+   ───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1160px) {
+  :root {
+    --list-w: 280px;
+  }
+
+  .app {
+    padding: 14px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 820px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    padding: 0;
+    gap: 0;
+    height: 100dvh;
+  }
+
+  .rail {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rail-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .rail-name {
+    flex: 1;
+    text-align: left;
+    font-size: 13px;
+    color: var(--foreground);
+  }
+
+  .rail-actions {
+    margin-top: 0;
+    flex-direction: row;
+  }
+
+  .rail-status {
+    margin-top: 0;
+  }
+
+  .list-pane,
+  .chat-pane {
+    border-radius: 0;
+    box-shadow: none;
+    grid-row: 2;
+    grid-column: 1;
+  }
+
+  /* One pane at a time — `data-view` on .app decides which. */
+  .app[data-view='thread'] .list-pane {
+    display: none;
+  }
+
+  .app[data-view='list'] .chat-pane {
+    display: none;
+  }
+
+  .chat-back {
+    display: grid;
+  }
+
+  .thread {
+    padding: 16px 14px 6px;
+  }
+
+  .row-stack {
+    max-width: 82%;
+  }
+
+  .composer {
+    padding: 10px 14px calc(14px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ── MOTION ──────────────────────────────────────────────────────────────── */
+.row {
+  animation: rise 0.24s var(--ease) both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

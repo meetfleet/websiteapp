@@ -31,7 +31,7 @@ if (
 
 $to        = 'support@meetfleet.app';
 $ticket_id = '#PR-' . strtoupper(substr(md5(uniqid(rand(), true)), 0, 6));
-$subject   = '[Peer Review ' . $ticket_id . '] ' . $topic . ' — ' . $name;
+$subject   = '[Peer Review ' . $ticket_id . '] ' . $topic . ' · ' . $name;
 $timestamp = date('M j, Y \a\t g:i A T');
 $first_name = explode(' ', $name)[0];
 
