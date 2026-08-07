@@ -507,6 +507,7 @@ a {
 }
 
 .chat {
+  position: relative;   /* anchors the profile peek under the header */
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -536,6 +537,25 @@ a {
   height: 20px;
 }
 
+/* Wraps the avatar + name so tapping either opens the profile peek. Carries the
+   gap the header used to provide between those two children. */
+.chat-peek-trigger {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+.chat-peek-trigger:hover .chat-name {
+  color: var(--accent);
+}
+
 .chat-avatar {
   width: 46px;
   height: 46px;
@@ -561,6 +581,106 @@ a {
   font-size: 12px;
   color: var(--muted-foreground);
   min-height: 18px;
+}
+
+/* ── PROFILE PEEK ────────────────────────────────────────────────────────── */
+/*
+ * Small card under the header showing who you're talking to: their generated
+ * avatar, name, @username and subscription tier. Tier colours are the app's
+ * TIER_OUTLINE values so a badge reads the same on both platforms.
+ */
+.peek {
+  position: absolute;
+  top: 74px;
+  left: 68px;
+  z-index: 40;
+  width: 218px;
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.13);
+  transform-origin: top left;
+  animation: peek-in 0.2s cubic-bezier(0.17, 0.89, 0.32, 1.06);
+}
+
+.peek[hidden] {
+  display: none;
+}
+
+@keyframes peek-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.peek-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--muted);
+  margin-bottom: 8px;
+}
+
+.peek-name {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.peek-username {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-bottom: 10px;
+  overflow-wrap: anywhere;
+}
+
+.peek-tier {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--tier-border, var(--border));
+  color: var(--tier-ink, var(--muted-foreground));
+  background: var(--tier-bg, var(--muted));
+}
+
+/* App TIER_OUTLINE colours. */
+.peek-tier[data-tier='free'] {
+  --tier-ink: var(--muted-foreground);
+  --tier-bg: var(--muted);
+  --tier-border: var(--border);
+}
+
+.peek-tier[data-tier='basics'] {
+  --tier-ink: #4F7CC4;
+  --tier-bg: rgba(79, 124, 196, 0.10);
+  --tier-border: rgba(79, 124, 196, 0.28);
+}
+
+.peek-tier[data-tier='gold'] {
+  --tier-ink: #C08A2E;
+  --tier-bg: rgba(192, 138, 46, 0.11);
+  --tier-border: rgba(192, 138, 46, 0.30);
+}
+
+.peek-tier[data-tier='onyx'] {
+  --tier-ink: #1E2430;
+  --tier-bg: rgba(30, 36, 48, 0.09);
+  --tier-border: rgba(30, 36, 48, 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peek {
+    animation-duration: 0.01ms;
+  }
 }
 
 /* ── THREAD ──────────────────────────────────────────────────────────────── */
@@ -1026,6 +1146,13 @@ a {
   padding: 12px 22px 20px;
 }
 
+/* While the attachment menu is open the composer sits above its backdrop, so
+   the plus button stays visible and clickable to dismiss. */
+.composer.is-menu-open {
+  position: relative;
+  z-index: 61;
+}
+
 .composer-row,
 .recorder {
   display: flex;
@@ -1093,6 +1220,181 @@ a {
 .composer-send svg {
   width: 17px;
   height: 17px;
+}
+
+/* ── ATTACHMENT MENU ─────────────────────────────────────────────────────── */
+/*
+ * Desktop port of the app's chat FloatingMenu. Same geometry, springs and
+ * stagger as the native version, scaled to ~0.78 so it sits comfortably above
+ * a desktop composer instead of filling a phone screen.
+ *
+ * Each row flies from the plus button (origin) to its slot: it starts small,
+ * offset and Gaussian-blurred, and lands sharp at full size. Rows are staggered
+ * bottom → top on open and top → bottom on close, matching the app.
+ */
+.fmenu {
+  --fm-item-h: 46px;
+  --fm-circle: 29px;
+  --fm-pad-h: 14px;
+  --fm-gap: 13px;
+  /* Distance from a row's centre back to the plus button, per axis. */
+  --fm-origin-x: calc(-1 * (var(--fm-pad-h) + var(--fm-circle) / 2 - 19px));
+
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+
+.fmenu[hidden] {
+  display: none;
+}
+
+.fmenu-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.42) url('../assets/images/bg-menu.webp') center / cover no-repeat;
+  background-blend-mode: lighten;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  transition: opacity 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fmenu.is-open .fmenu-backdrop {
+  opacity: 1;
+}
+
+/* Anchored to the plus button by JS (left/bottom set inline). */
+.fmenu-panel {
+  position: absolute;
+  width: 190px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fmenu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--fm-gap);
+  height: var(--fm-item-h);
+  padding: 0 var(--fm-pad-h);
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  color: var(--accent);
+
+  /* Flight state — overridden when the menu opens. */
+  opacity: 0;
+  transform: translate(var(--fm-origin-x), var(--fm-fly-y, 0)) scale(0.25);
+  filter: blur(14px);
+  transition:
+    transform 0.52s cubic-bezier(0.17, 0.89, 0.32, 1.06),
+    opacity 0.2s ease-out,
+    filter 0.3s ease-out;
+  /* Bottom row leads on open; the app's OPEN_DELAYS, top → bottom. */
+  transition-delay: var(--fm-delay-out, 0ms);
+}
+
+/* Hairline separators — the app draws these as static Skia lines under the
+   label column, so they start where the label starts. */
+.fmenu-item + .fmenu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(var(--fm-pad-h) + var(--fm-circle) + var(--fm-gap));
+  right: var(--fm-pad-h);
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.fmenu.is-open .fmenu-item {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  filter: blur(0);
+  transition-delay: var(--fm-delay-in, 0ms);
+}
+
+/* OPEN_DELAYS = [230, 180, 110, 50, 0] — bottom item leads. */
+.fmenu-item[style*='--i:0'] { --fm-delay-in: 230ms; --fm-delay-out: 0ms; }
+.fmenu-item[style*='--i:1'] { --fm-delay-in: 180ms; --fm-delay-out: 25ms; }
+.fmenu-item[style*='--i:2'] { --fm-delay-in: 110ms; --fm-delay-out: 50ms; }
+.fmenu-item[style*='--i:3'] { --fm-delay-in: 50ms;  --fm-delay-out: 75ms; }
+.fmenu-item[style*='--i:4'] { --fm-delay-in: 0ms;   --fm-delay-out: 100ms; }
+
+/* Vertical distance back to the origin, per row. Row 4 (bottom) sits nearest
+   the plus button, so it travels least. */
+.fmenu-item[style*='--i:0'] { --fm-fly-y: calc(4.5 * var(--fm-item-h)); }
+.fmenu-item[style*='--i:1'] { --fm-fly-y: calc(3.5 * var(--fm-item-h)); }
+.fmenu-item[style*='--i:2'] { --fm-fly-y: calc(2.5 * var(--fm-item-h)); }
+.fmenu-item[style*='--i:3'] { --fm-fly-y: calc(1.5 * var(--fm-item-h)); }
+.fmenu-item[style*='--i:4'] { --fm-fly-y: calc(0.5 * var(--fm-item-h)); }
+
+/* Circle — transparent → accent-tinted gradient, matching the app's Skia fill
+   and border gradients. */
+.fmenu-icon {
+  width: var(--fm-circle);
+  height: var(--fm-circle);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, transparent, rgba(0, 51, 255, 0.22));
+  border: 1px solid transparent;
+  background-origin: border-box;
+  box-shadow: inset 0 0 0 1px rgba(0, 51, 255, 0.16);
+}
+
+.fmenu-icon svg {
+  width: 15px;
+  height: 15px;
+  opacity: 0.78;
+}
+
+.fmenu-label {
+  font-size: 13.5px;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.fmenu-item:hover .fmenu-icon {
+  background: linear-gradient(135deg, transparent, rgba(0, 51, 255, 0.32));
+}
+
+.fmenu-item:active {
+  opacity: 0.55;
+}
+
+/* Plus rotates into an X while the menu is open, and lifts above the backdrop
+   so the button the menu flew out of stays visible — as it does in the app. */
+.composer-btn.is-active {
+  position: relative;
+  z-index: 61;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.composer-btn.is-active svg {
+  transform: rotate(45deg);
+}
+
+.composer-btn svg {
+  transition: transform 0.28s cubic-bezier(0.17, 0.89, 0.32, 1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fmenu-item,
+  .fmenu-backdrop,
+  .composer-btn svg {
+    transition-duration: 0.01ms;
+    transition-delay: 0ms;
+  }
+
+  .fmenu-item {
+    filter: none;
+  }
 }
 
 /* ── RECORDER ────────────────────────────────────────────────────────────── */

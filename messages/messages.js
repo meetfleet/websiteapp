@@ -17,7 +17,7 @@ import {
   getMe, requireAuth, signOut, ensureSession, getStoredUser,
 } from './supabase.js';
 import {
-  store, isAppOnly, newClientId, newTempId,
+  store, isAppOnly, newClientId, newTempId, resolveTier,
 } from './service.js';
 import {
   subscribeToMessages, unsubscribeFromMessages, setActiveConversation,
@@ -683,6 +683,8 @@ async function openConversation(conversationId) {
   const avatar = $('#chat-avatar');
   avatar.src = convo?.avatarUrl || '';
   avatar.alt = '';
+  // Never leave the previous partner's card on screen.
+  closePeek();
 
   renderConversations();
 
@@ -803,7 +805,157 @@ async function sendText() {
 
 /* ── Attachments ─────────────────────────────────────────────────────────── */
 
-$('#btn-attach').addEventListener('click', () => $('#file-input').click());
+/* ── Profile peek ────────────────────────────────────────────────────────── */
+/*
+ * Tapping the header avatar or name opens a small card with the partner's
+ * generated avatar, name, @username and subscription tier.
+ */
+const peek = $('#peek');
+const btnPeek = $('#btn-peek');
+let peekOpen = false;
+
+const TIER_LABELS = {
+  free: 'Free',
+  basics: 'Basics',
+  gold: 'Gold',
+  onyx: 'Onyx',
+};
+
+function openPeek() {
+  const convo = store.getConversation(state.activeId);
+  if (!convo) return;
+
+  // The card shows the generated avatar specifically — falling back to the
+  // uploaded photo only when the user has no dicebear one.
+  $('#peek-avatar').src = convo.dicebearAvatar || convo.avatarUrl || '';
+  $('#peek-avatar').alt = '';
+  $('#peek-name').textContent = convo.displayName || 'Chat';
+
+  const username = $('#peek-username');
+  username.textContent = convo.username ? `@${convo.username}` : '';
+  username.hidden = !convo.username;
+
+  const tier = resolveTier(convo);
+  const badge = $('#peek-tier');
+  badge.textContent = TIER_LABELS[tier] ?? 'Free';
+  badge.dataset.tier = tier;
+
+  peek.hidden = false;
+  peekOpen = true;
+  btnPeek.setAttribute('aria-expanded', 'true');
+}
+
+function closePeek() {
+  if (!peekOpen) return;
+  peek.hidden = true;
+  peekOpen = false;
+  btnPeek.setAttribute('aria-expanded', 'false');
+}
+
+btnPeek.addEventListener('click', (event) => {
+  event.stopPropagation();
+  if (peekOpen) closePeek();
+  else openPeek();
+});
+
+// Click anywhere else, or Escape, dismisses it.
+document.addEventListener('click', (event) => {
+  if (peekOpen && !peek.contains(event.target)) closePeek();
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && peekOpen) closePeek();
+});
+
+/* ── Attachment menu ─────────────────────────────────────────────────────── */
+/*
+ * Desktop port of the app's chat FloatingMenu. The flight, stagger and blur
+ * live in CSS; this only anchors the panel to the plus button, toggles the
+ * open class, and routes the five actions.
+ *
+ * Gallery and Camera map onto the two file inputs. Location, Contact and Music
+ * exist in the app but have no web equivalent yet, so they say so rather than
+ * silently doing nothing.
+ */
+const fmenu = $('#fmenu');
+const fmenuPanel = $('#fmenu-panel');
+const btnAttach = $('#btn-attach');
+let fmenuOpen = false;
+let fmenuCloseTimer = null;
+
+function positionFloatingMenu() {
+  const rect = btnAttach.getBoundingClientRect();
+  // Panel grows upward from just above the plus button, left edges aligned.
+  fmenuPanel.style.left = `${rect.left}px`;
+  fmenuPanel.style.bottom = `${window.innerHeight - rect.top + 6}px`;
+}
+
+function openFloatingMenu() {
+  if (fmenuOpen) return;
+  clearTimeout(fmenuCloseTimer);
+  fmenuOpen = true;
+  fmenu.hidden = false;
+  positionFloatingMenu();
+  // One frame with the menu laid out but not yet open, so the transition runs.
+  requestAnimationFrame(() => fmenu.classList.add('is-open'));
+  btnAttach.classList.add('is-active');
+  $('#composer').classList.add('is-menu-open');
+  btnAttach.setAttribute('aria-expanded', 'true');
+}
+
+function closeFloatingMenu() {
+  if (!fmenuOpen) return;
+  fmenuOpen = false;
+  fmenu.classList.remove('is-open');
+  btnAttach.classList.remove('is-active');
+  btnAttach.setAttribute('aria-expanded', 'false');
+  // Hide only once the fly-back has finished, matching the app's unmount delay.
+  fmenuCloseTimer = setTimeout(() => {
+    fmenu.hidden = true;
+    $('#composer').classList.remove('is-menu-open');
+  }, 420);
+}
+
+btnAttach.setAttribute('aria-haspopup', 'true');
+btnAttach.setAttribute('aria-expanded', 'false');
+
+btnAttach.addEventListener('click', () => {
+  if (fmenuOpen) closeFloatingMenu();
+  else openFloatingMenu();
+});
+
+$('#fmenu-backdrop').addEventListener('click', closeFloatingMenu);
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && fmenuOpen) closeFloatingMenu();
+});
+
+window.addEventListener('resize', () => {
+  if (fmenuOpen) positionFloatingMenu();
+});
+
+const FMENU_ACTIONS = {
+  gallery: () => $('#file-input').click(),
+  camera: () => $('#camera-input').click(),
+  location: () => toast('Sharing your location is only available in the app.'),
+  contact: () => toast('Sharing a contact is only available in the app.'),
+  music: () => toast('Sending music is only available in the app.'),
+};
+
+fmenuPanel.addEventListener('click', (event) => {
+  const item = event.target.closest('.fmenu-item');
+  if (!item) return;
+  const run = FMENU_ACTIONS[item.dataset.action];
+  closeFloatingMenu();
+  // Let the menu fly back before the picker steals focus, as the app does.
+  if (run) setTimeout(run, 260);
+});
+
+$('#camera-input').addEventListener('change', async (event) => {
+  const files = Array.from(event.target.files ?? []);
+  event.target.value = '';
+  for (const file of files) await sendAttachment(file);
+});
 
 $('#file-input').addEventListener('change', async (event) => {
   const files = Array.from(event.target.files ?? []);

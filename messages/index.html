@@ -153,13 +153,24 @@
             </svg>
           </button>
 
-          <img class="chat-avatar" id="chat-avatar" src="" alt="" width="46" height="46">
+          <button class="chat-peek-trigger" type="button" id="btn-peek" aria-haspopup="dialog"
+            aria-expanded="false" aria-label="View profile">
+            <img class="chat-avatar" id="chat-avatar" src="" alt="" width="46" height="46">
 
-          <div class="chat-identity">
-            <p class="chat-name" id="chat-name">…</p>
-            <p class="chat-meta" id="chat-meta"></p>
-          </div>
+            <div class="chat-identity">
+              <p class="chat-name" id="chat-name">…</p>
+              <p class="chat-meta" id="chat-meta"></p>
+            </div>
+          </button>
         </header>
+
+        <!-- Profile peek — anchored under the header avatar/name. -->
+        <div class="peek" id="peek" hidden role="dialog" aria-label="Profile" aria-modal="false">
+          <img class="peek-avatar" id="peek-avatar" src="" alt="" width="72" height="72">
+          <p class="peek-name" id="peek-name"></p>
+          <p class="peek-username" id="peek-username"></p>
+          <span class="peek-tier" id="peek-tier"></span>
+        </div>
 
         <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Messages"></div>
 
@@ -216,9 +227,77 @@
           </div>
 
           <input type="file" id="file-input" accept="image/*,video/*" multiple hidden>
+          <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
         </div>
       </div>
     </section>
+  </div>
+
+  <!--
+    Attachment menu — desktop port of the app's chat FloatingMenu.
+    Items fly out from the plus button, staggered bottom → top, blurring sharp
+    as they land. Geometry is the app's, scaled down to fit a desktop composer.
+  -->
+  <div class="fmenu" id="fmenu" hidden>
+    <div class="fmenu-backdrop" id="fmenu-backdrop"></div>
+    <div class="fmenu-panel" id="fmenu-panel" role="menu" aria-label="Attachment options">
+      <button class="fmenu-item" type="button" role="menuitem" data-action="gallery" style="--i:0">
+        <span class="fmenu-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="9" cy="9" r="2" />
+            <path d="m21 15-4.35-4.35a2 2 0 0 0-2.83 0L3 21" />
+          </svg>
+        </span>
+        <span class="fmenu-label">Gallery</span>
+      </button>
+
+      <button class="fmenu-item" type="button" role="menuitem" data-action="camera" style="--i:1">
+        <span class="fmenu-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+            <circle cx="12" cy="13" r="3.5" />
+          </svg>
+        </span>
+        <span class="fmenu-label">Camera</span>
+      </button>
+
+      <button class="fmenu-item" type="button" role="menuitem" data-action="location" style="--i:2">
+        <span class="fmenu-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </span>
+        <span class="fmenu-label">Location</span>
+      </button>
+
+      <button class="fmenu-item" type="button" role="menuitem" data-action="contact" style="--i:3">
+        <span class="fmenu-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </span>
+        <span class="fmenu-label">Contact</span>
+      </button>
+
+      <button class="fmenu-item" type="button" role="menuitem" data-action="music" style="--i:4">
+        <span class="fmenu-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13" />
+            <circle cx="6" cy="18" r="3" />
+            <circle cx="18" cy="16" r="3" />
+          </svg>
+        </span>
+        <span class="fmenu-label">Music</span>
+      </button>
+    </div>
   </div>
 
   <!-- Full-size image / video viewer -->

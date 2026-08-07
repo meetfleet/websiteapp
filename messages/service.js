@@ -172,12 +172,27 @@ export async function insertMessage(conversationId, senderId, text, options = {}
   return mapMessage(data);
 }
 
+/**
+ * Resolve a users row to its subscription tier.
+ *
+ * Ported from the app's services/entitlements.ts — keep the two in step. A
+ * lapsed subscriber is `free` whatever plan string they still carry; a premium
+ * user on an unrecognised plan falls back to `basics` rather than being shown
+ * as free while they are still paying.
+ */
+export function resolveTier(user) {
+  if (!user?.isPremium) return 'free';
+  const plan = user.subscriptionPlan;
+  if (plan === 'basics' || plan === 'gold' || plan === 'onyx') return plan;
+  return 'basics';
+}
+
 /** Profile fields the inbox and chat header need. Never throws on privacy. */
 export async function fetchProfile(userId) {
   try {
     const { data, error } = await supabase
       .from('users')
-      .select('id, username, name, emoji, "avatarUrl", "dicebearAvatar", "isPremium"')
+      .select('id, username, name, emoji, "avatarUrl", "dicebearAvatar", "isPremium", "subscriptionPlan"')
       .eq('id', userId)
       .single();
     if (error || !data) return null;
@@ -269,8 +284,13 @@ class MessageStore {
         name: partner?.username || 'Chat',
         displayName: partner?.name || partner?.username || 'Chat',
         avatarUrl: partner?.avatarUrl || partner?.dicebearAvatar || null,
+        // Kept apart from avatarUrl: the profile card always shows the generated
+        // avatar, even when the user has uploaded a photo over it.
+        dicebearAvatar: partner?.dicebearAvatar || null,
+        username: partner?.username || null,
         emoji: partner?.emoji || null,
         isPremium: Boolean(partner?.isPremium),
+        subscriptionPlan: partner?.subscriptionPlan || null,
       };
     }));
 
