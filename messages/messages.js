@@ -1307,6 +1307,70 @@ function applyIdentity(user) {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   Mobile Viewport & Keyboard Handling
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function setupMobileViewportHandler() {
+  if (!window.visualViewport) return;
+
+  function updateViewport() {
+    if (window.innerWidth > 820) {
+      document.documentElement.style.removeProperty('--vv-height');
+      document.body.classList.remove('is-keyboard-open');
+      return;
+    }
+
+    const vvHeight = window.visualViewport.height;
+    document.documentElement.style.setProperty('--vv-height', `${vvHeight}px`);
+
+    const isKeyboardOpen = window.innerHeight - vvHeight > 150;
+    document.body.classList.toggle('is-keyboard-open', isKeyboardOpen);
+
+    if (window.scrollY !== 0 || window.scrollX !== 0) {
+      window.scrollTo(0, 0);
+    }
+
+    const activeEl = document.activeElement;
+    if (activeEl && activeEl.id === 'composer-input') {
+      const thread = $('#thread');
+      if (thread) scrollToBottom(thread, false);
+    }
+  }
+
+  window.visualViewport.addEventListener('resize', updateViewport);
+  window.visualViewport.addEventListener('scroll', updateViewport);
+  window.addEventListener('resize', updateViewport);
+  window.addEventListener('scroll', () => {
+    if (window.innerWidth <= 820 && (window.scrollY !== 0 || window.scrollX !== 0)) {
+      window.scrollTo(0, 0);
+    }
+  });
+
+  const inputEl = $('#composer-input');
+  if (inputEl) {
+    inputEl.addEventListener('focus', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        updateViewport();
+        const thread = $('#thread');
+        if (thread) scrollToBottom(thread, true);
+      }, 100);
+    });
+
+    inputEl.addEventListener('blur', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        updateViewport();
+      }, 100);
+    });
+  }
+
+  updateViewport();
+}
+
+setupMobileViewportHandler();
+
 // A signed-out tab left open should not keep polling a dead session.
 window.addEventListener('beforeunload', () => unsubscribeFromMessages());
 
