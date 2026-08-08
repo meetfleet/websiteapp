@@ -181,6 +181,7 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
     const isMessageShowing = () => bottom.classList.contains('show-message');
 
     bottom.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.join-btn')) return;
       e.stopPropagation(); // VERY IMPORTANT: Prevents main carousel from sliding!
       isInnerDragging = true;
       innerStartX = e.clientX;
