@@ -43,14 +43,23 @@
   box-sizing: border-box;
 }
 
+html,
 body {
-  width: 100vw;
-  height: 100dvh;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   overflow: hidden;
+  position: fixed;
+  inset: 0;
   font-family: 'Aeonik', system-ui, sans-serif;
   color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  touch-action: none;
 }
 
 /* ── BACKGROUND ── */
@@ -211,18 +220,21 @@ main {
 
 .hero-text-slider {
   display: grid;
+  position: relative;
 }
 .hero-text-slide {
   grid-area: 1 / 1;
   opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  visibility: hidden;
   pointer-events: none;
+  transform: translateY(15px);
+  transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
 }
 .hero-text-slide.active {
   opacity: 1;
-  transform: translateY(0);
+  visibility: visible;
   pointer-events: auto;
+  transform: translateY(0);
 }
 
 .hero-text-slide h1 {
@@ -894,16 +906,16 @@ body.hide-floats .float-action {
 
   /* Header */
   header {
-    top: 20px;
-    left: 36px;
-    right: 36px;
+    top: calc(16px + env(safe-area-inset-top));
+    left: clamp(16px, 5vw, 36px);
+    right: clamp(16px, 5vw, 36px);
   }
 
   /* Hero — position neatly above activity cards */
   .hero {
-    left: 36px;
-    right: 36px;
-    top: clamp(80px, 12vh, 105px);
+    left: clamp(16px, 5vw, 36px);
+    right: clamp(16px, 5vw, 36px);
+    top: calc(clamp(75px, 13vh, 100px) + env(safe-area-inset-top));
     width: auto;
     max-width: none;
     z-index: 30;
@@ -1038,7 +1050,7 @@ body.hide-floats .float-action {
 /* ── SITE FOOTER ── */
 .site-footer {
   position: fixed;
-  bottom: 28px;
+  bottom: calc(28px + env(safe-area-inset-bottom));
   left: 7%;
   z-index: 10;
   display: flex;
@@ -1050,19 +1062,21 @@ body.hide-floats .float-action {
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.1px;
-  color: rgba(255, 255, 255, 0.45);
-  text-decoration: none;
+  color: rgba(255, 255, 255, 0.45) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.45);
+  text-decoration: none !important;
   transition: color 0.15s ease;
   white-space: nowrap;
 }
 
 .site-footer a:hover {
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.75) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.75);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px), (pointer: coarse) {
   .site-footer {
-    display: none;
+    display: none !important;
   }
 }
 

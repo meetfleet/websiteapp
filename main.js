@@ -114,6 +114,11 @@ document.querySelectorAll('[data-haptic]').forEach(el => {
 
   startAutoPlay();
 
+  window.addEventListener('resize', () => {
+    updateCarousel(0, false);
+  });
+
+
   /* ── SWIPE LOGIC ── */
   let startX = 0;
   let startY = 0;
