@@ -726,3 +726,116 @@ ol li {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.45);
 }
+
+/* ── DATA DELETION REQUEST ── */
+.delete-notice {
+  background: #f7f7f5;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 32px;
+}
+
+.delete-notice-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.75);
+  letter-spacing: -0.1px;
+  margin: 0 0 8px;
+}
+
+.delete-notice p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(0,0,0,0.55);
+  letter-spacing: -0.1px;
+  margin: 0 0 10px;
+}
+
+.delete-notice p:last-child { margin-bottom: 0; }
+
+.delete-notice ul {
+  margin: 0 0 10px;
+  padding-left: 18px;
+}
+
+.delete-notice li {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(0,0,0,0.55);
+  letter-spacing: -0.1px;
+  margin-bottom: 4px;
+}
+
+.delete-notice a {
+  color: rgba(0,0,0,0.7);
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+  text-decoration: none;
+}
+
+.delete-notice a:hover { color: #000; }
+
+.form-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(0,0,0,0.38);
+  letter-spacing: -0.1px;
+  margin: 2px 0 0;
+}
+
+.consent-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  background: #f7f7f5;
+  border: 1px solid rgba(0,0,0,0.09);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.consent-group.field-error {
+  border-color: rgba(210, 50, 40, 0.4);
+  background: rgba(210, 50, 40, 0.03);
+}
+
+.consent-group input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  border: 1.5px solid rgba(0,0,0,0.25);
+  border-radius: 5px;
+  background: #fff;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.consent-group input[type="checkbox"]:checked {
+  background: #0033ff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center;
+  border-color: #0033ff;
+}
+
+.consent-group input[type="checkbox"]:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 51, 255, 0.15);
+}
+
+.consent-group label {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(0,0,0,0.62);
+  letter-spacing: -0.1px;
+  cursor: pointer;
+}
+
+.consent-error-msg {
+  font-size: 12px;
+  color: rgba(200, 45, 35, 0.78);
+  margin: -14px 0 20px;
+  letter-spacing: -0.1px;
+  line-height: 1.4;
+}

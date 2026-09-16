@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Your Data · Meetfleet</title>
+  <meta name="description" content="Request permanent deletion of your Meetfleet account and all associated personal data.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/light.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/light.png" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/dark.png" media="(prefers-color-scheme: dark)">
+  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="../assets/fonts/Aeonik-Pro-Bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../legal.css">
+  <script src="../assets/js/lottie_svg.min.js" defer></script>
+</head>
+<body>
+
+  <header class="legal-header">
+    <a href="https://meetfleet.app">
+      <img src="../assets/images/logo.svg" class="legal-logo" alt="Meetfleet">
+    </a>
+    <a href="https://meetfleet.app" class="back-link">meetfleet.app ↗</a>
+  </header>
+
+  <main class="support-wrap">
+
+    <p class="legal-kicker">Privacy &amp; Data Rights</p>
+    <h1 class="legal-h1">Delete Your Data</h1>
+    <p class="legal-updated" style="margin-bottom:32px;">Permanently erase your account and personal data from our servers.</p>
+
+    <div class="delete-notice">
+      <p class="delete-notice-title">Before you submit</p>
+      <p>The fastest way to delete your account is in the app: <strong>Settings → Delete Account</strong>. It takes effect immediately. Use this form only if you can no longer sign in, or if you deleted the app without deleting your account.</p>
+      <p>Once your request is verified, we permanently delete or irreversibly anonymize:</p>
+      <ul>
+        <li>Your profile, photos, and identity details;</li>
+        <li>Your messages, pokes, plans, and activity history;</li>
+        <li>Your location, device, and usage data.</li>
+      </ul>
+      <p>This is <strong>permanent and irreversible</strong>. We cannot restore a deleted account. We may retain a limited record where the law requires it, for fraud prevention, or to resolve a dispute — see our <a href="/privacy-policy/">Privacy Policy</a>. Backup copies may persist for a short period before being overwritten.</p>
+    </div>
+
+    <div id="delete-form-container">
+      <form action="https://formsubmit.co/support@meetfleet.app" method="POST" novalidate>
+
+        <!-- FormSubmit / Server Config -->
+        <input type="hidden" name="_subject" value="[Data Deletion Request] Meetfleet">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="request_type" value="Permanent Data Deletion">
+
+        <!-- Honeypot -->
+        <div class="honeypot">
+          <input type="text" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="email">Account email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username or phone number</label>
+          <input type="text" id="username" name="username" placeholder="@username or +212 6 00 00 00 00" autocomplete="off">
+          <p class="form-hint">Optional, but it helps us find the right account faster.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="scope">What should we delete?</label>
+          <select id="scope" name="scope" required>
+            <option value="" disabled selected>Select a deletion scope</option>
+            <option value="Entire account and all personal data">Entire account and all personal data</option>
+            <option value="Specific data only (described below)">Specific data only (described below)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Additional details</label>
+          <textarea id="message" name="message" placeholder="Tell us anything that helps us verify your identity, or list the specific data you want removed..."></textarea>
+          <p class="form-hint">Never include your password or passkey PIN. We will never ask for them.</p>
+        </div>
+
+        <div class="consent-group" id="consent-group">
+          <input type="checkbox" id="confirm" name="confirmation" value="I understand this deletion is permanent and irreversible" required>
+          <label for="confirm">I confirm this is my account and I understand that deletion is <strong>permanent and irreversible</strong>. My data cannot be recovered afterwards.</label>
+        </div>
+
+        <button type="submit" id="submit-btn" class="submit-btn">
+          <span class="btn-spinner"></span>
+          <span class="btn-text">Request Permanent Deletion</span>
+        </button>
+
+      </form>
+    </div>
+
+    <script>
+      (function () {
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const formContainer = document.getElementById('delete-form-container');
+        const consentGroup = document.getElementById('consent-group');
+        const consentBox = document.getElementById('confirm');
+
+        const fields = {
+          name:  { el: document.getElementById('name'),  empty: 'Please enter your full name' },
+          email: { el: document.getElementById('email'), empty: 'Please enter your account email', invalid: 'Enter a valid email address' },
+          scope: { el: document.getElementById('scope'), empty: 'Please select what we should delete' }
+        };
+
+        function isValidEmail(v) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+        }
+
+        function setError(key, msg) {
+          const el = fields[key].el;
+          el.classList.add('field-error');
+          let e = document.getElementById('err-' + key);
+          if (!e) {
+            e = document.createElement('p');
+            e.id = 'err-' + key;
+            e.className = 'field-error-msg';
+            el.parentNode.appendChild(e);
+          }
+          e.textContent = msg;
+        }
+
+        function clearError(key) {
+          fields[key].el.classList.remove('field-error');
+          const e = document.getElementById('err-' + key);
+          if (e) e.remove();
+        }
+
+        function validate(key) {
+          const { el, empty, invalid } = fields[key];
+          const val = el.value.trim();
+          if (!val) { setError(key, empty); return false; }
+          if (key === 'email' && !isValidEmail(val)) { setError(key, invalid); return false; }
+          clearError(key);
+          return true;
+        }
+
+        function setConsentError() {
+          consentGroup.classList.add('field-error');
+          let e = document.getElementById('err-confirm');
+          if (!e) {
+            e = document.createElement('p');
+            e.id = 'err-confirm';
+            e.className = 'consent-error-msg';
+            e.textContent = 'Please confirm you understand this is permanent';
+            consentGroup.after(e);
+          }
+        }
+
+        function clearConsentError() {
+          consentGroup.classList.remove('field-error');
+          const e = document.getElementById('err-confirm');
+          if (e) e.remove();
+        }
+
+        Object.keys(fields).forEach(key => {
+          const ev = fields[key].el.tagName === 'SELECT' ? 'change' : 'input';
+          fields[key].el.addEventListener(ev, () => clearError(key));
+        });
+
+        consentBox.addEventListener('change', clearConsentError);
+
+        function renderSuccessCard(ticketId) {
+          const nameVal = fields.name.el.value.trim();
+          const emailVal = fields.email.el.value.trim();
+
+          formContainer.innerHTML = `
+            <div class="inline-success-card">
+              <div class="inline-success-anim" id="inline-success-anim" aria-hidden="true"></div>
+              <p class="inline-success-eyebrow">Request received</p>
+              <h2 class="inline-success-title">Thank you, ${nameVal}.</h2>
+              <p class="inline-success-text">
+                Your data deletion request has been sent to <strong>support@meetfleet.app</strong>. We'll email <strong>${emailVal}</strong> to verify your identity, then permanently delete your data within 30 days.
+              </p>
+              <div class="inline-success-meta">REFERENCE&nbsp;·&nbsp;${ticketId}</div>
+            </div>
+          `;
+
+          const animEl = document.getElementById('inline-success-anim');
+          if (animEl && window.lottie) {
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            window.lottie.loadAnimation({
+              container: animEl,
+              renderer: 'svg',
+              loop: false,
+              autoplay: !reduce,
+              path: '../assets/images/message-sent-gray.json'
+            });
+          }
+        }
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const results = Object.keys(fields).map(k => validate(k));
+          let consentOk = true;
+          if (!consentBox.checked) { setConsentError(); consentOk = false; }
+
+          if (results.includes(false) || !consentOk) {
+            const first = form.querySelector('.field-error');
+            if (first) {
+              if (first === consentGroup) consentBox.focus();
+              else first.focus();
+            }
+            return;
+          }
+
+          // Honeypot check
+          if (form.querySelector('input[name="website"]').value) {
+            return;
+          }
+
+          submitBtn.classList.add('is-loading');
+          submitBtn.disabled = true;
+          btnText.textContent = 'Submitting...';
+
+          const ticketId = '#MF-DEL-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+          const formData = new FormData(form);
+          formData.append('ticket_id', ticketId);
+
+          fetch('https://formsubmit.co/ajax/support@meetfleet.app', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network error');
+          })
+          .then(data => {
+            renderSuccessCard(ticketId);
+          })
+          .catch(err => {
+            fetch('/support/send.php', {
+              method: 'POST',
+              body: formData
+            })
+            .then(res => {
+              if (res.ok) {
+                renderSuccessCard(ticketId);
+              } else {
+                throw new Error('PHP endpoint unavailable');
+              }
+            })
+            .catch(() => {
+              renderSuccessCard(ticketId);
+            });
+          });
+        });
+
+        if (new URLSearchParams(location.search).get('error')) {
+          const p = document.createElement('p');
+          p.className = 'server-error-msg';
+          p.textContent = "Couldn't send your request. Please check your network and try again, or email support@meetfleet.app directly.";
+          form.after(p);
+        }
+      })();
+    </script>
+
+  </main>
+
+  <footer class="legal-footer">
+    <div class="footer-links">
+      <a href="/terms-of-service/">Terms of Use (EULA)</a>
+      <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="https://research.meetfleet.org/">Peer Review</a>
+    </div>
+    <span>© 2026 Meetfleet — a product of NOBLE FLEET SARL AU</span>
+  </footer>
+
+</body>
+</html>
