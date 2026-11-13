@@ -1,0 +1,11 @@
+name = "meetfleet-forms"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://meetfleet.app"
+TURNSTILE_HOSTNAMES = "meetfleet.app"
+
+# Secrets, set once with `npx wrangler secret put <NAME>`:
+#   TURNSTILE_SECRET_KEY  Turnstile widget secret key
+#   FORMSUBMIT_ENDPOINT   https://formsubmit.co/ajax/<random alias FormSubmit emailed you>

@@ -42,17 +42,17 @@
     </div>
 
     <div id="delete-form-container">
-      <form action="https://formsubmit.co/support@meetfleet.app" method="POST" novalidate>
+      <noscript>
+        <p class="server-error-msg">This form needs JavaScript. You can also email <strong>support@meetfleet.app</strong> directly from your account email.</p>
+      </noscript>
 
-        <!-- FormSubmit / Server Config -->
-        <input type="hidden" name="_subject" value="[Data Deletion Request] Meetfleet">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="request_type" value="Permanent Data Deletion">
+      <!-- Submits to the Cloudflare Worker in /_worker, which validates, verifies Turnstile, and forwards to FormSubmit. -->
+      <form action="https://meetfleet-forms.meetfleet-forms.workers.dev/delete-account" method="POST" novalidate>
 
-        <!-- Honeypot -->
-        <div class="honeypot">
-          <input type="text" name="website" tabindex="-1" autocomplete="off">
+        <!-- Honeypot: hidden from people; the Worker silently drops any submission that fills it. -->
+        <div class="honeypot" aria-hidden="true">
+          <label for="company_url">Company website</label>
+          <input type="text" id="company_url" name="company_url" tabindex="-1" autocomplete="off">
         </div>
 
         <div class="form-row">
@@ -74,6 +74,7 @@
 
         <div class="form-group">
           <label for="scope">What should we delete?</label>
+          <!-- Values must match DELETION_SCOPES in _worker/src/index.js; anything else is rejected. -->
           <select id="scope" name="scope" required>
             <option value="" disabled selected>Select a deletion scope</option>
             <option value="Entire account and all personal data">Entire account and all personal data</option>
@@ -92,6 +93,9 @@
           <label for="confirm">I confirm this is my account and I understand that deletion is <strong>permanent and irreversible</strong>. My data cannot be recovered afterwards.</label>
         </div>
 
+        <!-- Cloudflare Turnstile. Stays invisible unless Cloudflare needs the visitor to click. -->
+        <div class="turnstile-slot" id="turnstile-slot" data-sitekey="0x4AAAAAAGALhecK9T4AfmLn"></div>
+
         <button type="submit" id="submit-btn" class="submit-btn">
           <span class="btn-spinner"></span>
           <span class="btn-text">Request Permanent Deletion</span>
@@ -108,6 +112,50 @@
         const formContainer = document.getElementById('delete-form-container');
         const consentGroup = document.getElementById('consent-group');
         const consentBox = document.getElementById('confirm');
+        const turnstileSlot = document.getElementById('turnstile-slot');
+        let turnstileId;
+
+        window.onTurnstileLoad = function () {
+          turnstileId = window.turnstile.render(turnstileSlot, {
+            sitekey: turnstileSlot.dataset.sitekey,
+            action: 'delete-account',
+            appearance: 'interaction-only',
+            theme: 'light',
+            'before-interactive-callback': () => turnstileSlot.classList.add('is-visible'),
+            'after-interactive-callback': () => turnstileSlot.classList.remove('is-visible')
+          });
+        };
+
+        function turnstileToken() {
+          return window.turnstile && turnstileId !== undefined ? window.turnstile.getResponse(turnstileId) : '';
+        }
+
+        function resetTurnstile() {
+          if (window.turnstile && turnstileId !== undefined) window.turnstile.reset(turnstileId);
+        }
+
+        function showServerError(msg) {
+          let p = document.getElementById('server-error');
+          if (!p) {
+            p = document.createElement('p');
+            p.id = 'server-error';
+            p.className = 'server-error-msg';
+            p.setAttribute('role', 'alert');
+            form.after(p);
+          }
+          p.textContent = msg;
+        }
+
+        function clearServerError() {
+          const p = document.getElementById('server-error');
+          if (p) p.remove();
+        }
+
+        function setLoading(on) {
+          submitBtn.classList.toggle('is-loading', on);
+          submitBtn.disabled = on;
+          btnText.textContent = on ? 'Submitting...' : 'Request Permanent Deletion';
+        }
 
         const fields = {
           name:  { el: document.getElementById('name'),  empty: 'Please enter your full name' },
@@ -203,6 +251,7 @@
 
         form.addEventListener('submit', function (e) {
           e.preventDefault();
+          clearServerError();
 
           const results = Object.keys(fields).map(k => validate(k));
           let consentOk = true;
@@ -217,61 +266,35 @@
             return;
           }
 
-          // Honeypot check
-          if (form.querySelector('input[name="website"]').value) {
+          if (!turnstileToken()) {
+            showServerError('Still running a quick security check. Wait a moment and try again. If this keeps happening, email support@meetfleet.app directly.');
             return;
           }
 
-          submitBtn.classList.add('is-loading');
-          submitBtn.disabled = true;
-          btnText.textContent = 'Submitting...';
+          setLoading(true);
 
-          const ticketId = '#MF-DEL-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-          const formData = new FormData(form);
-          formData.append('ticket_id', ticketId);
-
-          fetch('https://formsubmit.co/ajax/support@meetfleet.app', {
+          fetch(form.action, {
             method: 'POST',
-            body: formData,
-            headers: {
-              'Accept': 'application/json'
-            }
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
           })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-            throw new Error('Network error');
+          .then(res => res.json().catch(() => ({})).then(data => ({ ok: res.ok, data })))
+          .then(({ ok, data }) => {
+            if (ok && data.success && data.ticket) renderSuccessCard(data.ticket);
+            else fail(data.error);
           })
-          .then(data => {
-            renderSuccessCard(ticketId);
-          })
-          .catch(err => {
-            fetch('/support/send.php', {
-              method: 'POST',
-              body: formData
-            })
-            .then(res => {
-              if (res.ok) {
-                renderSuccessCard(ticketId);
-              } else {
-                throw new Error('PHP endpoint unavailable');
-              }
-            })
-            .catch(() => {
-              renderSuccessCard(ticketId);
-            });
-          });
+          .catch(() => fail());
         });
 
-        if (new URLSearchParams(location.search).get('error')) {
-          const p = document.createElement('p');
-          p.className = 'server-error-msg';
-          p.textContent = "Couldn't send your request. Please check your network and try again, or email support@meetfleet.app directly.";
-          form.after(p);
+        // Turnstile tokens are single-use, so a failed attempt needs a fresh one.
+        function fail(msg) {
+          setLoading(false);
+          resetTurnstile();
+          showServerError(msg || "Couldn't send your request. Please check your network and try again, or email support@meetfleet.app directly.");
         }
       })();
     </script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad" async defer></script>
 
   </main>
 
