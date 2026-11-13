@@ -42,8 +42,8 @@ curl -sI    https://chat.meetfleet.app | head   # empty output = SSL not enabled
 ## Form handler (Cloudflare Worker)
 
 The data deletion form (`/delete-account/`) posts to a Cloudflare Worker in
-`_worker/`, not to FormSubmit directly. Pages can't run server code, so the
-Worker does the checks a backend would:
+`_worker/` (live at `https://meetfleet-forms.meetfleet-forms.workers.dev`).
+Pages can't run server code, so the Worker does the checks a backend would:
 
 - drops submissions that fill the hidden `company_url` honeypot, while still
   answering with a normal success response;
@@ -53,28 +53,33 @@ Worker does the checks a backend would:
   `<option>` values in `delete-account/index.html`;
 - verifies the Cloudflare Turnstile token with Cloudflare, so a bot that
   POSTs straight to the Worker is turned away;
-- forwards only the known fields to FormSubmit, which sends the email.
+- emails the request as plain text to `support@meetfleet.app` through
+  [Resend](https://resend.com), with Reply-To set to the requester.
+
+It used to forward to FormSubmit, but FormSubmit answered every request from
+the Worker with 429 "Rate limit exceeded".
 
 `_worker/` starts with an underscore, so Jekyll (which GitHub Pages runs) leaves
 it out of the published site. Don't add a `.nojekyll` file, or the folder
 becomes public.
 
-### First-time setup
+### Setup
 
 1. **Turnstile:** Cloudflare dashboard → Turnstile → Add widget. Hostname
    `meetfleet.app`, mode **Managed**. Most visitors never see it, and the rare
    suspicious one gets a single checkbox. Keep the site key and the secret key.
-2. **FormSubmit alias:** use the random-string endpoint FormSubmit emailed when
-   the form was first activated, as `https://formsubmit.co/ajax/<alias>`. The
-   plain `support@meetfleet.app` address also works, but bots already know it.
-3. **Deploy the Worker:**
+2. **Resend:** sign up at resend.com **with `support@meetfleet.app`**. Until
+   meetfleet.app is verified in Resend, mail is sent from
+   `onboarding@resend.dev`, and Resend only delivers that to the account's own
+   address. Create an API key with sending access. Free plan: 100 emails/day.
+3. **Deploy the Worker and set its secrets:**
 
    ```sh
    cd _worker
    npx wrangler login
    npx wrangler deploy        # prints https://meetfleet-forms.<you>.workers.dev
    npx wrangler secret put TURNSTILE_SECRET_KEY
-   npx wrangler secret put FORMSUBMIT_ENDPOINT
+   npx wrangler secret put RESEND_API_KEY
    ```
 
    Until both secrets are set, the Worker refuses every submission. It never
@@ -83,9 +88,15 @@ becomes public.
 4. **Point the page at it:** in `delete-account/index.html`, set the form
    `action` to `https://meetfleet-forms.<you>.workers.dev/delete-account` and
    `data-sitekey` on `#turnstile-slot` to the Turnstile site key.
-5. Push the site **after** the Worker is live, then send one real request. If
-   the page shows "Could not send your request.", look in the support inbox for
-   a FormSubmit activation email and confirm it.
+5. Push the site, then send one real request and check the support inbox.
+
+If a submission fails, Workers → meetfleet-forms → Logs (or
+`npx wrangler tail`) shows the reason Resend gave.
+
+**Sending from your own domain (optional):** add meetfleet.app under Resend →
+Domains, create the DNS records it lists in Namecheap, and once it shows
+Verified, change `MAIL_FROM` in `_worker/wrangler.toml` to an address on
+meetfleet.app (e.g. `Meetfleet Forms <forms@meetfleet.app>`) and redeploy.
 
 Tests: `cd _worker && npm test` (Node 18+, no install needed).
 

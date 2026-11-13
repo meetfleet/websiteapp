@@ -46,7 +46,7 @@
         <p class="server-error-msg">This form needs JavaScript. You can also email <strong>support@meetfleet.app</strong> directly from your account email.</p>
       </noscript>
 
-      <!-- Submits to the Cloudflare Worker in /_worker, which validates, verifies Turnstile, and forwards to FormSubmit. -->
+      <!-- Submits to the Cloudflare Worker in /_worker, which validates, verifies Turnstile, and emails the request to support. -->
       <form action="https://meetfleet-forms.meetfleet-forms.workers.dev/delete-account" method="POST" novalidate>
 
         <!-- Honeypot: hidden from people; the Worker silently drops any submission that fills it. -->
@@ -266,25 +266,39 @@
             return;
           }
 
-          if (!turnstileToken()) {
-            showServerError('Still running a quick security check. Wait a moment and try again. If this keeps happening, email support@meetfleet.app directly.');
-            return;
-          }
-
           setLoading(true);
 
-          fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { 'Accept': 'application/json' }
-          })
-          .then(res => res.json().catch(() => ({})).then(data => ({ ok: res.ok, data })))
-          .then(({ ok, data }) => {
-            if (ok && data.success && data.ticket) renderSuccessCard(data.ticket);
-            else fail(data.error);
+          // Turnstile may still be issuing a token (on load, or after a failed attempt).
+          waitForToken(30000).then(token => {
+            if (!token) {
+              setLoading(false);
+              showServerError("We couldn't complete the security check. Reload the page and try again, or email support@meetfleet.app directly.");
+              return;
+            }
+            return fetch(form.action, {
+              method: 'POST',
+              body: new FormData(form),
+              headers: { 'Accept': 'application/json' }
+            })
+            .then(res => res.json().catch(() => ({})).then(data => ({ ok: res.ok, data })))
+            .then(({ ok, data }) => {
+              if (ok && data.success && data.ticket) renderSuccessCard(data.ticket);
+              else fail(data.error);
+            });
           })
           .catch(() => fail());
         });
+
+        function waitForToken(ms) {
+          const start = Date.now();
+          return new Promise(resolve => {
+            (function check() {
+              const token = turnstileToken();
+              if (token || Date.now() - start > ms) resolve(token);
+              else setTimeout(check, 250);
+            })();
+          });
+        }
 
         // Turnstile tokens are single-use, so a failed attempt needs a fresh one.
         function fail(msg) {

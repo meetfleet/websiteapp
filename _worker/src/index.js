@@ -1,12 +1,15 @@
 // Form handler for meetfleet.app/delete-account/.
 //
-// GitHub Pages can't run server code, so this Worker sits between the page
-// and FormSubmit. It drops honeypot hits, rejects values the form can't
-// produce, verifies the Turnstile token, and only then forwards a whitelisted
-// set of fields to FormSubmit. Bots that POST here directly fail Turnstile.
+// GitHub Pages can't run server code, so the page posts here. The Worker
+// drops honeypot hits, rejects values the form can't produce, verifies the
+// Turnstile token, and only then emails the request to support via Resend.
+// Bots that POST here directly fail Turnstile.
 //
-// Secrets (wrangler secret put): TURNSTILE_SECRET_KEY, FORMSUBMIT_ENDPOINT
-// Vars (wrangler.toml):           ALLOWED_ORIGINS, TURNSTILE_HOSTNAMES
+// (It used to forward to FormSubmit, which answered every request from the
+// Worker with 429 "Rate limit exceeded".)
+//
+// Secrets (wrangler secret put): TURNSTILE_SECRET_KEY, RESEND_API_KEY
+// Vars (wrangler.toml):           ALLOWED_ORIGINS, TURNSTILE_HOSTNAMES, MAIL_FROM, MAIL_TO
 
 // Must match the <option> values in delete-account/index.html exactly.
 const DELETION_SCOPES = new Set([
@@ -66,7 +69,7 @@ export default {
       return json({ error: 'Verification failed. Please try again.', retryTurnstile: true }, 403, cors);
     }
 
-    const sent = await forward(data, ticket, env);
+    const sent = await sendEmail(data, ticket, env);
     if (!sent) return json({ error: 'Could not send your request.' }, 502, cors);
 
     return json({ success: true, ticket }, 200, cors);
@@ -104,31 +107,43 @@ async function verifyTurnstile(token, ip, env) {
   }
 }
 
-async function forward(d, ticket, env) {
-  const body = new FormData();
-  body.append('_subject', `[Data Deletion Request ${ticket}] Meetfleet`);
-  body.append('_template', 'table');
-  body.append('_captcha', 'false');
-  body.append('request_type', 'Permanent Data Deletion');
-  body.append('ticket_id', ticket);
-  for (const [key, value] of Object.entries(d)) body.append(key, value);
+async function sendEmail(d, ticket, env) {
+  // Plain text only, so nothing the requester typed is ever rendered as HTML.
+  const text = [
+    `Ticket:          ${ticket}`,
+    'Request:         Permanent Data Deletion',
+    `Name:            ${d.name}`,
+    `Account email:   ${d.email}`,
+    `Username/phone:  ${d.username || '-'}`,
+    `Scope:           ${d.scope}`,
+    `Confirmation:    ${d.confirmation}`,
+    '',
+    'Additional details:',
+    d.message || '-',
+    '',
+    'Reply to this email to reach the requester.',
+  ].join('\n');
 
   try {
-    // FormSubmit rejects requests with no Referer, so present the real page.
-    const res = await fetch(env.FORMSUBMIT_ENDPOINT, {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      body,
       headers: {
-        Accept: 'application/json',
-        Referer: 'https://meetfleet.app/delete-account/',
-        Origin: 'https://meetfleet.app',
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        from: env.MAIL_FROM,
+        to: [env.MAIL_TO],
+        reply_to: d.email,
+        subject: `[Data Deletion Request ${ticket}] Meetfleet`,
+        text,
+      }),
     });
-    if (!res.ok) return false;
-    // FormSubmit can answer 200 with success "false" (e.g. activation pending).
-    const out = await res.json();
-    return out.success === true || out.success === 'true';
-  } catch {
+    if (res.ok) return true;
+    console.error('Resend rejected the email', res.status, (await res.text()).slice(0, 500));
+    return false;
+  } catch (err) {
+    console.error('Resend request failed', String(err));
     return false;
   }
 }

@@ -6,7 +6,9 @@ const ENV = {
   ALLOWED_ORIGINS: 'https://meetfleet.app',
   TURNSTILE_HOSTNAMES: 'meetfleet.app',
   TURNSTILE_SECRET_KEY: 'secret',
-  FORMSUBMIT_ENDPOINT: 'https://formsubmit.example/ajax/alias',
+  RESEND_API_KEY: 're_test',
+  MAIL_FROM: 'Meetfleet Forms <onboarding@resend.dev>',
+  MAIL_TO: 'support@meetfleet.app',
 };
 
 const VALID = {
@@ -21,17 +23,17 @@ const VALID = {
 
 let calls;
 let siteverify;
-let formsubmit;
+let resend;
 const realFetch = globalThis.fetch;
 
 beforeEach(() => {
   calls = [];
   siteverify = { success: true, action: 'delete-account', hostname: 'meetfleet.app' };
-  formsubmit = { status: 200, body: { success: 'true' } };
+  resend = { status: 200, body: { id: 'email_123' } };
   globalThis.fetch = async (url, init) => {
     calls.push({ url: String(url), init });
     if (String(url).includes('siteverify')) return Response.json(siteverify);
-    return Response.json(formsubmit.body, { status: formsubmit.status });
+    return Response.json(resend.body, { status: resend.status });
   };
 });
 
@@ -46,9 +48,11 @@ function post(fields, { origin = 'https://meetfleet.app', path = '/delete-accoun
   return worker.fetch(new Request(`https://forms.example${path}`, { method: 'POST', body, headers }), ENV);
 }
 
-const forwarded = () => calls.filter(c => c.url === ENV.FORMSUBMIT_ENDPOINT);
+const RESEND_URL = 'https://api.resend.com/emails';
+const forwarded = () => calls.filter(c => c.url === RESEND_URL);
+const sentEmail = () => JSON.parse(forwarded().at(-1).init.body);
 
-test('valid submission is verified and forwarded', async () => {
+test('valid submission is verified and emailed', async () => {
   const res = await post(VALID);
   assert.equal(res.status, 200);
   const out = await res.json();
@@ -57,17 +61,24 @@ test('valid submission is verified and forwarded', async () => {
   assert.equal(res.headers.get('Access-Control-Allow-Origin'), 'https://meetfleet.app');
 
   assert.equal(forwarded().length, 1);
-  const sent = forwarded()[0].init.body;
-  assert.equal(sent.get('scope'), VALID.scope);
-  assert.equal(sent.get('ticket_id'), out.ticket);
-  assert.equal(sent.get('cf-turnstile-response'), null, 'token is not forwarded');
+  const call = forwarded()[0];
+  assert.equal(call.init.headers.Authorization, 'Bearer re_test');
+  const email = sentEmail();
+  assert.equal(email.from, ENV.MAIL_FROM);
+  assert.deepEqual(email.to, ['support@meetfleet.app']);
+  assert.equal(email.reply_to, VALID.email);
+  assert.equal(email.subject, `[Data Deletion Request ${out.ticket}] Meetfleet`);
+  assert.match(email.text, /Scope: +Entire account and all personal data/);
+  assert.match(email.text, /Username\/phone: +@ada/);
+  assert.ok(!email.text.includes('token'), 'Turnstile token is not emailed');
+  assert.equal(email.html, undefined, 'plain text only');
 });
 
 test('honeypot hit looks like success but sends nothing', async () => {
   const res = await post({ ...VALID, company_url: 'https://spam.example' });
   assert.equal(res.status, 200);
   assert.equal((await res.json()).success, true);
-  assert.equal(calls.length, 0, 'neither Turnstile nor FormSubmit is called');
+  assert.equal(calls.length, 0, 'neither Turnstile nor Resend is called');
 });
 
 test('placeholder and unknown scopes are rejected', async () => {
@@ -117,11 +128,20 @@ test('requests from other origins are refused', async () => {
   assert.equal(calls.length, 0);
 });
 
-test('FormSubmit failure surfaces as an error, not success', async () => {
-  formsubmit = { status: 200, body: { success: 'false', message: 'activation required' } };
-  assert.equal((await post(VALID)).status, 502);
-  formsubmit = { status: 500, body: {} };
-  assert.equal((await post(VALID)).status, 502);
+test('email failure surfaces as an error, not success', async () => {
+  const errors = [];
+  const realError = console.error;
+  console.error = (...a) => errors.push(a.join(' '));
+  try {
+    resend = { status: 429, body: { name: 'daily_quota_exceeded' } };
+    assert.equal((await post(VALID)).status, 502);
+    resend = { status: 403, body: { name: 'validation_error' } };
+    assert.equal((await post(VALID)).status, 502);
+  } finally {
+    console.error = realError;
+  }
+  assert.equal(errors.length, 2);
+  assert.match(errors[0], /Resend rejected the email 429 .*daily_quota_exceeded/);
 });
 
 test('other paths and methods are refused', async () => {

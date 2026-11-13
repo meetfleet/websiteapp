@@ -5,7 +5,16 @@ compatibility_date = "2026-09-01"
 [vars]
 ALLOWED_ORIGINS = "https://meetfleet.app"
 TURNSTILE_HOSTNAMES = "meetfleet.app"
+MAIL_TO = "support@meetfleet.app"
+# resend.dev only delivers to the address the Resend account was created with,
+# so that account must be support@meetfleet.app. After verifying meetfleet.app
+# in Resend, switch this to e.g. "Meetfleet Forms <forms@meetfleet.app>".
+MAIL_FROM = "Meetfleet Forms <onboarding@resend.dev>"
 
 # Secrets, set once with `npx wrangler secret put <NAME>`:
 #   TURNSTILE_SECRET_KEY  Turnstile widget secret key
-#   FORMSUBMIT_ENDPOINT   https://formsubmit.co/ajax/<random alias FormSubmit emailed you>
+#   RESEND_API_KEY        Resend API key (sending access)
+
+# Keep Worker logs (incl. email failures) in the dashboard: Workers → meetfleet-forms → Logs.
+[observability]
+enabled = true
