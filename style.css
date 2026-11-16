@@ -258,7 +258,10 @@ main {
 /* ── APP STORE BADGE (BLURRED + DARK COMING SOON PILL) ── */
 .appstore-container {
   margin-top: 20px;
-  display: inline-block;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
   overflow: visible;
   position: relative;
   z-index: 40;
@@ -273,6 +276,12 @@ main {
   position: relative;
   z-index: 45;
   pointer-events: auto;
+}
+
+.appstore-btn {
+  display: block;
+  height: 54px;
+  width: auto;
 }
 
 .appstore-badge-wrap {
