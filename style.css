@@ -924,17 +924,16 @@ body.hide-floats .float-action {
   .hero {
     left: clamp(16px, 5vw, 36px);
     right: clamp(16px, 5vw, 36px);
-    top: calc(clamp(75px, 13vh, 100px) + env(safe-area-inset-top));
+    top: calc(clamp(64px, 9.5vh, 84px) + env(safe-area-inset-top));
     width: auto;
     max-width: none;
     z-index: 30;
     animation: fadeUp 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
   }
 
+  /* No logo above the title on phones, so the store badges have room */
   .hero-icon {
-    width: 39px;
-    height: 39px;
-    margin-bottom: 12px;
+    display: none;
   }
 
   .hero-text-slide h1 {
@@ -950,10 +949,15 @@ body.hide-floats .float-action {
   }
 
   .appstore-container {
-    margin-top: 18px;
+    margin-top: 14px;
+    gap: 8px;
     position: relative;
     z-index: 40;
     pointer-events: auto;
+  }
+
+  .appstore-btn {
+    height: 40px;
   }
 
 
